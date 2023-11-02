@@ -1,0 +1,13 @@
+.container {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+}
+
+.card {
+    width: 100%;
+}
+
+.card-body {
+    padding: 2rem;
+}
