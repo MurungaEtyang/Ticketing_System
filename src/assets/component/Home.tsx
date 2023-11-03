@@ -29,49 +29,52 @@ const Home: React.FC = () => {
     };
 
     return (
-        <div className="home-container">
-            <h1 className="home-title">Welcome to the Home Page</h1>
-            <p className="home-content">This is the content of the home page.</p>
+        <>
+            <body>
+                <div className="home-container">
+                    <h1 className="home-title">Welcome to the Home Page</h1>
+                    <p className="home-content">This is the content of the home page.</p>
+                    <nav className="nav-container">
+                        {showTicketForm ? (
+                            <Ticket />
+                        ) : (
+                            <button className="ticket-button" onClick={() => handleButtonClick('ticket')} disabled={!showLoginForm && !showRegisterForm}>
+                                Ticket
+                            </button>
+                        )}
 
-            <nav className="nav-container">
-                {showTicketForm ? (
-                    <Ticket />
-                ) : (
-                    <button className="ticket-button" onClick={() => handleButtonClick('ticket')} disabled={!showLoginForm && !showRegisterForm}>
-                        Ticket
-                    </button>
-                )}
+                        <div className="profile-dropdown">
+                            <button className="profile-button" onClick={handleProfileClick}>
+                                Profile
+                            </button>
+                            {showProfileDropdown && (
+                                <div className="dropdown-content">
+                                    {showLoginForm ? (
+                                        <div className="form-container">
+                                            <Login />
+                                        </div>
+                                    ) : (
+                                        <button className="dropdown-button" onClick={() => handleButtonClick('login')}>
+                                            Login
+                                        </button>
+                                    )}
 
-                <div className="profile-dropdown">
-                    <button className="profile-button" onClick={handleProfileClick}>
-                        Profile
-                    </button>
-                    {showProfileDropdown && (
-                        <div className="dropdown-content">
-                            {showLoginForm ? (
-                                <div className="form-container">
-                                    <Login />
+                                    {showRegisterForm ? (
+                                        <div className="form-container">
+                                            <Registration />
+                                        </div>
+                                    ) : (
+                                        <button className="dropdown-button" onClick={() => handleButtonClick('register')}>
+                                            Register
+                                        </button>
+                                    )}
                                 </div>
-                            ) : (
-                                <button className="dropdown-button" onClick={() => handleButtonClick('login')}>
-                                    Login
-                                </button>
-                            )}
-
-                            {showRegisterForm ? (
-                                <div className="form-container">
-                                    <Registration />
-                                </div>
-                            ) : (
-                                <button className="dropdown-button" onClick={() => handleButtonClick('register')}>
-                                    Register
-                                </button>
                             )}
                         </div>
-                    )}
+                    </nav>
                 </div>
-            </nav>
-        </div>
+            </body>
+        </>
     );
 };
 

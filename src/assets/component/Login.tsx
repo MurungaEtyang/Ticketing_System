@@ -40,12 +40,12 @@ const Login = () => {
     };
 
     return (
-        <div className="login-container">
+        <div className="login-container1">
             <div className="login-card">
                 <h3 className="card-title">Login</h3>
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
-                        <label htmlFor="email">Email</label>
+                        <label htmlFor="email">Email *</label>
                         <input
                             type="email"
                             className="form-control"
@@ -55,7 +55,7 @@ const Login = () => {
                         />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="password">Password</label>
+                        <label htmlFor="password">Password *</label>
                         <input
                             type="password"
                             className="form-control"

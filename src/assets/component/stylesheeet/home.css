@@ -1,3 +1,6 @@
+body{
+    background-color: #bcbfc2;
+}
 
 .nav-container {
     display: flex;
@@ -61,6 +64,19 @@
 }
 
 .form-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #f2f2f2;
+    padding: 20px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+.registration-container,
+.login-container {
     display: flex;
     justify-content: center;
     align-items: center;

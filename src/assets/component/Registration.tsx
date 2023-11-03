@@ -66,7 +66,7 @@ const Registration = () => {
                             <h3 className="card-title">Registration form</h3>
                             <form onSubmit={handleSubmit}>
                                 <div className="form-group">
-                                    <label htmlFor="firstname">First name</label>
+                                    <label htmlFor="firstname">First name *</label>
                                     <input
                                         type="text"
                                         className="form-control"
@@ -76,7 +76,7 @@ const Registration = () => {
                                     />
                                 </div>
                                 <div className="form-group">
-                                    <label htmlFor="lastname">Last name</label>
+                                    <label htmlFor="lastname">Last name *</label>
                                     <input
                                         type="text"
                                         className="form-control"
@@ -86,7 +86,7 @@ const Registration = () => {
                                     />
                                 </div>
                                 <div className="form-group">
-                                    <label htmlFor="email">Email</label>
+                                    <label htmlFor="email">Email *</label>
                                     <input
                                         type="email"
                                         className="form-control"
@@ -96,7 +96,7 @@ const Registration = () => {
                                     />
                                 </div>
                                 <div className="form-group">
-                                    <label htmlFor="password">Password</label>
+                                    <label htmlFor="password">Password *</label>
                                     <input
                                         type="password"
                                         className="form-control"
