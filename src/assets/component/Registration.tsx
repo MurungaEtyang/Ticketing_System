@@ -1,19 +1,61 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
 const Registration = () => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-    //  make api call to register the users
-        setFirstName('');
-        setFirstName('');
-        setUsername('');
-        setPassword('');
-    }
+        if (checkAllInputs()) {
+            // Make API call to register the user
+
+            // Reset the form fields
+            setFirstName('');
+            setLastName('');
+            setEmail('');
+            setPassword('');
+            // Show success toast notification
+            toast.success('Registration successful!', {
+                position: toast.POSITION.TOP_RIGHT,
+            });
+
+
+        } else {
+            if(firstName === ''){
+                toast.error('Please fill First Name input.', {
+                    position: toast.POSITION.BOTTOM_RIGHT,
+                });
+            }
+            else if(lastName === ''){
+                toast.error('Please fill Last Name input.', {
+                    position: toast.POSITION.BOTTOM_RIGHT,
+                });
+            }
+            else if (email == ''){
+                toast.error('Please fill email input.', {
+                    position: toast.POSITION.BOTTOM_RIGHT,
+                });
+            }else if(password == ''){
+                toast.error('Please fill password input', {
+                    position: toast.POSITION.BOTTOM_RIGHT,
+                });
+            }else {
+                toast.error('Please fill in all the input fields.', {
+                    position: toast.POSITION.BOTTOM_RIGHT,
+                });
+            }
+        }
+    };
+
+    const checkAllInputs = () => {
+        return firstName !== '' && lastName !== '' && email !== '' && password !== '';
+    };
 
     return (
         <div className="container">
@@ -49,8 +91,8 @@ const Registration = () => {
                                         type="email"
                                         className="form-control"
                                         id="email"
-                                        value={username}
-                                        onChange={(e) => setUsername(e.target.value)}
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
                                     />
                                 </div>
                                 <div className="form-group">
@@ -71,7 +113,9 @@ const Registration = () => {
                     </div>
                 </div>
             </div>
+            <ToastContainer />
         </div>
     );
 };
+
 export default Registration;
