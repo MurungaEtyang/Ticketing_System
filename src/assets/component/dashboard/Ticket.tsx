@@ -4,7 +4,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import { css } from '@emotion/react';
 import { ClipLoader } from 'react-spinners';
-import './stylesheet/ticket.css';
+import '../stylesheeet/ticket.css';
 
 const Ticket = () => {
     const [title, setTitle] = useState('');
