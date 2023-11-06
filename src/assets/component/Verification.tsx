@@ -1,29 +1,49 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-const Verification = () => {
-    const [Verification, setVerification] = useState('');
+import axios from 'axios';
+import "./stylesheeet/verification.css"
 
-    const handleSubmit = (e: React.FormEvent) => {
+const Verification = () => {
+    const [verification, setVerification] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (checkCode()){
-            //  make api call to register the users
-            setVerification('');
-            toast.success("Verification code inserted successfully", {
-                position: toast.POSITION.TOP_LEFT
-            })
-
-        }else{
-            toast.error("Verification code is required.", {
-                position: toast.POSITION.TOP_RIGHT
-            })
+        if (verification === '') {
+            toast.error('Verification code is required.', {
+                position: toast.POSITION.TOP_RIGHT,
+            });
+            return;
         }
-    }
 
-    const checkCode = () => {
-        return Verification !== '';
-    }
+        setIsLoading(true);
+
+        try {
+            // Make API call to register the user
+            const response = await axios.post('http://localhost:3000/api/register', {
+                verificationCode: verification,
+            });
+
+            // Reset the verification code
+            setVerification('');
+
+            toast.success('Verification code inserted successfully', {
+                position: toast.POSITION.TOP_RIGHT,
+            });
+
+        //     redirect to the dashboard
+
+
+        } catch (error) {
+            toast.error('Failed to insert verification code. Please try again later.', {
+                position: toast.POSITION.BOTTOM_RIGHT,
+            });
+        }
+
+        setIsLoading(false);
+    };
 
     return (
         <div className="container">
@@ -31,22 +51,21 @@ const Verification = () => {
                 <div className="col-md-6">
                     <div className="card">
                         <div className="card-body">
-                            <h3 className="card-title">Registration form</h3>
+                            <h3 className="card-title">Verification form</h3>
                             <form onSubmit={handleSubmit}>
-
                                 <div className="form-group">
-                                    <label htmlFor="password">Password</label>
+                                    <label htmlFor="verification">Code</label>
                                     <input
                                         type="text"
                                         className="form-control"
-                                        id="password"
+                                        id="verification"
                                         placeholder="XXXX XXXX XXXX XXXX"
-                                        value={Verification}
+                                        value={verification}
                                         onChange={(e) => setVerification(e.target.value)}
                                     />
                                 </div>
-                                <button type="submit" className="btn btn-primary">
-                                    Verify
+                                <button type="submit" className="btn-primary" disabled={isLoading}>
+                                    {isLoading ? 'Loading...' : 'Verify'}
                                 </button>
                             </form>
                         </div>
@@ -57,4 +76,9 @@ const Verification = () => {
         </div>
     );
 };
+
 export default Verification;
+
+export const verfy = () => {
+    return <ToastContainer />
+}

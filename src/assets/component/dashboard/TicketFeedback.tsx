@@ -1,25 +1,61 @@
+import './stylesheet/ticketFeedback.css'
 import React, { useState } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
 
 const TicketFeedback = () => {
     const [message, setMessage] = useState('');
     const [satisfied, setSatisfied] = useState(true);
     const [rating, setRating] = useState(0);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState('');
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        // Perform any necessary actions with the feedback data
-        // For example, you can submit the feedback to a backend API
+        setIsLoading(true);
+        setError('');
 
-        // Reset the form fields
-        setMessage('');
-        setSatisfied(true);
-        setRating(0);
+        // Make API request to submit feedback
+        fetch('http://localhost:3000/api/tickets', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ message, satisfied, rating }),
+        })
+            .then((response) => {
+                if (response.ok) {
+                    // Show success message or redirect to another page
+                    // console.log('Feedback submitted successfully');
+                    toast.success('Feedback submitted successfully', {
+                        position: toast.POSITION.TOP_RIGHT
+                    });
+
+                } else {
+                    toast.error('Feedback submission failed',{
+                        position: toast.POSITION.BOTTOM_RIGHT
+                    });
+                }
+            })
+            .catch((error) => {
+                // setError(error.message);
+                toast.error(error.message,{
+                    position: toast.POSITION.BOTTOM_RIGHT
+                })
+            })
+            .finally(() => {
+                setIsLoading(false);
+                setMessage('');
+                setSatisfied(true);
+                setRating(0);
+            });
     };
 
-    const handleRatingChange = (value: number) => {
+    const handleStarClick = (value: number) => {
         setRating(value);
     };
+
 
     return (
         <div className="container">
@@ -41,7 +77,7 @@ const TicketFeedback = () => {
                                 <div className="form-group">
                                     <label htmlFor="satisfied">Satisfied</label>
                                     <select
-                                        className="form-control"
+                                        className="form-control satisfied-dropdown"
                                         id="satisfied"
                                         value={satisfied ? 'yes' : 'no'}
                                         onChange={(e) => setSatisfied(e.target.value === 'yes')}
@@ -54,30 +90,35 @@ const TicketFeedback = () => {
                                     <label htmlFor="rating">Rating</label>
                                     <div className="rating">
                                         {[1, 2, 3, 4, 5].map((value) => (
-                                            <label key={value}>
+                                            <React.Fragment key={value}>
                                                 <input
                                                     type="radio"
+                                                    id={`star${value}`}
                                                     name="rating"
                                                     value={value}
                                                     checked={rating === value}
-                                                    onChange={() => handleRatingChange(value)}
+                                                    onChange={() => handleStarClick(value)}
                                                 />
-                                                {value} star
-                                            </label>
+                                                <label htmlFor={`star${value}`} className={`star ${rating >= value ? 'selected' : ''}`}>
+                                                    &#9733;
+                                                </label>
+                                            </React.Fragment>
                                         ))}
                                     </div>
                                 </div>
-                                <button type="submit" className="btn btn-primary">
-                                    Submit
+
+                                <button type="submit" className="btn btn-primary" disabled={isLoading}>
+                                    {isLoading ? 'Submitting...' : 'Submit'}
                                 </button>
+                                {error && <div className="error">{error}</div>}
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
+                <ToastContainer />
         </div>
     );
 };
 
 export default TicketFeedback;
-

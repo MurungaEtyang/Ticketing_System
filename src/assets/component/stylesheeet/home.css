@@ -50,7 +50,7 @@ body{
 }
 
 .home-container {
-    margin-top: 80px; /* Adjust this value to create space below the nav */
+    /*margin-top: 80px; !* Adjust this value to create space below the nav *!*/
 }
 
 .home-title {
@@ -68,10 +68,11 @@ body{
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: #f2f2f2;
+    /*background-color: #f2f2f2;*/
     padding: 20px;
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 40%;
 }
 
 
