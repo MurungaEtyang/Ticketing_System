@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import axios from 'axios';
-import "./stylesheeet/verification.css"
+import './stylesheeet/verification.css'
 
-const Verification = () => {
+const Verification: React.FC = () => {
     const [verification, setVerification] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -21,21 +22,21 @@ const Verification = () => {
         setIsLoading(true);
 
         try {
-            // Make API call to register the user
-            const response = await axios.post('http://localhost:3000/api/register', {
-                verificationCode: verification,
-            });
+            // Make API call to verify the code
+            // const response = await axios.post('http://localhost:3000/api/verify', {
+            //     verificationCode: verification,
+            // });
 
+            // Assuming the verification is successful
             // Reset the verification code
-            setVerification('');
+            // setVerification('');
 
             toast.success('Verification code inserted successfully', {
                 position: toast.POSITION.TOP_RIGHT,
             });
 
-        //     redirect to the dashboard
-
-
+            // Redirect to the Login component
+            navigate('/login');
         } catch (error) {
             toast.error('Failed to insert verification code. Please try again later.', {
                 position: toast.POSITION.BOTTOM_RIGHT,
@@ -78,7 +79,3 @@ const Verification = () => {
 };
 
 export default Verification;
-
-export const verfy = () => {
-    return <ToastContainer />
-}

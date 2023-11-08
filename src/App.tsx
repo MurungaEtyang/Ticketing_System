@@ -1,19 +1,27 @@
-import Home from "./assets/component/Home";
-// import Ticket from "./assets/component/dashboard/Ticket.tsx";
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Home from './assets/component/Home';
+import Verification from './assets/component/Verification';
+import Login from './assets/component/Login'
+import Dashboard from './assets/component/dashboard/Dashboard'
+import Registration from "./assets/component/Registration.tsx";
 
-// import TicketFeedback from "./assets/component/dashboard/TicketFeedback";
-// import Login from './assets/component/Login.tsx'
-// import Registration from './assets/component/Registration.tsx'
-function App() {
+const App: React.FC = () => {
     return (
         <>
-            <div><Home /></div>
-            {/*<div><Login /></div>*/}
-            {/*<div><Registration /></div>*/}
-            {/*<div><TicketFeedback /></div>*/}
-            {/*<div><Ticket0/></div>*/}
-        </>
-    )
-}
+            <Router>
+                <div className="App">
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/verification" element={<Verification />} />
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/dashboard" element={<Dashboard />} />
+                        <Route path="/register" element={<Registration />}/>
+                    </Routes>
+                </div>
 
-export default App
+            </Router>
+        </>
+    );
+};
+
+export default App;

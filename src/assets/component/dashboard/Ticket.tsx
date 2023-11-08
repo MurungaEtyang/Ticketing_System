@@ -25,17 +25,17 @@ const Ticket = () => {
         try {
             setLoading(true); // Set loading state to true
 
-            const ticket = {
-                title,
-                description,
-            };
-
-            // Make API call to submit the ticket
-            const response = await axios.post('http://localhost:3000/api/tickets', ticket);
-
-            // Reset the form fields
-            setTitle('');
-            setDescription('');
+            // const ticket = {
+            //     title,
+            //     description,
+            // };
+            //
+            // // Make API call to submit the ticket
+            // const response = await axios.post('http://localhost:3000/api/tickets', ticket);
+            //
+            // // Reset the form fields
+            // setTitle('');
+            // setDescription('');
 
             // Show success toast notification
             toast.success('Ticket submitted successfully!', {
@@ -68,6 +68,8 @@ const Ticket = () => {
         } finally {
             setLoading(false);
         }
+
+
     };
 
     const override = css`

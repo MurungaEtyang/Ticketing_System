@@ -1,4 +1,4 @@
-body{
+body {
     background-color: #bcbfc2;
 }
 
@@ -19,8 +19,11 @@ body{
     margin-right: 200px;
 }
 
+
+
 .profile-dropdown {
-    position: relative;
+    display: flex;
+    align-items: center;
 }
 
 .profile-button {
@@ -72,9 +75,9 @@ body{
     padding: 20px;
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 40%;
+    width: 30%;
+    height: 20%;
 }
-
 
 .registration-container,
 .login-container {
