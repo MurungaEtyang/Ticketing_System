@@ -1,0 +1,131 @@
+.profile {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+
+.profile p {
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.profile img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.side-nav-bar {
+    background-color: #f2f2f2;
+    padding: 10px;
+    margin-bottom: 20px;
+    width: 200px;
+    background-color: #007bff;
+    top: 100px
+}
+
+.User-Management-button,
+.User-Analysis-button,
+.Ticket-Assignment-button,
+.Department-Creation-button,
+.Department-Management-button,
+.Department-Analysis-button,
+.Department-Report-button,
+.User-Reporting-button,
+.Department-Report-button{
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    outline: none;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.User-Management-content,
+.User-Analysis-content,
+.Ticket-Assignment-content,
+.Department-Creation-content,
+.Department-Management-content,
+.Department-Analysis-content,
+.Department-Report-content,
+.User-Reporting-content{
+    display: block;
+    padding-left: 20px;
+}
+
+.dropdown-button,
+.User-Analysis-dropdown-button,
+.Ticket-Assignment-dropdown-button,
+.Department-Creation-dropdown-button,
+.Department-Management-dropdown-button,
+.Department-Analysis-dropdown-button,
+.Department-Report-dropdown-button,
+.User-Reporting-dropdown-button{
+    background-color: #f2f2f2;
+    color: black;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    outline: none;
+    margin-top: 10px;
+}
+
+.dropdown-button:hover,
+.User-Analysis-dropdown-button:hover,
+.Ticket-Assignment-dropdown-button:hover,
+.Department-Creation-dropdown-button:hover,
+.Department-Management-dropdown-button:hover,
+.Department-Analysis-dropdown-button:hover,
+.Department-Report-button:hover{
+    background-color: #ddd;
+}
+
+.User-Management-dropdown.show,
+.User-Analysis-dropdown.show,
+.Ticket-Assignment-dropdown.show,
+.Department-Creation-dropdown.show,
+.Department-Management-dropdown.show,
+.Department-Analysis-dropdown.show,
+.Department-Report-button.show{
+    display: block;
+}
+
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+h2 {
+    margin-top: 0;
+}

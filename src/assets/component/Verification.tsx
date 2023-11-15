@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './stylesheeet/verification.css'
+import axios from "axios";
 
 const Verification: React.FC = () => {
     const [verification, setVerification] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
-
+    const location = useLocation()
+    const email = location.state?.email || '';
+    // alert(email)
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -27,9 +30,20 @@ const Verification: React.FC = () => {
             //     verificationCode: verification,
             // });
 
+            await fetch('http://localhost:8080/api/v1/users/registration/activate/' + email, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Basic a2FtYXIyNTRiYXJha2FAZ21haWwuY29tOmFkbWlu',
+                },
+                body: JSON.stringify({
+                    message: verification
+                })
+            })
+
             // Assuming the verification is successful
             // Reset the verification code
-            // setVerification('');
+            setVerification('');
 
             toast.success('Verification code inserted successfully', {
                 position: toast.POSITION.TOP_RIGHT,

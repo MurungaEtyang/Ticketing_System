@@ -1,16 +1,22 @@
 import React, { useState, useRef } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import axios from 'axios';
 import { css } from '@emotion/react';
 import { ClipLoader } from 'react-spinners';
 import '../stylesheeet/ticket.css';
+import { handleBookTicket } from '../api/HandleApiFromBackend';
 
-const Ticket = () => {
+interface TicketProps {
+    setNotificationMessage: (message: string) => void;
+}
+
+const Ticket: React.FC<TicketProps> = ({ setNotificationMessage }) => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
+    const [attachment, setAttachment] = useState('');
     const [loading, setLoading] = useState(false);
-    const descriptionRef = useRef<HTMLTextAreaElement>(null); // Create a ref for the textarea
+    const [imageUrl, setImageUrl] = useState('');
+    const descriptionRef = useRef<HTMLTextAreaElement>(null);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -23,53 +29,42 @@ const Ticket = () => {
         }
 
         try {
-            setLoading(true); // Set loading state to true
+            setLoading(true);
 
-            // const ticket = {
-            //     title,
-            //     description,
-            // };
-            //
-            // // Make API call to submit the ticket
-            // const response = await axios.post('http://localhost:3000/api/tickets', ticket);
-            //
-            // // Reset the form fields
-            // setTitle('');
-            // setDescription('');
+            // Make API call to submit the ticket
 
-            // Show success toast notification
-            toast.success('Ticket submitted successfully!', {
-                position: toast.POSITION.TOP_RIGHT,
-            });
+            const formData = new FormData();
+            formData.append('title', title);
+            formData.append('description', description);
+            formData.append('attachment', attachment);
 
-            // Do something with the response data
-            console.log(response.data);
-        } catch (error: any) {
-            // Display specific error message based on the type of error
-            if (error.response) {
-                // The request was made and the server responded with a status code
-                toast.error(`Request failed with status ${error.response.status}`, {
-                    position: toast.POSITION.TOP_CENTER,
-                });
-            } else if (error.request) {
-                // The request was made but no response was received
-                toast.error('No response received from the server', {
-                    position: toast.POSITION.TOP_CENTER,
-                });
-            } else {
-                // Something happened in setting up the request that triggered an error
-                toast.error('An error occurred while submitting the ticket', {
-                    position: toast.POSITION.TOP_CENTER,
-                });
-            }
+            await fetch('http://localhost:8080/api/v1/tickets', {
+                method: 'POST',
+                headers: {
+                    Authorization: 'Basic ' + localStorage.getItem('email_password_credentials'),
+                    'Content-Type': 'multipart/form-data',
+                },
+                body: formData,
+            })
+                .then((response) => {
+                    // Show success toast notification
+                    toast.success('Ticket submitted successfully!', {
+                        position: toast.POSITION.TOP_RIGHT,
+                    });
 
-            // Log the error to the console
-            console.error(error);
+                    // Set the notification message
+                    setNotificationMessage('Message has been sent');
+                })
+                .catch((error) => toast.error(error.message));
+
+            // Reset the form fields
+            setTitle('');
+            setDescription('');
+        } catch (error) {
+            alert(error.value);
         } finally {
             setLoading(false);
         }
-
-
     };
 
     const override = css`
@@ -79,10 +74,20 @@ const Ticket = () => {
 
     const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setDescription(e.target.value);
-        // Automatically adjust the height of the textarea
         if (descriptionRef.current) {
             descriptionRef.current.style.height = 'auto';
             descriptionRef.current.style.height = `${descriptionRef.current.scrollHeight}px`;
+        }
+    };
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImageUrl(reader.result as string);
+            };
+            reader.readAsDataURL(file);
         }
     };
 
@@ -95,7 +100,7 @@ const Ticket = () => {
                             <h3 className="card-title">Ticket</h3>
                             <form onSubmit={handleSubmit}>
                                 <div className="form-group">
-                                    <label htmlFor="title">Title</label>
+                                    <label htmlFor="title">Title*</label>
                                     <input
                                         type="text"
                                         className="form-control"
@@ -105,15 +110,29 @@ const Ticket = () => {
                                     />
                                 </div>
                                 <div className="form-group">
-                                    <label htmlFor="description">Description</label>
+                                    <label htmlFor="description">Description*</label>
                                     <textarea
                                         className="form-control-text"
                                         id="description"
                                         value={description}
                                         onChange={handleDescriptionChange}
-                                        ref={descriptionRef} // Assign the ref to the textarea
+                                        ref={descriptionRef}
                                     ></textarea>
                                 </div>
+                                <div>
+                                    <label htmlFor="attachment">Upload File</label>
+                                    <input
+                                        type="file"
+                                        className="form-control-file"
+                                        id="attachment"
+                                        onChange={handleFileChange}
+                                    />
+                                </div>
+                                {imageUrl && (
+                                    <div className="uploaded-image-container">
+                                        <img src={imageUrl} alt="Uploaded File" className="uploaded-image" />
+                                    </div>
+                                )}
                                 <button type="submit" className="btn-primary" disabled={loading}>
                                     {loading ? (
                                         <ClipLoader color="#ffffff" loading={loading} css={override} size={20} />
@@ -132,6 +151,3 @@ const Ticket = () => {
 };
 
 export default Ticket;
-export const ToastNotificationTicket = () => {
-    return <ToastContainer />;
-};

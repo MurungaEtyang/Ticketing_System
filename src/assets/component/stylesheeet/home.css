@@ -57,13 +57,17 @@ body {
 }
 
 .home-title {
-    font-size: 24px;
-    font-weight: bold;
+    text-align: center;
+    font-size: 3rem;
+    margin-top: 2rem;
+    transform: translateX(50%);
 }
 
-.home-content {
-    font-size: 16px;
-    margin-bottom: 20px;
+.content-text {
+    text-align: center;
+    font-size: 1.2rem;
+    /*margin-left: 50%;*/
+    transform: translateX(50%);
 }
 
 .form-container {
@@ -71,12 +75,13 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    /*background-color: #f2f2f2;*/
+    background-color: #f2f2f2;
     padding: 20px;
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     width: 30%;
     height: 20%;
+    z-index: 9999;
 }
 
 .registration-container,

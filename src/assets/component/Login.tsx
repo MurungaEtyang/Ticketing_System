@@ -5,6 +5,7 @@ import { css } from '@emotion/react';
 import { ClipLoader } from 'react-spinners';
 import './stylesheeet/login.css';
 import { useNavigate } from 'react-router-dom';
+// import axios from "axios";
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -25,26 +26,71 @@ const Login = () => {
         try {
             setLoading(true);
 
-            // Make API call to log in the user
-            // const response = await axios.post('http://localhost:3000/api/login', {
-            //     email,
-            //     password,
-            // });
+            const credentials:string = btoa(email+":"+password)
+
+            localStorage.setItem("email_password_credentials",credentials);
+
+            await fetch('http://localhost:8080/api/v1/users/management/'+email, {
+                method: "GET",
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Basic '+ credentials,
+                }
+            }).then(response => {
+
+                if (response.ok) {
+                    if (response != null) {
+
+                        return response.json();
+
+                    }
+
+                }
+                else {
+                    alert(JSON.stringify(response))
+                    toast.error('Invalid email or password. Please try again.', {
+                        position: toast.POSITION.TOP_CENTER,
+                    });
+                }
+            }).then(data => {
+                if (data.authority === 'USER') {
+                    navigate('/dashboard', { state: { email }});
+                    return;
+                }else if(data.authority === 'EMPLOYEE'){
+                    navigate('/employee', { state: { email }});
+                    return;
+                }else if(data.authority === 'ADMIN' || data.authority === 'OWNER'){
+                    navigate('./admin', {state: { email }});
+                    return;
+                }
+            })
 
             // Reset the form fields
-            // setEmail('');
-            // setPassword('');
+            setEmail('');
+            setPassword('');
 
-            // Do something with the response data
-            // console.log(response.data);
 
-            // Show success toast notification
-            toast.success('Login successful!', {
-                position: toast.POSITION.TOP_RIGHT,
-            });
+            // if () {
+                // Check if email is verified
+                // if (response.data.emailVerified) {
+                //     // Do something when login is successful and email is verified
+                //
+                //     toast.success('Login successful!', {
+                //         position: toast.POSITION.TOP_RIGHT,
+                //     });
 
-            // Redirect to the Dashboard component
-            navigate('/dashboard', { state: { email }});
+                // navigate('/dashboard', { state: { email }});
+                // } else {
+                //     toast.error('Email is not verified. Please verify your email.', {
+                //         position: toast.POSITION.TOP_CENTER,
+                //     });
+                // }
+            // } else {
+            //     alert(JSON.stringify(res))
+            //     toast.error('Invalid email or password. Please try again.', {
+            //         position: toast.POSITION.TOP_CENTER,
+            //     });
+            // }
         } catch (error) {
             toast.error('Failed to login. Please try again later.', {
                 position: toast.POSITION.TOP_CENTER,
@@ -65,7 +111,7 @@ const Login = () => {
                 <div className="col-md-6">
                     <div className="card">
                         <div className="card-body">
-                            <h3 className="card-title">Login form</h3>
+                            <h3 className="card-title">LOGIN TO CUSTOMER SERVICE PORTAL</h3>
                             <form onSubmit={handleSubmit}>
                                 <div className="form-group">
                                     <label htmlFor="email">Email *</label>
@@ -99,7 +145,7 @@ const Login = () => {
                     </div>
                 </div>
             </div>
-            <ToastContainer />
+            {/*<ToastContainer />*/}
         </div>
     );
 };

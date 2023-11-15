@@ -4,6 +4,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { css } from '@emotion/react';
 import { ClipLoader } from 'react-spinners';
 import { useNavigate } from 'react-router-dom';
+import axios from "axios";
 
 const Registration = () => {
     const [firstName, setFirstName] = useState('');
@@ -29,20 +30,52 @@ const Registration = () => {
         setLoading(true);
 
         try {
-            // handle api
 
-            // Store the email and verification code in local storage
-            // localStorage.setItem('email', email);
-            // localStorage.setItem('verificationCode', verificationCode);
+            // Make API call to registration in the user
+            // const response = await axios.post('http://localhost:8080/api/v1/users/registration/register', {
+            //     Headers: {
+            //         Authorization: "Basic a2FtYXIyNTRiYXJha2FAZ21haWwuY29tOmFkbWlu"
+            //     }, Body:
+            //         {// firstName,
+            //             // lastName,
+            //             username: email,
+            //             password: password,
+            //         }
+            // }).then(response => {
+            //     console.log()
+            // });
+
+            await fetch("http://localhost:8080/api/v1/users/registration/register",{
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Basic a2FtYXIyNTRiYXJha2FAZ21haWwuY29tOmFkbWlu',
+                    'Sec-Fetch-Mode': 'no-cors'
+                },
+                body: JSON.stringify({
+                    username: email,
+                    password: password
+                })
+            }).then(response => {console.log(response.json())});
+
+            // Reset the form fields
+            setFirstName('');
+            setLastName('');
+            setEmail('');
+            setPassword('');
+
+
 
             // Redirect to the verification page
-            navigate('/verification');
+            navigate('/verification', { state: { email}});
 
             // Show success toast notification
             toast.success('Registration successful!', {
                 position: toast.POSITION.TOP_RIGHT,
             });
         } catch (error) {
+
+                // alert(error)
             toast.error('Failed to register user. Please try again later.', {
                 position: toast.POSITION.TOP_CENTER,
             });
@@ -75,7 +108,7 @@ const Registration = () => {
                     <div className="col-md-6">
                         <div className="card">
                             <div className="card-body">
-                                <h3 className="card-title">Registration form</h3>
+                                <h3 className="card-title">REGISTER TO CUSTOMER SERVICE PORTAL</h3>
                                 <form onSubmit={handleSubmit}>
                                     <div className="form-group">
                                         <label htmlFor="firstname">First name *</label>
@@ -139,7 +172,7 @@ const Registration = () => {
                     </div>
                 </div>
             </div>
-            <ToastContainer />
+            {/*<ToastContainer />*/}
         </>
     );
 };

@@ -80,6 +80,20 @@ button[type="submit"]:disabled {
     margin-top: 10px;
 }
 
+.form-control-file {
+    display: flex;
+    align-items: center;
+}
+
+.uploaded-image-container {
+    margin-top: 10px;
+}
+
+.uploaded-image {
+    max-width: 100%;
+    height: 40px;
+}
+
 /* Responsive Styles */
 
 @media screen and (max-width: 768px) {
