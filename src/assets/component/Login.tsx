@@ -4,8 +4,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { css } from '@emotion/react';
 import { ClipLoader } from 'react-spinners';
 import './stylesheeet/login.css';
-import { useNavigate } from 'react-router-dom';
-// import axios from "axios";
+import { useNavigate, Link } from 'react-router-dom';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -48,11 +47,12 @@ const Login = () => {
                 }
                 else {
                     alert(JSON.stringify(response))
-                    toast.error('Invalid email or password. Please try again.', {
-                        position: toast.POSITION.TOP_CENTER,
-                    });
+                    // toast.error('Invalid email or password. Please try again.', {
+                    //     position: toast.POSITION.TOP_CENTER,
+                    // });
                 }
             }).then(data => {
+
                 if (data.authority === 'USER') {
                     navigate('/dashboard', { state: { email }});
                     return;
@@ -63,37 +63,19 @@ const Login = () => {
                     navigate('./admin', {state: { email }});
                     return;
                 }
+                toast.success('You are successfully log in.', {
+                    position: toast.POSITION.TOP_RIGHT,
+                });
+
             })
 
             // Reset the form fields
             setEmail('');
             setPassword('');
 
-
-            // if () {
-                // Check if email is verified
-                // if (response.data.emailVerified) {
-                //     // Do something when login is successful and email is verified
-                //
-                //     toast.success('Login successful!', {
-                //         position: toast.POSITION.TOP_RIGHT,
-                //     });
-
-                // navigate('/dashboard', { state: { email }});
-                // } else {
-                //     toast.error('Email is not verified. Please verify your email.', {
-                //         position: toast.POSITION.TOP_CENTER,
-                //     });
-                // }
-            // } else {
-            //     alert(JSON.stringify(res))
-            //     toast.error('Invalid email or password. Please try again.', {
-            //         position: toast.POSITION.TOP_CENTER,
-            //     });
-            // }
         } catch (error) {
-            toast.error('Failed to login. Please try again later.', {
-                position: toast.POSITION.TOP_CENTER,
+            toast.error('Invalid email or password. Please try again.', {
+                position: toast.POSITION.BOTTOM_RIGHT,
             });
         } finally {
             setLoading(false);
@@ -104,6 +86,10 @@ const Login = () => {
         display: block;
         margin: 0 auto;
     `;
+
+    const redirectRegister = () => {
+        navigate('/register');
+    };
 
     return (
         <div className="container">
@@ -140,6 +126,12 @@ const Login = () => {
                                         'Login'
                                     )}
                                 </button>
+                                <div className="register-link">
+                                    Don't have an account?{' '}
+                                    <Link to="/register" onClick={redirectRegister}>
+                                        Register
+                                    </Link>
+                                </div>
                             </form>
                         </div>
                     </div>

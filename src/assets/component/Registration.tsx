@@ -3,8 +3,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { css } from '@emotion/react';
 import { ClipLoader } from 'react-spinners';
-import { useNavigate } from 'react-router-dom';
-import axios from "axios";
+import {Link, useNavigate} from 'react-router-dom';
 
 const Registration = () => {
     const [firstName, setFirstName] = useState('');
@@ -30,20 +29,6 @@ const Registration = () => {
         setLoading(true);
 
         try {
-
-            // Make API call to registration in the user
-            // const response = await axios.post('http://localhost:8080/api/v1/users/registration/register', {
-            //     Headers: {
-            //         Authorization: "Basic a2FtYXIyNTRiYXJha2FAZ21haWwuY29tOmFkbWlu"
-            //     }, Body:
-            //         {// firstName,
-            //             // lastName,
-            //             username: email,
-            //             password: password,
-            //         }
-            // }).then(response => {
-            //     console.log()
-            // });
 
             await fetch("http://localhost:8080/api/v1/users/registration/register",{
                 method: "POST",
@@ -88,13 +73,9 @@ const Registration = () => {
         return firstName !== '' && lastName !== '' && email !== '' && password !== '';
     };
 
-    // const generateVerificationCode = () => {
-    //     // Generate a random 6-digit verification code
-    //     const code = Math.floor(100000 + Math.random() * 900000).toString();
-    //     setVerificationCode(code);
-    //     alert(code)
-    //     return code;
-    // };
+    const redirectLogin = () => {
+        navigate('/login');
+    };
 
     const override = css`
         display: block;
@@ -166,6 +147,13 @@ const Registration = () => {
                                             'Register'
                                         )}
                                     </button>
+
+                                    <div className="login-link">
+                                        Already have an account?{' '}
+                                        <Link to="/login" onClick={redirectLogin}>
+                                            Login
+                                        </Link>
+                                    </div>
                                 </form>
                             </div>
                         </div>

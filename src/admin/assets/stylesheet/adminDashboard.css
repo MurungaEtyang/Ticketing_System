@@ -1,3 +1,11 @@
+/*body{*/
+/*    background-color: #2d2d2d;*/
+/*}*/
+.admin-dashboard-container{
+    margin-top: -10px;
+    background-color: #9a8b8b;
+}
+
 .profile {
     display: flex;
     align-items: center;
@@ -24,6 +32,10 @@
     width: 200px;
     background-color: #007bff;
     top: 100px
+}
+
+.side-nav-bar.raised {
+    margin-top: -20px;
 }
 
 .User-Management-button,
@@ -124,6 +136,8 @@
     background-color: transparent;
     border: none;
     cursor: pointer;
+    color: white;
+    font-size: 30px;
 }
 
 h2 {

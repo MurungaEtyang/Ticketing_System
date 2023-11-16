@@ -14,9 +14,13 @@ body {
     padding: 20px;
     background-color: #f2f2f2;
 }
-
+.logo {
+    max-width: 100%;
+    height: auto;
+}
 .nav-container button {
     margin-right: 200px;
+    width: 100%;
 }
 
 
@@ -31,6 +35,11 @@ body {
     background-color: transparent;
     border: none;
     cursor: pointer;
+}
+
+.logo {
+    max-width: 100%;
+    height: auto;
 }
 
 .dropdown-content {
