@@ -4,7 +4,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { css } from '@emotion/react';
 import { ClipLoader } from 'react-spinners';
 import '../stylesheeet/ticket.css';
-import { handleBookTicket } from '../api/HandleApiFromBackend';
+// import {numBytes} from "aws-sdk/clients/finspace";
+// import { handleBookTicket } from '../api/HandleApiFromBackend';
 
 interface TicketProps {
     setNotificationMessage: (message: string) => void;
@@ -13,10 +14,20 @@ interface TicketProps {
 const Ticket: React.FC<TicketProps> = ({ setNotificationMessage }) => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [attachment, setAttachment] = useState('');
     const [loading, setLoading] = useState(false);
     const [imageUrl, setImageUrl] = useState('');
     const descriptionRef = useRef<HTMLTextAreaElement>(null);
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImageUrl(reader.result as string);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -31,22 +42,29 @@ const Ticket: React.FC<TicketProps> = ({ setNotificationMessage }) => {
         try {
             setLoading(true);
 
-            // Make API call to submit the ticket
+            const fileInput = document.getElementById('attachment') as HTMLInputElement;
+            const file = fileInput.files?.[0];
+
+            if (!file) {
+                toast.error('Please select a file.', {
+                    position: toast.POSITION.BOTTOM_RIGHT,
+                });
+                return;
+            }
 
             const formData = new FormData();
+            formData.append('attachment', file);
             formData.append('title', title);
             formData.append('description', description);
-            formData.append('attachment', attachment);
 
             await fetch('http://localhost:8080/api/v1/tickets', {
                 method: 'POST',
                 headers: {
                     Authorization: 'Basic ' + localStorage.getItem('email_password_credentials'),
-                    'Content-Type': 'multipart/form-data',
                 },
                 body: formData,
-            })
-                .then((response) => {
+            }).then((response) => {
+                if (response.ok) {
                     // Show success toast notification
                     toast.success('Ticket submitted successfully!', {
                         position: toast.POSITION.TOP_RIGHT,
@@ -54,8 +72,10 @@ const Ticket: React.FC<TicketProps> = ({ setNotificationMessage }) => {
 
                     // Set the notification message
                     setNotificationMessage('Message has been sent');
-                })
-                .catch((error) => toast.error(error.message));
+                } else {
+                    alert(response.status);
+                }
+            }).catch((error) => toast.error(error.message));
 
             // Reset the form fields
             setTitle('');
@@ -80,16 +100,7 @@ const Ticket: React.FC<TicketProps> = ({ setNotificationMessage }) => {
         }
     };
 
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setImageUrl(reader.result as string);
-            };
-            reader.readAsDataURL(file);
-        }
-    };
+
 
     return (
         <div className="container">
