@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import './AssignTicket.css';
 
 const AssignTicket = () => {
+    const [currentForm, setCurrentForm] = useState<'check' | 'content' | 'assign'>('check');
     const [isLoading, setIsLoading] = useState(false);
     const [ticketId, setTicketId] = useState('');
     const [assignTo, setAssignTo] = useState('');
@@ -14,7 +15,12 @@ const AssignTicket = () => {
     const [deadline, setDeadline] = useState<Date | null>(null);
     const [assignToOptions, setAssignToOptions] = useState<string[]>([]);
     const [showForm, setShowForm] = useState(false);
-    const [ticketContent, setTicketContent] = useState<{ title: string; description: string; attachment: string } | null>(null);
+    const [ticketContent, setTicketContent] = useState<{
+
+        title: string;
+        description: string;
+        attachment: string
+    } | null>(null);
     const [attachmentType, setAttachmentType] = useState<string | null>(null);
 
     useEffect(() => {
@@ -24,6 +30,7 @@ const AssignTicket = () => {
                 // const response = await fetch('/api/assign-to-options');
                 // const data = await response.json();
                 // setAssignToOptions(data.options);
+
 
                 // For testing purposes, set some dummy assignTo options
                 setAssignToOptions(['Kamar Baraka', 'Evans Etyang', 'Elijah Mutune', 'Jeff Omondi']);
@@ -55,7 +62,8 @@ const AssignTicket = () => {
         event.preventDefault();
         setIsLoading(true);
 
-        if (!showForm) {
+        if (currentForm === 'check') {
+
             // const requestBody = {
             //     ticketId: ticketId
             // };
@@ -87,17 +95,20 @@ const AssignTicket = () => {
             toast.success('Ticket checked successfully', {
                 position: toast.POSITION.TOP_RIGHT,
             });
-            // setShowForm(true);
-            await showTicketContent()
-        } else {
-            const requestBody = {
-                ticketId: ticketId,
-                assignTo: assignTo,
-                priority: priority,
-                deadline: deadline
-            };
+            setCurrentForm('content');
+            await showTicketContent();
+        } else if (currentForm === 'content') {
+            setCurrentForm('assign');
+        } else if (currentForm === 'assign') {
+            // const requestBody = {
+            //     ticketId: ticketId,
+            //     assignTo: assignTo,
+            //     priority: priority,
+            //     deadline: deadline
+            // };
 
             try {
+
                 // const response = await fetch('https://example.com/api/assignTicket', {
                 //     method: 'POST',
                 //     headers: {
@@ -123,31 +134,31 @@ const AssignTicket = () => {
                     position: toast.POSITION.TOP_RIGHT,
                 });
             } catch (error) {
-
                 toast.error('Error fetching ticket content', {
                     position: toast.POSITION.BOTTOM_RIGHT,
                 });
             }
 
             // For testing purposes, log the form data
-            alert('Ticket ID: '+ ticketId);
-            alert('Assign To: '+ assignTo);
-            alert('Priority: '+ priority);
-            alert('Deadline: '+ deadline);
+            alert('Ticket ID: ' + ticketId);
+            alert('Assign To: ' + assignTo);
+            alert('Priority: ' + priority);
+            alert('Deadline: ' + deadline);
 
             // Reset the form
             setTicketId('');
             setAssignTo('');
             setPriority('');
             setDeadline(null);
-            setShowForm(false);
+            setCurrentForm('check');
         }
 
         setIsLoading(false);
     };
 
 
-    const showTicketContent = async () =>{
+    const showTicketContent = async () => {
+        alert('Ticket ID: ' + ticketId);
         // setIsLoading(true);
         //
         // try {
@@ -158,7 +169,7 @@ const AssignTicket = () => {
         //         setTicketContent(data.description);
         //         setAttachmentType(data.attachmentType);
 
-         //        //show form
+        //        //show form
         //          setShowForm(true);
         //     } else {
         //         toast.error('Error fetching ticket content', {
@@ -207,85 +218,54 @@ const AssignTicket = () => {
         link.click();
     };
 
+
+    const handleNext = () => {
+        if (currentForm === 'check') {
+            // For testing purposes, directly show the form
+            showTicketContent();
+            setCurrentForm('content');
+        } else if (currentForm === 'content') {
+            setCurrentForm('assign');
+        }
+    };
+
+    const handlePrevious = () => {
+        if (currentForm === 'content') {
+            setCurrentForm('check');
+        } else if (currentForm === 'assign') {
+            setCurrentForm('content');
+        }
+    };
+
     return (
-        <>
-            <div className="assign-ticket-container"> {/* Add a container class */}
+        <div className="assign-ticket-container">
+            {currentForm === 'check' && (
                 <form onSubmit={handleSubmit}>
                     <div>
                         <h2>Assigning the Ticket</h2>
                     </div>
-                    {!showForm ? (
-                        <>
-                            <label htmlFor="ticketId">Ticket ID:</label>
-                            <input
-                                type="text"
-                                id="ticketId"
-                                value={ticketId}
-                                onChange={handleTicketIdChange}
-                            />
-                            <br />
-
-                            {isLoading ? (
-                                <BeatLoader color="#000000" size={30} />
-
-                            ) : (
-                                <>
-                                    <button type="submit" className="check-ticket-button">Check Ticket ID</button>
-                                </>
-                            )}
-
-                        </>
-                    ) : (
-                        <>
-                            <label htmlFor="assignTo">Assign To:</label>
-                            <select
-                                id="assignTo"
-                                value={assignTo}
-                                onChange={handleAssignToChange}
-                            >
-                                <option value="">Select an Employee</option>
-                                {assignToOptions.map((option) => (
-                                    <option key={option} value={option}>
-                                        {option}
-                                    </option>
-                                ))}
-                            </select>
-                            <br />
-                            <label htmlFor="priority">Priority:</label>
-                            <input
-                                type="text"
-                                id="priority"
-                                value={priority}
-                                onChange={handlePriorityChange}
-                            />
-                            <br />
-                            <label htmlFor="deadline">Deadline:</label>
-                            <DatePicker
-                                id="deadline"
-                                selected={deadline}
-                                onChange={handleDeadlineChange}
-                                dateFormat="yyyy-MM-dd"
-                            />
-                            <br />
-
-                            {isLoading ? (
-                                <BeatLoader color="#000000" size={30} />
-
-                            ) : (
-                                <>
-                                    <button type="submit" className="assign-ticket-button">Assign Ticket</button>
-                                </>
-                            )}
-
-                        </>
-                    )}
+                    <div>
+                        <label htmlFor="ticketId">Ticket ID:</label>
+                        <input
+                            type="text"
+                            id="ticketId"
+                            value={ticketId}
+                            onChange={handleTicketIdChange}
+                        />
+                    </div>
+                    <div>
+                        {isLoading ? (
+                            <BeatLoader color="#000000" size={30} />
+                        ) : (
+                            <button type="button" onClick={handleNext} className="check-ticket-button">
+                                Next
+                            </button>
+                        )}
+                    </div>
                 </form>
+            )}
 
-            </div>
-
-
-            {/*form for ticket container*/}
-            <div className="ticket-details-container">
+            {currentForm === 'content' && (
                 <form className="ticket-details-container-form">
                     {ticketContent && (
                         <div className="ticket-content-container">
@@ -317,17 +297,74 @@ const AssignTicket = () => {
                                 <BeatLoader color="#000000" size={30} />
                             ) : (
                                 <>
-                                    <button type="submit" className="check-ticket-button">Next</button>
+                                    <button type="button" onClick={handlePrevious} className="check-ticket-button">
+                                        Previous
+                                    </button>
+                                    <button type="button" onClick={handleNext} className="check-ticket-button">
+                                        Next
+                                    </button>
                                 </>
                             )}
                         </div>
                     )}
-
                 </form>
-            </div>
+            )}
+
+            {currentForm === 'assign' && (
+                <form onSubmit={handleSubmit}>
+                    <div>
+                        <label htmlFor="assignTo">Assign To:</label>
+                        <select
+                            id="assignTo"
+                            value={assignTo}
+                            onChange={handleAssignToChange}
+                        >
+                            <option value="">Select an Employee</option>
+                            {assignToOptions.map((option) => (
+                                <option key={option} value={option}>
+                                    {option}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    <div>
+                        <label htmlFor="priority">Priority:</label>
+                        <input
+                            type="text"
+                            id="priority"
+                            value={priority}
+                            onChange={handlePriorityChange}
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="deadline">Deadline:</label>
+                        <DatePicker
+                            id="deadline"
+                            selected={deadline}
+                            onChange={handleDeadlineChange}
+                            dateFormat="yyyy-MM-dd"
+                        />
+                    </div>
+                    <div>
+                        {isLoading ? (
+                            <BeatLoader color="#000000" size={30} />
+                        ) : (
+                            <>
+                                <button type="button" onClick={handlePrevious} className="check-ticket-button">
+                                    Previous
+                                </button>
+                                <button type="submit" className="assign-ticket-button">
+                                    Assign Ticket
+                                </button>
+                            </>
+                        )}
+                    </div>
+                </form>
+            )}
             <ToastContainer />
-        </>
-    )
-};
+        </div>
+    );
+}
+
 
 export default AssignTicket;

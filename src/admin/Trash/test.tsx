@@ -27,6 +27,11 @@ const AssignTicket = () => {
         // Fetch the Assign To options from the API endpoint
         const fetchAssignToOptions = async () => {
             try {
+                // const response = await fetch('/api/assign-to-options');
+                // const data = await response.json();
+                // setAssignToOptions(data.options);
+
+
                 // For testing purposes, set some dummy assignTo options
                 setAssignToOptions(['Kamar Baraka', 'Evans Etyang', 'Elijah Mutune', 'Jeff Omondi']);
             } catch (error) {
@@ -58,6 +63,34 @@ const AssignTicket = () => {
         setIsLoading(true);
 
         if (currentForm === 'check') {
+
+            // const requestBody = {
+            //     ticketId: ticketId
+            // };
+            //
+            // try {
+            //     const response = await fetch('https://example.com/api/checkTicket', {
+            //         method: 'POST',
+            //         headers: {
+            //             'Content-Type': 'application/json'
+            //         },
+            //         body: JSON.stringify(requestBody)
+            //     });
+            //
+            //     if (response.ok) {
+            //         toast.success('Ticket checked successfully', {
+            //             position: toast.POSITION.TOP_RIGHT,
+            //         });
+            //         await showTicketContent()
+            //     } else {
+            //         toast.error('Error checking ticket.', {
+            //             position: toast.POSITION.BOTTOM_RIGHT,
+            //         });
+            //     }
+            // } catch (error) {
+            //     console.error('Error checking ticket:', error);
+            // }
+
             // For testing purposes, directly show the form
             toast.success('Ticket checked successfully', {
                 position: toast.POSITION.TOP_RIGHT,
@@ -65,14 +98,38 @@ const AssignTicket = () => {
             setCurrentForm('content');
             await showTicketContent();
         } else if (currentForm === 'content') {
-            const requestBody = {
-                ticketId: ticketId,
-                assignTo: assignTo,
-                priority: priority,
-                deadline: deadline
-            };
+            setCurrentForm('assign');
+        } else if (currentForm === 'assign') {
+            // const requestBody = {
+            //     ticketId: ticketId,
+            //     assignTo: assignTo,
+            //     priority: priority,
+            //     deadline: deadline
+            // };
 
             try {
+
+                // const response = await fetch('https://example.com/api/assignTicket', {
+                //     method: 'POST',
+                //     headers: {
+                //         'Content-Type': 'application/json'
+                //     },
+                //     body: JSON.stringify(requestBody)
+                // });
+                //
+                // if (response.ok) {
+                //     // console.log('Ticket assigned successfully');
+                //     toast.success('Ticket assigned successfully', {
+                //         position: toast.POSITION.TOP_RIGHT,
+                //     });
+                //     setShowForm(false);
+                // } else {
+                //     toast.error('Error assigning ticket', {
+                //         position: toast.POSITION.BOTTOM_RIGHT,
+                //     });
+                //
+                // }
+
                 toast.success('Ticket assigned successfully', {
                     position: toast.POSITION.TOP_RIGHT,
                 });
@@ -93,7 +150,7 @@ const AssignTicket = () => {
             setAssignTo('');
             setPriority('');
             setDeadline(null);
-            setCurrentForm('assign');
+            setCurrentForm('check');
         }
 
         setIsLoading(false);
@@ -101,6 +158,31 @@ const AssignTicket = () => {
 
 
     const showTicketContent = async () => {
+        alert('Ticket ID: ' + ticketId);
+        // setIsLoading(true);
+        //
+        // try {
+        //     const response = await fetch(`https://example.com/api/ticket/${ticketId}`);
+        //     if (response.ok) {
+        //         const data = await response.json();
+        //         setTicketContent(data.title);
+        //         setTicketContent(data.description);
+        //         setAttachmentType(data.attachmentType);
+
+        //        //show form
+        //          setShowForm(true);
+        //     } else {
+        //         toast.error('Error fetching ticket content', {
+        //             position: toast.POSITION.BOTTOM_RIGHT,
+        //         });
+        //     }
+        // } catch (error) {
+        //     toast.error('Error fetching ticket content: ' + error, {
+        //         position: toast.POSITION.BOTTOM_RIGHT,
+        //     });
+        // }
+        //
+        // setIsLoading(false);
 
         // for testing the flow of application
         const testData = {
@@ -135,6 +217,26 @@ const AssignTicket = () => {
         link.download = 'attachment';
         link.click();
     };
+
+
+    const handleNext = () => {
+        if (currentForm === 'check') {
+            // For testing purposes, directly show the form
+            showTicketContent();
+            setCurrentForm('content');
+        } else if (currentForm === 'content') {
+            setCurrentForm('assign');
+        }
+    };
+
+    const handlePrevious = () => {
+        if (currentForm === 'content') {
+            setCurrentForm('check');
+        } else if (currentForm === 'assign') {
+            setCurrentForm('content');
+        }
+    };
+
     return (
         <div className="assign-ticket-container">
             {currentForm === 'check' && (
@@ -155,8 +257,8 @@ const AssignTicket = () => {
                         {isLoading ? (
                             <BeatLoader color="#000000" size={30} />
                         ) : (
-                            <button type="submit" className="check-ticket-button">
-                                Check Ticket ID
+                            <button type="button" onClick={handleNext} className="check-ticket-button">
+                                Next
                             </button>
                         )}
                     </div>
@@ -194,16 +296,22 @@ const AssignTicket = () => {
                             {isLoading ? (
                                 <BeatLoader color="#000000" size={30} />
                             ) : (
-                                <button type="submit" className="check-ticket-button">Next</button>
+                                <>
+                                    <button type="button" onClick={handlePrevious} className="check-ticket-button">
+                                        Previous
+                                    </button>
+                                    <button type="button" onClick={handleNext} className="check-ticket-button">
+                                        Next
+                                    </button>
+                                </>
                             )}
                         </div>
                     )}
                 </form>
             )}
 
-
             {currentForm === 'assign' && (
-                <form>
+                <form onSubmit={handleSubmit}>
                     <div>
                         <label htmlFor="assignTo">Assign To:</label>
                         <select
@@ -241,17 +349,18 @@ const AssignTicket = () => {
                         {isLoading ? (
                             <BeatLoader color="#000000" size={30} />
                         ) : (
-                            <button type="submit" className="assign-ticket-button">
-                                Assign Ticket
-                            </button>
+                            <>
+                                <button type="button" onClick={handlePrevious} className="check-ticket-button">
+                                    Previous
+                                </button>
+                                <button type="submit" className="assign-ticket-button">
+                                    Assign Ticket
+                                </button>
+                            </>
                         )}
                     </div>
                 </form>
             )}
-
-
-
-
             <ToastContainer />
         </div>
     );
