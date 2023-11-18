@@ -148,12 +148,12 @@ const Registration = () => {
                                         )}
                                     </button>
 
-                                    <div className="login-link">
-                                        Already have an account?{' '}
-                                        <Link to="/login" onClick={redirectLogin}>
-                                            Login
-                                        </Link>
-                                    </div>
+                                    {/*<div className="login-link">*/}
+                                    {/*    Already have an account?{' '}*/}
+                                    {/*    <Link to="/login" onClick={redirectLogin}>*/}
+                                    {/*        Login*/}
+                                    {/*    </Link>*/}
+                                    {/*</div>*/}
                                 </form>
                             </div>
                         </div>

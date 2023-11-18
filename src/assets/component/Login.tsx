@@ -86,10 +86,10 @@ const Login = () => {
         display: block;
         margin: 0 auto;
     `;
-
-    const redirectRegister = () => {
-        navigate('/register');
-    };
+    //
+    // const redirectRegister = () => {
+    //     navigate('/register');
+    // };
 
     return (
         <div className="container">
@@ -126,12 +126,12 @@ const Login = () => {
                                         'Login'
                                     )}
                                 </button>
-                                <div className="register-link">
-                                    Don't have an account?{' '}
-                                    <Link to="/register" onClick={redirectRegister}>
-                                        Register
-                                    </Link>
-                                </div>
+                                {/*<div className="register-link">*/}
+                                {/*    Don't have an account?{' '}*/}
+                                {/*    <Link to="/register" onClick={redirectRegister}>*/}
+                                {/*        Register*/}
+                                {/*    </Link>*/}
+                                {/*</div>*/}
                             </form>
                         </div>
                     </div>

@@ -39,7 +39,7 @@ const Dashboard: React.FC = () => {
     };
 
     const handleLogout = () => {
-        navigate('/login');
+        navigate('/');
     };
 
     const handleLogin = () => {

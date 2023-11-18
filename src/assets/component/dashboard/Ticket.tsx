@@ -4,8 +4,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import { css } from '@emotion/react';
 import { ClipLoader } from 'react-spinners';
 import '../stylesheeet/ticket.css';
-// import {numBytes} from "aws-sdk/clients/finspace";
-// import { handleBookTicket } from '../api/HandleApiFromBackend';
 
 interface TicketProps {
     setNotificationMessage: (message: string) => void;
