@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { BeatLoader } from 'react-spinners';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './AssignTicket.css';
 
 const AssignTicket = () => {
@@ -24,7 +26,7 @@ const AssignTicket = () => {
                 // setAssignToOptions(data.options);
 
                 // For testing purposes, set some dummy assignTo options
-                setAssignToOptions(['John Doe', 'Jane Smith', 'Bob Johnson']);
+                setAssignToOptions(['Kamar Baraka', 'Evans Etyang', 'Elijah Mutune', 'Jeff Omondi']);
             } catch (error) {
                 console.error('Error fetching Assign To options:', error);
             }
@@ -57,7 +59,7 @@ const AssignTicket = () => {
             // const requestBody = {
             //     ticketId: ticketId
             // };
-
+            //
             // try {
             //     const response = await fetch('https://example.com/api/checkTicket', {
             //         method: 'POST',
@@ -66,65 +68,72 @@ const AssignTicket = () => {
             //         },
             //         body: JSON.stringify(requestBody)
             //     });
-
+            //
             //     if (response.ok) {
-            //         console.log('Ticket checked successfully');
-            //         setShowForm(true);
+            //         toast.success('Ticket checked successfully', {
+            //             position: toast.POSITION.TOP_RIGHT,
+            //         });
+            //         await showTicketContent()
             //     } else {
-            //         console.error('Error checking ticket');
+            //         toast.error('Error checking ticket.', {
+            //             position: toast.POSITION.BOTTOM_RIGHT,
+            //         });
             //     }
             // } catch (error) {
             //     console.error('Error checking ticket:', error);
             // }
 
+            // For testing purposes, directly show the form
+            toast.success('Ticket checked successfully', {
+                position: toast.POSITION.TOP_RIGHT,
+            });
+            // setShowForm(true);
+            await showTicketContent()
+        } else {
+            const requestBody = {
+                ticketId: ticketId,
+                assignTo: assignTo,
+                priority: priority,
+                deadline: deadline
+            };
+
             try {
-                const response = await fetch(`https://example.com/api/ticket/${ticketId}`);
-                if (response.ok) {
-                    const data = await response.json();
-                    setTicketContent(data.title);
-                    setTicketContent(data.description);
-                    setAttachmentType(data.attachmentType);
-                } else {
-                    console.error('Error fetching ticket content');
-                }
+                // const response = await fetch('https://example.com/api/assignTicket', {
+                //     method: 'POST',
+                //     headers: {
+                //         'Content-Type': 'application/json'
+                //     },
+                //     body: JSON.stringify(requestBody)
+                // });
+                //
+                // if (response.ok) {
+                //     // console.log('Ticket assigned successfully');
+                //     toast.success('Ticket assigned successfully', {
+                //         position: toast.POSITION.TOP_RIGHT,
+                //     });
+                //     setShowForm(false);
+                // } else {
+                //     toast.error('Error assigning ticket', {
+                //         position: toast.POSITION.BOTTOM_RIGHT,
+                //     });
+                //
+                // }
+
+                toast.success('Ticket assigned successfully', {
+                    position: toast.POSITION.TOP_RIGHT,
+                });
             } catch (error) {
-                console.error('Error fetching ticket content:', error);
+
+                toast.error('Error fetching ticket content', {
+                    position: toast.POSITION.BOTTOM_RIGHT,
+                });
             }
 
-            // For testing purposes, directly show the form
-            setShowForm(true);
-        } else {
-            // const requestBody = {
-            //     ticketId: ticketId,
-            //     assignTo: assignTo,
-            //     priority: priority,
-            //     deadline: deadline
-            // };
-            //
-            // try {
-        //         const response = await fetch('https://example.com/api/assignTicket', {
-        //             method: 'POST',
-        //             headers: {
-        //                 'Content-Type': 'application/json'
-        //             },
-        //             body: JSON.stringify(requestBody)
-        //         });
-        //
-        //         if (response.ok) {
-        //             console.log('Ticket assigned successfully');
-        //             setShowForm(false);
-        //         } else {
-        //             console.error('Error assigning ticket');
-        //         }
-        //     } catch (error) {
-        //         console.error('Error assigning ticket:', error);
-        //     }
-        //
             // For testing purposes, log the form data
-            console.log('Ticket ID:', ticketId);
-            console.log('Assign To:', assignTo);
-            console.log('Priority:', priority);
-            console.log('Deadline:', deadline);
+            alert('Ticket ID: '+ ticketId);
+            alert('Assign To: '+ assignTo);
+            alert('Priority: '+ priority);
+            alert('Deadline: '+ deadline);
 
             // Reset the form
             setTicketId('');
@@ -137,6 +146,60 @@ const AssignTicket = () => {
         setIsLoading(false);
     };
 
+
+    const showTicketContent = async () =>{
+        // setIsLoading(true);
+        //
+        // try {
+        //     const response = await fetch(`https://example.com/api/ticket/${ticketId}`);
+        //     if (response.ok) {
+        //         const data = await response.json();
+        //         setTicketContent(data.title);
+        //         setTicketContent(data.description);
+        //         setAttachmentType(data.attachmentType);
+
+         //        //show form
+        //          setShowForm(true);
+        //     } else {
+        //         toast.error('Error fetching ticket content', {
+        //             position: toast.POSITION.BOTTOM_RIGHT,
+        //         });
+        //     }
+        // } catch (error) {
+        //     toast.error('Error fetching ticket content: ' + error, {
+        //         position: toast.POSITION.BOTTOM_RIGHT,
+        //     });
+        // }
+        //
+        // setIsLoading(false);
+
+        // for testing the flow of application
+        const testData = {
+            ticket: ticketId,
+            title: "Test Ticket",
+            description: "This is a test ticket",
+            attachment: "C:/Users/Murunga/Desktop/password.txt/"
+            // attachmentType: "image"
+        };
+
+        try {
+            // Simulate API call delay
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
+            // Set the ticket content and attachment type with the test data
+            setTicketContent(testData);
+            setAttachmentType(testData.attachment);
+            setShowForm(true);
+
+        } catch (error) {
+            toast.error('Error fetching ticket content: ' + error, {
+                position: toast.POSITION.BOTTOM_RIGHT,
+            });
+        }
+
+
+    }
+
     const handleDownloadAttachment = (attachmentUrl: string) => {
         const link = document.createElement('a');
         link.href = attachmentUrl;
@@ -145,107 +208,125 @@ const AssignTicket = () => {
     };
 
     return (
-        <div className="assign-ticket-container"> {/* Add a container class */}
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <h2>Assigning the Ticket</h2>
-                </div>
-                {!showForm ? (
-                    <>
-                        <label htmlFor="ticketId">Ticket ID:</label>
-                        <input
-                            type="text"
-                            id="ticketId"
-                            value={ticketId}
-                            onChange={handleTicketIdChange}
-                        />
-                        <br />
+        <>
+            <div className="assign-ticket-container"> {/* Add a container class */}
+                <form onSubmit={handleSubmit}>
+                    <div>
+                        <h2>Assigning the Ticket</h2>
+                    </div>
+                    {!showForm ? (
+                        <>
+                            <label htmlFor="ticketId">Ticket ID:</label>
+                            <input
+                                type="text"
+                                id="ticketId"
+                                value={ticketId}
+                                onChange={handleTicketIdChange}
+                            />
+                            <br />
 
-                        {ticketContent && (
-                            <div className="ticket-content">
-                                <h3>Ticket Content:</h3>
-                                <p>Title: {ticketContent.title}</p>
-                                <p>Description: {ticketContent.description}</p>
-                                {attachmentType === 'image' || attachmentType === 'video' ? (
-                                    <div className="attachment">
-                                        <p>Attachment:</p>
-                                        <a href={ticketContent.attachment} target="_blank" rel="noopener noreferrer">
-                                            <img src={ticketContent.attachment} alt="Attachment" />
-                                        </a>
-                                        <div className="attachment-options">
-                                            <button onClick={() => handleDownloadAttachment(ticketContent.attachment)}>Download</button>
-                                        </div>
+                            {isLoading ? (
+                                <BeatLoader color="#000000" size={30} />
+
+                            ) : (
+                                <>
+                                    <button type="submit" className="check-ticket-button">Check Ticket ID</button>
+                                </>
+                            )}
+
+                        </>
+                    ) : (
+                        <>
+                            <label htmlFor="assignTo">Assign To:</label>
+                            <select
+                                id="assignTo"
+                                value={assignTo}
+                                onChange={handleAssignToChange}
+                            >
+                                <option value="">Select an Employee</option>
+                                {assignToOptions.map((option) => (
+                                    <option key={option} value={option}>
+                                        {option}
+                                    </option>
+                                ))}
+                            </select>
+                            <br />
+                            <label htmlFor="priority">Priority:</label>
+                            <input
+                                type="text"
+                                id="priority"
+                                value={priority}
+                                onChange={handlePriorityChange}
+                            />
+                            <br />
+                            <label htmlFor="deadline">Deadline:</label>
+                            <DatePicker
+                                id="deadline"
+                                selected={deadline}
+                                onChange={handleDeadlineChange}
+                                dateFormat="yyyy-MM-dd"
+                            />
+                            <br />
+
+                            {isLoading ? (
+                                <BeatLoader color="#000000" size={30} />
+
+                            ) : (
+                                <>
+                                    <button type="submit" className="assign-ticket-button">Assign Ticket</button>
+                                </>
+                            )}
+
+                        </>
+                    )}
+                </form>
+
+            </div>
+
+
+            {/*form for ticket container*/}
+            <div className="ticket-details-container">
+                <form className="ticket-details-container-form">
+                    {ticketContent && (
+                        <div className="ticket-content-container">
+                            <h3>Ticket Content:</h3>
+                            <p>Title: {ticketContent.title}</p>
+                            <p>Description: {ticketContent.description}</p>
+                            {attachmentType === 'image' || attachmentType === 'video' ? (
+                                <div className="attachment">
+                                    <p>Attachment:</p>
+                                    <a href={ticketContent.attachment} target="_blank" rel="noopener noreferrer">
+                                        <img src={ticketContent.attachment} alt="Attachment" />
+                                    </a>
+                                    <div className="attachment-options">
+                                        <button onClick={() => handleDownloadAttachment(ticketContent.attachment)}>Download</button>
                                     </div>
-                                ) : attachmentType === 'pdf' || attachmentType === 'text' ? (
-                                    <div className="attachment">
-                                        <p>Attachment:</p>
-                                        <a href={ticketContent.attachment} target="_blank" rel="noopener noreferrer">
-                                            View Attachment
-                                        </a>
-                                        <div className="attachment-options">
-                                            <button onClick={() => handleDownloadAttachment(ticketContent.attachment)}>Download</button>
-                                        </div>
+                                </div>
+                            ) : attachmentType === 'pdf' || attachmentType === 'text' ? (
+                                <div className="attachment">
+                                    <p>Attachment:</p>
+                                    <a href={ticketContent.attachment} target="_blank" rel="noopener noreferrer">
+                                        View Attachment
+                                    </a>
+                                    <div className="attachment-options">
+                                        <button onClick={() => handleDownloadAttachment(ticketContent.attachment)}>Download</button>
                                     </div>
-                                ) : null}
-                            </div>
-                        )}
+                                </div>
+                            ) : null}
+                            {isLoading ? (
+                                <BeatLoader color="#000000" size={30} />
+                            ) : (
+                                <>
+                                    <button type="submit" className="check-ticket-button">Next</button>
+                                </>
+                            )}
+                        </div>
+                    )}
 
-                        {isLoading ? (
-                            <BeatLoader color="#000000" size={30} />
-
-                        ) : (
-                            <>
-                                <button type="submit" className="check-ticket-button">Check Ticket ID</button>
-                            </>
-                        )}
-
-                    </>
-                ) : (
-                    <>
-                        <label htmlFor="assignTo">Assign To:</label>
-                        <select
-                            id="assignTo"
-                            value={assignTo}
-                            onChange={handleAssignToChange}
-                        >
-                            <option value="">Select an Employee</option>
-                            {assignToOptions.map((option) => (
-                                <option key={option} value={option}>
-                                    {option}
-                                </option>
-                            ))}
-                        </select>
-                        <br />
-                        <label htmlFor="priority">Priority:</label>
-                        <input
-                            type="text"
-                            id="priority"
-                            value={priority}
-                            onChange={handlePriorityChange}
-                        />
-                        <br />
-                        <label htmlFor="deadline">Deadline:</label>
-                        <DatePicker
-                            id="deadline"
-                            selected={deadline}
-                            onChange={handleDeadlineChange}
-                            dateFormat="yyyy-MM-dd"
-                        />
-                        <br />
-
-                        {isLoading ? (
-                            <BeatLoader color="#000000" size={30} />
-
-                        ) : (
-                            <>
-                                <button type="submit" className="assign-ticket-button">Assign Ticket</button>
-                            </>
-                        )}
-
-                    </>
-                )}
-            </form>
-        </div>
+                </form>
+            </div>
+            <ToastContainer />
+        </>
     )
 };
 

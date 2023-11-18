@@ -2,9 +2,12 @@ import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { BeatLoader } from 'react-spinners';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './AssignTicket.css';
 
 const AssignTicket = () => {
+    const [currentForm, setCurrentForm] = useState<'check' | 'content' | 'assign'>('check');
     const [isLoading, setIsLoading] = useState(false);
     const [ticketId, setTicketId] = useState('');
     const [assignTo, setAssignTo] = useState('');
@@ -12,19 +15,20 @@ const AssignTicket = () => {
     const [deadline, setDeadline] = useState<Date | null>(null);
     const [assignToOptions, setAssignToOptions] = useState<string[]>([]);
     const [showForm, setShowForm] = useState(false);
-    const [ticketContent, setTicketContent] = useState<{ title: string; description: string; attachment: string } | null>(null);
+    const [ticketContent, setTicketContent] = useState<{
+
+        title: string;
+        description: string;
+        attachment: string
+    } | null>(null);
     const [attachmentType, setAttachmentType] = useState<string | null>(null);
 
     useEffect(() => {
         // Fetch the Assign To options from the API endpoint
         const fetchAssignToOptions = async () => {
             try {
-                // const response = await fetch('/api/assign-to-options');
-                // const data = await response.json();
-                // setAssignToOptions(data.options);
-
                 // For testing purposes, set some dummy assignTo options
-                setAssignToOptions(['John Doe', 'Jane Smith', 'Bob Johnson']);
+                setAssignToOptions(['Kamar Baraka', 'Evans Etyang', 'Elijah Mutune', 'Jeff Omondi']);
             } catch (error) {
                 console.error('Error fetching Assign To options:', error);
             }
@@ -53,89 +57,77 @@ const AssignTicket = () => {
         event.preventDefault();
         setIsLoading(true);
 
-        if (!showForm) {
-            // const requestBody = {
-            //     ticketId: ticketId
-            // };
-
-            // try {
-            //     const response = await fetch('https://example.com/api/checkTicket', {
-            //         method: 'POST',
-            //         headers: {
-            //             'Content-Type': 'application/json'
-            //         },
-            //         body: JSON.stringify(requestBody)
-            //     });
-
-            //     if (response.ok) {
-            //         console.log('Ticket checked successfully');
-            //         setShowForm(true);
-            //     } else {
-            //         console.error('Error checking ticket');
-            //     }
-            // } catch (error) {
-            //     console.error('Error checking ticket:', error);
-            // }
+        if (currentForm === 'check') {
+            // For testing purposes, directly show the form
+            toast.success('Ticket checked successfully', {
+                position: toast.POSITION.TOP_RIGHT,
+            });
+            setCurrentForm('content');
+            await showTicketContent();
+        } else if (currentForm === 'content') {
+            const requestBody = {
+                ticketId: ticketId,
+                assignTo: assignTo,
+                priority: priority,
+                deadline: deadline
+            };
 
             try {
-                const response = await fetch(`https://example.com/api/ticket/${ticketId}`);
-                if (response.ok) {
-                    const data = await response.json();
-                    setTicketContent(data.title);
-                    setTicketContent(data.description);
-                    setAttachmentType(data.attachmentType);
-                } else {
-                    console.error('Error fetching ticket content');
-                }
+                toast.success('Ticket assigned successfully', {
+                    position: toast.POSITION.TOP_RIGHT,
+                });
             } catch (error) {
-                console.error('Error fetching ticket content:', error);
+                toast.error('Error fetching ticket content', {
+                    position: toast.POSITION.BOTTOM_RIGHT,
+                });
             }
 
-            // For testing purposes, directly show the form
-            setShowForm(true);
-        } else {
-            // const requestBody = {
-            //     ticketId: ticketId,
-            //     assignTo: assignTo,
-            //     priority: priority,
-            //     deadline: deadline
-            // };
-            //
-            // try {
-            //         const response = await fetch('https://example.com/api/assignTicket', {
-            //             method: 'POST',
-            //             headers: {
-            //                 'Content-Type': 'application/json'
-            //             },
-            //             body: JSON.stringify(requestBody)
-            //         });
-            //
-            //         if (response.ok) {
-            //             console.log('Ticket assigned successfully');
-            //             setShowForm(false);
-            //         } else {
-            //             console.error('Error assigning ticket');
-            //         }
-            //     } catch (error) {
-            //         console.error('Error assigning ticket:', error);
-            //     }
-            //
             // For testing purposes, log the form data
-            console.log('Ticket ID:', ticketId);
-            console.log('Assign To:', assignTo);
-            console.log('Priority:', priority);
-            console.log('Deadline:', deadline);
+            alert('Ticket ID: ' + ticketId);
+            alert('Assign To: ' + assignTo);
+            alert('Priority: ' + priority);
+            alert('Deadline: ' + deadline);
 
             // Reset the form
             setTicketId('');
             setAssignTo('');
             setPriority('');
             setDeadline(null);
-            setShowForm(false);
+            setCurrentForm('assign');
         }
 
         setIsLoading(false);
     };
+
+
+    const showTicketContent = async () => {
+
+        // for testing the flow of application
+        const testData = {
+            ticket: ticketId,
+            title: "Test Ticket",
+            description: "This is a test ticket",
+            attachment: "C:/Users/Murunga/Desktop/password.txt/"
+            // attachmentType: "image"
+        };
+
+        try {
+            // Simulate API call delay
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
+            // Set the ticket content and attachment type with the test data
+            setTicketContent(testData);
+            setAttachmentType(testData.attachment);
+            setShowForm(true);
+
+        } catch (error) {
+            toast.error('Error fetching ticket content: ' + error, {
+                position: toast.POSITION.BOTTOM_RIGHT,
+            });
+        }
+
+
+    }
 
     const handleDownloadAttachment = (attachmentUrl: string) => {
         const link = document.createElement('a');
@@ -143,15 +135,14 @@ const AssignTicket = () => {
         link.download = 'attachment';
         link.click();
     };
-
     return (
-        <div className="assign-ticket-container"> {/* Add a container class */}
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <h2>Assigning the Ticket</h2>
-                </div>
-                {!showForm ? (
-                    <>
+        <div className="assign-ticket-container">
+            {currentForm === 'check' && (
+                <form onSubmit={handleSubmit}>
+                    <div>
+                        <h2>Assigning the Ticket</h2>
+                    </div>
+                    <div>
                         <label htmlFor="ticketId">Ticket ID:</label>
                         <input
                             type="text"
@@ -159,49 +150,61 @@ const AssignTicket = () => {
                             value={ticketId}
                             onChange={handleTicketIdChange}
                         />
-                        <br />
-
-                        {ticketContent && (
-                            <div className="ticket-content">
-                                <h3>Ticket Content:</h3>
-                                <p>Title: {ticketContent.title}</p>
-                                <p>Description: {ticketContent.description}</p>
-                                {attachmentType === 'image' || attachmentType === 'video' ? (
-                                    <div className="attachment">
-                                        <p>Attachment:</p>
-                                        <a href={ticketContent.attachment} target="_blank" rel="noopener noreferrer">
-                                            <img src={ticketContent.attachment} alt="Attachment" />
-                                        </a>
-                                        <div className="attachment-options">
-                                            <button onClick={() => handleDownloadAttachment(ticketContent.attachment)}>Download</button>
-                                        </div>
-                                    </div>
-                                ) : attachmentType === 'pdf' || attachmentType === 'text' ? (
-                                    <div className="attachment">
-                                        <p>Attachment:</p>
-                                        <a href={ticketContent.attachment} target="_blank" rel="noopener noreferrer">
-                                            View Attachment
-                                        </a>
-                                        <div className="attachment-options">
-                                            <button onClick={() => handleDownloadAttachment(ticketContent.attachment)}>Download</button>
-                                        </div>
-                                    </div>
-                                ) : null}
-                            </div>
-                        )}
-
+                    </div>
+                    <div>
                         {isLoading ? (
                             <BeatLoader color="#000000" size={30} />
-
                         ) : (
-                            <>
-                                <button type="submit" className="check-ticket-button">Check Ticket ID</button>
-                            </>
+                            <button type="submit" className="check-ticket-button">
+                                Check Ticket ID
+                            </button>
                         )}
+                    </div>
+                </form>
+            )}
 
-                    </>
-                ) : (
-                    <>
+            {currentForm === 'content' && (
+                <form className="ticket-details-container-form">
+                    {ticketContent && (
+                        <div className="ticket-content-container">
+                            <h3>Ticket Content:</h3>
+                            <p>Title: {ticketContent.title}</p>
+                            <p>Description: {ticketContent.description}</p>
+                            {attachmentType === 'image' || attachmentType === 'video' ? (
+                                <div className="attachment">
+                                    <p>Attachment:</p>
+                                    <a href={ticketContent.attachment} target="_blank" rel="noopener noreferrer">
+                                        <img src={ticketContent.attachment} alt="Attachment" />
+                                    </a>
+                                    <div className="attachment-options">
+                                        <button onClick={() => handleDownloadAttachment(ticketContent.attachment)}>Download</button>
+                                    </div>
+                                </div>
+                            ) : attachmentType === 'pdf' || attachmentType === 'text' ? (
+                                <div className="attachment">
+                                    <p>Attachment:</p>
+                                    <a href={ticketContent.attachment} target="_blank" rel="noopener noreferrer">
+                                        View Attachment
+                                    </a>
+                                    <div className="attachment-options">
+                                        <button onClick={() => handleDownloadAttachment(ticketContent.attachment)}>Download</button>
+                                    </div>
+                                </div>
+                            ) : null}
+                            {isLoading ? (
+                                <BeatLoader color="#000000" size={30} />
+                            ) : (
+                                <button type="submit" className="check-ticket-button">Next</button>
+                            )}
+                        </div>
+                    )}
+                </form>
+            )}
+
+
+            {currentForm === 'assign' && (
+                <form>
+                    <div>
                         <label htmlFor="assignTo">Assign To:</label>
                         <select
                             id="assignTo"
@@ -215,7 +218,8 @@ const AssignTicket = () => {
                                 </option>
                             ))}
                         </select>
-                        <br />
+                    </div>
+                    <div>
                         <label htmlFor="priority">Priority:</label>
                         <input
                             type="text"
@@ -223,7 +227,8 @@ const AssignTicket = () => {
                             value={priority}
                             onChange={handlePriorityChange}
                         />
-                        <br />
+                    </div>
+                    <div>
                         <label htmlFor="deadline">Deadline:</label>
                         <DatePicker
                             id="deadline"
@@ -231,22 +236,26 @@ const AssignTicket = () => {
                             onChange={handleDeadlineChange}
                             dateFormat="yyyy-MM-dd"
                         />
-                        <br />
-
+                    </div>
+                    <div>
                         {isLoading ? (
                             <BeatLoader color="#000000" size={30} />
-
                         ) : (
-                            <>
-                                <button type="submit" className="assign-ticket-button">Assign Ticket</button>
-                            </>
+                            <button type="submit" className="assign-ticket-button">
+                                Assign Ticket
+                            </button>
                         )}
+                    </div>
+                </form>
+            )}
 
-                    </>
-                )}
-            </form>
+
+
+
+            <ToastContainer />
         </div>
-    )
-};
+    );
+}
+
 
 export default AssignTicket;
