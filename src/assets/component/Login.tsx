@@ -25,56 +25,48 @@ const Login = () => {
         try {
             setLoading(true);
 
-            const credentials:string = btoa(email+":"+password)
+            const credentials: string = btoa(email + ":" + password)
 
-            localStorage.setItem("email_password_credentials",credentials);
+            localStorage.setItem("email_password_credentials", credentials);
 
-            await fetch('http://localhost:8080/api/v1/users/management/'+email, {
+            const response = await fetch('http://localhost:8080/api/v1/login', {
                 method: "GET",
                 headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: 'Basic '+ credentials,
+                    // 'Content-Type': 'application/json',
+                    Authorization: 'Basic ' + credentials,
                 }
-            }).then(response => {
+            });
 
-                if (response.ok) {
-                    if (response != null) {
+            if (response.ok) {
+                const data = await response.json();
 
-                        return response.json();
-
-                    }
-
-                }
-                else {
-                    alert(JSON.stringify(response))
-                    // toast.error('Invalid email or password. Please try again.', {
-                    //     position: toast.POSITION.TOP_CENTER,
-                    // });
-                }
-            }).then(data => {
+                // store data authority in local storage
+                localStorage.setItem('data_authority', data.authority);
 
                 if (data.authority === 'USER') {
-                    navigate('/dashboard', { state: { email }});
-                    return;
-                }else if(data.authority === 'EMPLOYEE'){
-                    navigate('/employee', { state: { email }});
-                    return;
-                }else if(data.authority === 'ADMIN' || data.authority === 'OWNER'){
-                    navigate('./admin', {state: { email }});
-                    return;
+                    navigate('/dashboard', { state: { email } });
+                } else if (data.authority === 'EMPLOYEE') {
+                    navigate('/handleApi', { state: { email } });
+                } else if (data.authority === 'ADMIN' || data.authority === 'OWNER') {
+                    navigate('./admin', { state: { email } });
+                } else {
+                    toast.error('Invalid authority. Please contact the administrator.', {
+                        position: toast.POSITION.TOP_RIGHT,
+                    });
                 }
-                toast.success('You are successfully log in.', {
+            } else if (response.status === 401) {
+                toast.error('Invalid email or password. Please try again.', {
                     position: toast.POSITION.TOP_RIGHT,
                 });
-
-            })
-
-            // Reset the form fields
-            setEmail('');
-            setPassword('');
-
+            } else if (response.status === 403) {
+                toast.error('Email not verified. Please verify your email.', {
+                    position: toast.POSITION.TOP_RIGHT,
+                });
+            } else {
+                throw new Error('Server error');
+            }
         } catch (error) {
-            toast.error('Invalid email or password. Please try again.', {
+            toast.error(error.message+'Failed to login. Please try again later.', {
                 position: toast.POSITION.BOTTOM_RIGHT,
             });
         } finally {
@@ -83,8 +75,8 @@ const Login = () => {
     };
 
     const override = css`
-        display: block;
-        margin: 0 auto;
+      display: block;
+      margin: 0 auto;
     `;
     //
     // const redirectRegister = () => {

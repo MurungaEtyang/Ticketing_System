@@ -1,50 +1,69 @@
 import React, { useState, useEffect } from 'react';
-import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import './GetAllTickets.css';
+import '../assets/stylesheet/GetAllTickets.css';
 
 const GetAllTickets = () => {
     const [tickets, setTickets] = useState([]);
     const [error, setError] = useState('');
 
     useEffect(() => {
-        const apiEndpoint = 'http://localhost:80801/api/v1/tickets/report';
+        try {
+            const apiEndpoint = 'http://localhost:8080/api/v1/tickets/report';
 
-        fetch(apiEndpoint)
-            .then(response => response.json())
-            .then(data => setTickets(data))
-            .catch(error => {
-                console.error('Error fetching ticket data:', error);
-                setError('An error occurred while fetching ticket data.');
-            });
+            fetch(apiEndpoint,{
+                method: "GET",
+                headers: {
+                    Authorization: 'Basic ' + localStorage.getItem('email_password_credentials')
+                }
+            })
+                .then(response => response.json())
+                .then(data => setTickets(data))
+                .catch(error => {
+                    console.error('Error fetching ticket data:', error);
+                    setError('An error occurred while fetching ticket data.');
+                });
+        } catch (error) {
+            console.error('Error fetching ticket data:', error);
+            setError('An error occurred while fetching ticket data.');
+        }
     }, []);
 
     return (
         <div>
             {error && <div className="error">{error}</div>}
 
-            <table>
-                <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Type</th>
-                    <th>Deprecation</th>
-                    <th>Profile</th>
-                    <th>Name</th>
-                </tr>
-                </thead>
-                <tbody>
-                {tickets.map(ticket => (
-                    <tr key={ticket.id}>
-                        <td>{ticket.Title}</td>
-                        <td>{ticket.Type}</td>
-                        <td>{ticket.Deprecation}</td>
-                        <td>{ticket.Profile}</td>
-                        <td>{ticket.Name}</td>
-                    </tr>
-                ))}
-                </tbody>
-            </table>
+            <form className="card1">
+                <div className="card-body">
+                    <table className="table">
+                        <thead>
+                        <tr className="table-header">
+                            <th>ID</th>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Priority</th>
+                            <th>Status</th>
+                            <th>Raised By</th>
+                            <th>Assigned To</th>
+                            <th>Deadline</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {tickets.map(ticket => (
+                            <tr key={ticket.id}>
+                                <td>{ticket.id}</td>
+                                <td>{ticket.title}</td>
+                                <td className="description-column">{ticket.description}</td>
+                                <td>{ticket.priority}</td>
+                                <td>{ticket.status}</td>
+                                <td>{ticket.raisedBy}</td>
+                                <td>{ticket.assignedTo}</td>
+                                <td>{ticket.deadline}</td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
+                </div>
+            </form>
         </div>
     );
 };

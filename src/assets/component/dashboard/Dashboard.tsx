@@ -7,6 +7,7 @@ import logo from '../images/logo.jpeg';
 import Ticket from './Ticket';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell } from '@fortawesome/free-solid-svg-icons';
+import axios from "axios";
 
 const Dashboard: React.FC = () => {
     const location = useLocation();
@@ -20,6 +21,24 @@ const Dashboard: React.FC = () => {
     const [showMessageDropdown, setShowMessageDropdown] = useState(false);
 
     const [newNotificationCount, setNewNotificationCount] = useState(0);
+
+    const handleLogout = async () => {
+        const credential = localStorage.getItem('email_password_credentials')
+        try {
+            await fetch("http://localhost:8080/logout", {
+                method: "POST",
+                headers: {
+                    Authorization: "Basic " + credential,
+                },
+            });
+
+            const navigate = useNavigate();
+            navigate("/");
+        } catch (error) {
+            alert("Logout failed" + error);
+        }
+    };
+
 
     useEffect(() => {
         if (notificationMessage) {
@@ -36,10 +55,6 @@ const Dashboard: React.FC = () => {
     const handleProfile = () => {
         // Toggle the visibility of the logout dropdown
         setShowLogoutDropdown(!showLogoutDropdown);
-    };
-
-    const handleLogout = () => {
-        navigate('/');
     };
 
     const handleLogin = () => {

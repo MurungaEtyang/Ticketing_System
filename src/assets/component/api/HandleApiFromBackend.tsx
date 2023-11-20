@@ -12,7 +12,7 @@ export const handleLogin = async (email: string, password: string) => {
     }
 };
 
-// Function to handle registration API
+// Function to handle handleApi API
 export const handleRegistration = async (firstname: string, lastname: string, email: string, password: string) => {
     try {
         const response = await axios.post('/api/registration', { firstname, lastname, email, password });

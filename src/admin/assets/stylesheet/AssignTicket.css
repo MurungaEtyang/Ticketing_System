@@ -1,0 +1,150 @@
+.assign-ticket-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    width: 400px;
+    /*width: fit-content; !* Added width property *!*/
+    height: fit-content;
+    /*background-color: darkblue;*/
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.assign-ticket-container form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.assign-ticket-container h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.assign-ticket-container label {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.assign-ticket-container input,
+.assign-ticket-container select {
+    width: 300px;
+    height: 40px;
+    font-size: 16px;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+.assign-ticket-container button {
+    width: 150px;
+    height: 40px;
+    font-size: 16px;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+.assign-ticket-container button {
+    cursor: pointer;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+}
+
+.assign-ticket-container button:hover {
+    background-color: #0056b3;
+}
+
+.ticket-details-container-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.ticket-content-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.ticket-content-container h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.ticket-content-container p {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.attachment {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.attachment a {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.attachment img {
+    width: 200px;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.attachment-options button {
+    cursor: pointer;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    margin-top: 5px;
+}
+
+.attachment-options button:hover {
+    background-color: #0056b3;
+}
+
+.check-ticket-button {
+    cursor: pointer;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    margin-top: 10px;
+}
+
+.check-ticket-button:hover {
+    background-color: #0056b3;
+}
+
+.assign-button {
+    cursor: pointer;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    margin-top: 10px;
+}
+
+.assign-button:hover {
+    background-color: #0056b3;
+}

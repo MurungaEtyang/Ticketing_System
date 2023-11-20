@@ -3,7 +3,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './stylesheeet/verification.css'
-import axios from "axios";
 
 const Verification: React.FC = () => {
     const [verification, setVerification] = useState('');
@@ -25,34 +24,36 @@ const Verification: React.FC = () => {
         setIsLoading(true);
 
         try {
-            // Make API call to verify the code
-            // const response = await axios.post('http://localhost:3000/api/verify', {
-            //     verificationCode: verification,
-            // });
+
+            const formData = new FormData();
+            formData.append('verification', verification)
 
             await fetch('http://localhost:8080/api/v1/users/registration/activate/' + email, {
                 method: "POST",
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/x-www-form-urlencoded',
                     Authorization: 'Basic a2FtYXIyNTRiYXJha2FAZ21haWwuY29tOmFkbWlu',
                 },
-                body: JSON.stringify({
-                    message: verification
-                })
-            })
+                body: formData
+            }).then(async (response) => {
+                if (response.ok) {
+                    // Assuming the verification is successful
+                    // Reset the verification code
+                    setVerification('');
 
-            // Assuming the verification is successful
-            // Reset the verification code
-            setVerification('');
+                    toast.success('Verification code inserted successfully', {
+                        position: toast.POSITION.TOP_RIGHT,
+                    });
 
-            toast.success('Verification code inserted successfully', {
-                position: toast.POSITION.TOP_RIGHT,
+                    // Redirect to the Login component
+                    navigate('/login');
+                } else {
+                    const errorResponse = await response.json();
+                    throw new Error(errorResponse.message);
+                }
             });
-
-            // Redirect to the Login component
-            navigate('/login');
         } catch (error) {
-            toast.error('Failed to insert verification code. Please try again later.', {
+            toast.error(error.message || 'Failed to insert verification code. Please try again later.', {
                 position: toast.POSITION.BOTTOM_RIGHT,
             });
         }

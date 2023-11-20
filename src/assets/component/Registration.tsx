@@ -4,6 +4,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { css } from '@emotion/react';
 import { ClipLoader } from 'react-spinners';
 import {Link, useNavigate} from 'react-router-dom';
+import { RegisterApi } from '../../handleApi/HandleApi.tsx'
+
 
 const Registration = () => {
     const [firstName, setFirstName] = useState('');
@@ -30,34 +32,34 @@ const Registration = () => {
 
         try {
 
-            await fetch("http://localhost:8080/api/v1/users/registration/register",{
-                method: "POST",
+            // handleApi
+
+            const formData = new FormData();
+            formData.append("email", email);
+            formData.append("password", password);
+
+            fetch("http://localhost:8080/api/v1/users/registration/register", {
+                method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: 'Basic a2FtYXIyNTRiYXJha2FAZ21haWwuY29tOmFkbWlu',
-                    'Sec-Fetch-Mode': 'no-cors'
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    Authorization: 'Basic ' + localStorage.getItem('email_password_credentials')
                 },
-                body: JSON.stringify({
-                    username: email,
-                    password: password
-                })
-            }).then(response => {console.log(response.json())});
+                body: formData
+            }).then(response => {
+                alert(response);
+                navigate('/verification', { state: { email } });
+
+                // Show success toast notification
+                toast.success('Registration successful!', {
+                    position: toast.POSITION.TOP_RIGHT,
+                });
+            });
 
             // Reset the form fields
             setFirstName('');
             setLastName('');
             setEmail('');
             setPassword('');
-
-
-
-            // Redirect to the verification page
-            navigate('/verification', { state: { email}});
-
-            // Show success toast notification
-            toast.success('Registration successful!', {
-                position: toast.POSITION.TOP_RIGHT,
-            });
         } catch (error) {
 
                 // alert(error)
@@ -71,10 +73,6 @@ const Registration = () => {
 
     const checkAllInputs = () => {
         return firstName !== '' && lastName !== '' && email !== '' && password !== '';
-    };
-
-    const redirectLogin = () => {
-        navigate('/login');
     };
 
     const override = css`

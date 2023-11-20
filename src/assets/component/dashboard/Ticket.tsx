@@ -55,7 +55,7 @@ const Ticket: React.FC<TicketProps> = ({ setNotificationMessage }) => {
             formData.append('title', title);
             formData.append('description', description);
 
-            await fetch('http://localhost:8080/api/v1/tickets', {
+            await fetch('http://localhost:8080/api/v1/tickets?' + 'title='+ title + '&description=' + description, {
                 method: 'POST',
                 headers: {
                     Authorization: 'Basic ' + localStorage.getItem('email_password_credentials'),

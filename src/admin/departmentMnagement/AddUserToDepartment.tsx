@@ -1,39 +1,94 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { css } from '@emotion/react';
 import { ClipLoader } from 'react-spinners';
-import './stylesheeet/login.css';
+import Select from 'react-select';
 
 const AddUserToDepartment = () => {
     const [email, setEmail] = useState('');
-    const [department, setDepartment] = useState('');
+    const [department, setDepartment] = useState<{ department: string; }[]>([]);
     const [loading, setLoading] = useState(false);
+    const [departments, setDepartments] = useState<string[]>([]);
+    const [emails, setEmails] = useState<{ emails: string; }[]>([]);
+    const [selectedEmail, setSelectedEmail] = useState<any>(null);
+
+    useEffect(() => {
+        fetchDepartments();
+        fetchEmails();
+    }, []);
+
+    const fetchDepartments = async () => {
+        try {
+            const response = await fetch('http://localhost:8080/api/v1/departments/all',{
+                method: "GET",
+                headers: {
+                    'Content-Type': 'application/x-www-urlencoded',
+                    Authorization: 'Basic ' + localStorage.getItem('email_password_credentials')
+                }
+            });
+            const data = await response.json();
+            const department = data.map((user) => user.departmentName);
+            // alert(department)
+            setDepartments(department);
+            // setDepartments(['department1','department2', 'department3'])
+        } catch (error) {
+            toast.error('Failed to fetch departments. Please try again.', {
+                position: toast.POSITION.BOTTOM_RIGHT,
+            });
+        }
+    };
+
+    const fetchEmails = async () => {
+
+        try {
+            const response = await fetch('http://localhost:8080/api/v1/users/management/authority?authority=employee',{
+                method: "GET",
+                headers: {
+                    Authorization: 'Basic ' + localStorage.getItem('email_password_credentials')
+                }
+            });
+            const data = await response.json();
+            const emails = data.map((user) => user.username);
+            setEmails(emails);
+
+        } catch (error) {
+            toast.error('Failed to fetch emails. Please try again.', {
+                position: toast.POSITION.BOTTOM_RIGHT,
+            });
+        }
+    };
+
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (email === '' || department === '') {
-            toast.error('Please fill in all the input fields.', {
-                position: toast.POSITION.BOTTOM_RIGHT,
-            });
-            return;
-        }
 
         try {
             setLoading(true);
 
-            // await fetch('http://localhost:8080/api/v1/departments/add', {
-            //     method: "POST",
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //         Authorization: 'Basic '+ credentials,
-            //     }
-            // })
+            const formData = new FormData();
+            formData.append("email", selectedEmail.label);
+            formData.append("department", department.label);
+
+            await fetch('http://localhost:8080/api/v1/departments/add?users=' + selectedEmail.label +
+            '&department_name=' + department.label, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+
+                    Authorization: 'Basic ' + localStorage.getItem('email_password_credentials')
+                },
+                body: formData,
+            })
 
             // Reset the form fields
             setEmail('');
-            setDepartment('');
+            setDepartment(null);
+
+            toast.success('success.', {
+                position: toast.POSITION.TOP_RIGHT,
+            });
 
         } catch (error) {
             toast.error('Invalid email or department. Please try again.', {
@@ -45,8 +100,8 @@ const AddUserToDepartment = () => {
     };
 
     const override = css`
-        display: block;
-        margin: 0 auto;
+      display: block;
+      margin: 0 auto;
     `;
 
     return (
@@ -55,26 +110,26 @@ const AddUserToDepartment = () => {
                 <div className="col-md-6">
                     <div className="card">
                         <div className="card-body">
-                            <h3 className="card-title">LOGIN TO CUSTOMER SERVICE PORTAL</h3>
+                            <h3 className="card-title">Add Users To Department</h3>
                             <form onSubmit={handleSubmit}>
                                 <div className="form-group">
                                     <label htmlFor="email">Email *</label>
-                                    <input
-                                        type="email"
-                                        className="form-control"
-                                        id="email"
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
+                                    <Select
+                                        required
+                                        options={emails.map((email) => ({ value: email, label: email }))}
+                                        value={selectedEmail}
+                                        onChange={(selectedOption) => setSelectedEmail(selectedOption)}
+                                        isSearchable
                                     />
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="department">Department *</label>
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        id="department"
+                                    <Select
+                                        required
+                                        options={departments.map((dept) => ({ value: dept, label: dept }))}
                                         value={department}
-                                        onChange={(e) => setDepartment(e.target.value)}
+                                        onChange={(selectedOption) => setDepartment(selectedOption)}
+                                        isSearchable
                                     />
                                 </div>
                                 <button type="submit" className="btn btn-primary" disabled={loading}>
@@ -89,12 +144,12 @@ const AddUserToDepartment = () => {
                     </div>
                 </div>
             </div>
-            {/*<ToastContainer />*/}
+            <ToastContainer />
         </div>
     );
 };
 
 export default AddUserToDepartment;
-export const ToastNotificationLogin = () => {
+export const ToastNotificationAddUserToDepartment = () => {
     return <ToastContainer />;
 };
