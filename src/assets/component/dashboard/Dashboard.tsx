@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './dashboard.css';
-import logo from '../images/logo.jpeg';
+import Logo from '../images/Logo.png';
 import Ticket from './Ticket';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell } from '@fortawesome/free-solid-svg-icons';
@@ -78,6 +78,9 @@ const Dashboard: React.FC = () => {
     return (
         <div className="container">
             <div className="content-container">
+                <div className="upload-logo-container">
+                    <img src={Logo} alt="Logo"  />
+                </div>
                 <h1 className="home-title">CUSTOMER SERVICE PORTAL</h1>
                 <p className="content-text">
                     Click the profile icon to access your account.
@@ -90,9 +93,7 @@ const Dashboard: React.FC = () => {
                 </p>
             </div>
             <nav className="nav-container">
-                <div className="nav-left">
-                    <img src={logo} alt="Logo" className="logo" />
-                </div>
+
 
                 <div className="nav-right">
                     {email && (

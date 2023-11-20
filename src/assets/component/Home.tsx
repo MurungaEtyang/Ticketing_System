@@ -4,7 +4,7 @@ import Registration from "./Registration";
 import './stylesheeet/home.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
-import logo from './images/logo.jpeg';
+import Logo from './images/logo.png';
 import { ToastNotificationRegitration } from "./Registration";
 import { ToastNotificationLogin } from "./Login";
 
@@ -45,7 +45,7 @@ const Home: React.FC = () => {
             </div>
 
             <nav className="nav-container">
-                <img src={logo} alt="Logo" className="logo" />
+                <img src={Logo} alt="Logo" className="logo" />
 
                 <div className="profile-dropdown">
                     <button className="profile-button" onClick={handleProfileClick}>

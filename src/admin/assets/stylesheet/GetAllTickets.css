@@ -1,13 +1,9 @@
 .container {
     margin: 20px;
-    width: 800px; /* Increase the width as desired */
-    max-height: 80vh; /* Set a maximum height to limit the container height */
-    overflow-y: auto; /* Enable vertical scrolling if content exceeds the maximum height */
     display: flex;
     flex-direction: column;
-    align-items: flex-start; /* Align content to the top */
-    border: 1px solid #000; /* Add a dark border */
-    padding: 10px; /* Add padding to separate the container */
+
+
 }
 
 .assign-ticket-container {
@@ -194,12 +190,6 @@
     border-left: 1px solid #000
 }
 
-.table  {
-    padding: 10px;
-    text-align: left;
-    font-weight: bold;
-    white-space: nowrap;
-}
 
 .table th:not(:last-child) {
     margin-right: 20px;
