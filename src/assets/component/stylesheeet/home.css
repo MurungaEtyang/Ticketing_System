@@ -1,5 +1,5 @@
 body {
-    background-color: #bcbfc2;
+    background-color: darkgrey;
 }
 
 .nav-container {
@@ -16,7 +16,12 @@ body {
 }
 .logo {
     max-width: 100%;
-    height: auto;
+    height: 100px;
+    position: fixed;
+    top: 120px;
+    left: 29%;
+    border-radius: 14px;
+
 }
 .nav-container button {
     margin-right: 200px;
@@ -26,20 +31,17 @@ body {
 
 
 .profile-dropdown {
+    position: fixed;
     display: flex;
     align-items: center;
+    left: 90%;
 }
 
 .profile-button {
     padding: 10px;
-    background-color: transparent;
     border: none;
     cursor: pointer;
-}
-
-.logo {
-    max-width: 100%;
-    height: auto;
+    color: gray;
 }
 
 .dropdown-content {
