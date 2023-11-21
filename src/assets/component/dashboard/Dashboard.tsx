@@ -23,19 +23,18 @@ const Dashboard: React.FC = () => {
     const [newNotificationCount, setNewNotificationCount] = useState(0);
 
     const handleLogout = async () => {
-        const credential = localStorage.getItem('email_password_credentials')
         try {
             await fetch("http://localhost:8080/logout", {
-                method: "POST",
+                method: "GET",
                 headers: {
-                    Authorization: "Basic " + credential,
+                    Authorization: 'Basic ' + localStorage.getItem('email_password_credentials')
                 },
             });
 
             const navigate = useNavigate();
             navigate("/");
         } catch (error) {
-            alert("Logout failed" + error);
+            alert("Logout failed: " + error);
         }
     };
 

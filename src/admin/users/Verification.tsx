@@ -2,15 +2,16 @@ import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import './stylesheeet/verification.css'
+import '../../assets/component/stylesheeet/verification.css'
+
 
 const Verification: React.FC = () => {
     const [verification, setVerification] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
-    const location = useLocation()
-    const email = location.state?.email || '';
-    // alert(email)
+    // const location = useLocation()
+    // const email = location.state?.email || '';
+    // alert(email);
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -23,34 +24,35 @@ const Verification: React.FC = () => {
 
         setIsLoading(true);
 
+        const username = localStorage.getItem('email');
+        alert(username)
         try {
-
-            const formData = new FormData();
-            formData.append('verification', verification)
-
-            await fetch('http://localhost:8080/api/v1/users/registration/activate/' + email, {
+            await fetch('http://localhost:8080/api/v1/users/registration/activate?username=' + username, {
                 method: "POST",
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    Authorization: 'Basic a2FtYXIyNTRiYXJha2FAZ21haWwuY29tOmFkbWlu',
+                    'Content-Type': 'application/json',
+                    Authorization: 'Basic ' + localStorage.getItem('email_password_credentials')
                 },
-                body: formData
+                body: JSON.stringify({
+                    'message': verification
+                })
             }).then(async (response) => {
                 if (response.ok) {
                     // Assuming the verification is successful
                     // Reset the verification code
-                    setVerification('');
-
                     toast.success('Verification code inserted successfully', {
                         position: toast.POSITION.TOP_RIGHT,
                     });
 
+                    setVerification('');
                     // Redirect to the Login component
-                    navigate('/login');
+                    navigate('/admin');
                 } else {
                     const errorResponse = await response.json();
                     throw new Error(errorResponse.message);
                 }
+
+
             });
         } catch (error) {
             toast.error(error.message || 'Failed to insert verification code. Please try again later.', {

@@ -41,14 +41,15 @@ const Login = () => {
                 const data = await response.json();
 
                 // store data authority in local storage
-                localStorage.setItem('data_authority', data.authority);
+                localStorage.setItem('data_authority', data.authorities);
 
-                if (data.authority === 'USER') {
+                if (data.authorities == 'USER') {
                     navigate('/dashboard', { state: { email } });
-                } else if (data.authority === 'EMPLOYEE') {
-                    navigate('/handleApi', { state: { email } });
-                } else if (data.authority === 'ADMIN' || data.authority === 'OWNER') {
+                } else if (data.authorities == 'EMPLOYEE') {
+                    navigate('/employee', { state: { email } });
+                } else if (data.authorities == 'ADMIN' || data.authorities == 'OWNER') {
                     navigate('./admin', { state: { email } });
+
                 } else {
                     toast.error('Invalid authority. Please contact the administrator.', {
                         position: toast.POSITION.TOP_RIGHT,

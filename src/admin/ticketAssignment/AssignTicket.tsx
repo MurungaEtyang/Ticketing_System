@@ -6,6 +6,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '../assets/stylesheet/AssignTicket.css';
 import { formatDate } from 'react-datepicker';
+import Calendar from 'react-calendar';
 
 const AssignTicket = () => {
     const [currentForm, setCurrentForm] = useState<'check' | 'content' | 'assign'>('check');
@@ -26,6 +27,20 @@ const AssignTicket = () => {
         assignedTo: string;
         deadline: string;
     } | null>(null);
+
+    const handleDateChange = (date: Date | null) => {
+        if (date) {
+            setDeadline(date);
+        }
+    };
+    const formatDate = (deadline: Date | null) => {
+        if (deadline) {
+            const options: Intl.DateTimeFormatOptions = { month: 'numeric', day: 'numeric', year: 'numeric' };
+            return deadline.toLocaleDateString('en-US', options).replace(/ /g, '/');
+        } else {
+            return 'No date selected';
+        }
+    };
 
     useEffect(() => {
         // Fetch the Assign To options from the API endpoint
@@ -61,9 +76,9 @@ const AssignTicket = () => {
         setPriority(event.target.value);
     };
 
-    const handleDeadlineChange = (date: Date | null) => {
-        setDeadline(date);
-    };
+    // const handleDeadlineChange = (date: Date | null) => {
+    //     setDeadline(date);
+    // };
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
@@ -134,6 +149,7 @@ const AssignTicket = () => {
                     position: toast.POSITION.BOTTOM_RIGHT,
                 });
             }
+            alert(deadline)
             // Reset the form
             setTicketId('');
             setAssignTo('');
@@ -281,12 +297,16 @@ const AssignTicket = () => {
                     </div>
                     <div>
                         <label htmlFor="deadline">Deadline:</label>
+                        {/*<Calendar */}
+                        {/*    value={deadline} */}
+                        {/*    onChange={handleDateChange} */}
+                        {/*/>*/}
                         <DatePicker
                             required
                             id="deadline"
                             selected={deadline}
-                            onChange={handleDeadlineChange}
-                            dateFormat="dd/MM/yyyy"
+                            onChange={handleDateChange}
+                            dateFormat={formatDate(deadline)}
                         />
                     </div>
                     <div>

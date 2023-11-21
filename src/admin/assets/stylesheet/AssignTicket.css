@@ -148,3 +148,71 @@
 .assign-button:hover {
     background-color: #0056b3;
 }
+/* Add this CSS code to your stylesheet or component */
+.react-calendar {
+    width: 200px;
+    max-width: 100%;
+    font-family: Arial, sans-serif;
+}
+
+.react-calendar__tile {
+    padding: 0.5em;
+}
+
+.react-calendar__month-view__days {
+    flex-wrap: wrap;
+}
+
+.react-calendar__month-view__days__day {
+    flex-basis: calc(100% / 7);
+    max-width: calc(100% / 7);
+    text-align: center;
+}
+
+.react-calendar__navigation {
+    margin-bottom: 1em;
+}
+
+.react-calendar__navigation button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1px;
+    padding: 0.5em;
+}
+
+.react-calendar__navigation button:enabled:hover,
+.react-calendar__navigation button:enabled:focus {
+    background-color: #e6e6e6;
+}
+
+.react-calendar__navigation button[disabled] {
+    cursor: default;
+    opacity: 0.5;
+}
+
+.react-calendar__month-view__weekdays {
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.react-calendar__month-view__weekdays__weekday {
+    flex-basis: calc(100% / 7);
+    max-width: calc(100% / 7);
+}
+
+.react-calendar__month-view__weekNumbers {
+    display: none;
+}
+
+.react-calendar__tile--now {
+    background-color: #e6e6e6;
+}
+
+.react-calendar__tile--active {
+    background-color: #36d7b7;
+    color: white;
+}
+
+

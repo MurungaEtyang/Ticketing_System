@@ -6,7 +6,9 @@ import AssignTicket from "./ticketAssignment/AssignTicket.tsx";
 import GetAllTickets from "./ticketAssignment/GetAllTickets.tsx";
 import AddUserToDepartment from "./departmentMnagement/AddUserToDepartment.tsx";
 import CreateDepartment from "./departmentMnagement/CreateDepartment.tsx";
-import axios from "axios";
+import Registration from "./users/Registration.tsx";
+import AllUser from "./users/AllUser.tsx";
+
 
 const AdminDashboard: React.FC = () => {
     const location = useLocation();
@@ -17,25 +19,30 @@ const AdminDashboard: React.FC = () => {
     const [selectedMenuItem, setSelectedMenuItem] = useState("");
 
     const handleLogout = async () => {
-        try {
+
             await fetch("http://localhost:8080/logout", {
                 method: "GET",
                 headers: {
-                    "Content-Type": "application/json",
                     "Authorization": "Basic " + localStorage.getItem('email_password_credentials')
                 },
-            });
+            }).then(response => {
+                alert(response.status);
+                if (response.status === 204) {
+                    const navigate = useNavigate();
+                    navigate("/");
+                    return;
+                }else{
+                    alert("Logout failed.");
+                }
+            }).catch(error => alert("Logout failed: " + error)
 
-            const navigate = useNavigate();
-            navigate("/");
-        } catch (error) {
-            alert("Logout failed: " + error);
-        }
+            );
+
     };
 
 
 
-    const handleDropdownToggle = () => {
+    const handleDropdownManageUsers = () => {
         setUserManagement(!UserManagement);
     };
 
@@ -53,30 +60,18 @@ const AdminDashboard: React.FC = () => {
 
     const renderAssociatedFiles = () => {
         switch (selectedMenuItem) {
+            case "RegisterUser":
+                return (<div><Registration /></div>);
+            case "ALLUsers":
+                return (<div><AllUser /></div>);
             case "AllTickets":
-                return (
-                    <div>
-                        <GetAllTickets />
-                    </div>
-                );
+                return (<div><GetAllTickets /></div>);
             case "AssignTicket":
-                return (
-                    <div>
-                        <AssignTicket />
-                    </div>
-                );
+                return (<div><AssignTicket /></div>);
             case "CreateDepartment":
-                return (
-                    <div>
-                        <CreateDepartment/>
-                    </div>
-                );
+                return (<div><CreateDepartment/></div>);
             case "AddUsersToDepartment":
-                return (
-                    <div>
-                        <AddUserToDepartment />
-                    </div>
-                );
+                return (<div><AddUserToDepartment /></div>);
             default:
                 return null;
         }
@@ -99,6 +94,36 @@ const AdminDashboard: React.FC = () => {
 
                 <div className="side-nav-bar raised">
                     {/*User Management*/}
+                    <div className="users-management-dropdown">
+                        {/* Add dropdown */}
+                        <button className="Ticket-Assignment-button" onClick={handleDropdownManageUsers}>
+                            Manage Users
+                        </button>
+                        {UserManagement && (
+                            <div className="Ticket-Assignment-content">
+                                <button
+                                    className="Ticket-Assignment-dropdown-button"
+                                    onClick={() => handleDropdownItemClick("RegisterUser")}
+                                >
+                                    Register User
+                                </button>
+                                <button
+                                    className="Ticket-Assignment-dropdown-button"
+                                    onClick={() => handleDropdownItemClick("UpgradeUser")}
+                                >
+                                    Upgrade User
+                                </button>
+                                <button
+                                    className="Ticket-Assignment-dropdown-button"
+                                    onClick={() => handleDropdownItemClick("ALLUsers")}
+                                >
+                                    All users
+                                </button>
+                            </div>
+                        )}
+                    </div>
+
+
                     {/*Ticket Assignment*/}
                     <div className="Ticket-Assignment-dropdown">
                         {/* Add dropdown */}

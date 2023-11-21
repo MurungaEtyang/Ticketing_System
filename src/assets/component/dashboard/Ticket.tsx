@@ -1,9 +1,10 @@
-import React, { useState, useRef } from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { css } from '@emotion/react';
 import { ClipLoader } from 'react-spinners';
 import '../stylesheeet/ticket.css';
+import Select from "react-select";
 
 interface TicketProps {
     setNotificationMessage: (message: string) => void;
@@ -15,6 +16,12 @@ const Ticket: React.FC<TicketProps> = ({ setNotificationMessage }) => {
     const [loading, setLoading] = useState(false);
     const [imageUrl, setImageUrl] = useState('');
     const descriptionRef = useRef<HTMLTextAreaElement>(null);
+    const [department, setDepartment] = useState<{ department: string; }[]>([]);
+    const [departments, setDepartments] = useState<string[]>([]);
+
+    useEffect(() => {
+        fetchDepartments();
+    }, []);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -41,7 +48,7 @@ const Ticket: React.FC<TicketProps> = ({ setNotificationMessage }) => {
             setLoading(true);
 
             const fileInput = document.getElementById('attachment') as HTMLInputElement;
-            const file = fileInput.files?.[0];
+            const file = fileInput.files;
 
             if (!file) {
                 toast.error('Please select a file.', {
@@ -49,15 +56,19 @@ const Ticket: React.FC<TicketProps> = ({ setNotificationMessage }) => {
                 });
                 return;
             }
-
+            
             const formData = new FormData();
-            formData.append('attachment', file);
+            formData.append('department', department.label)
             formData.append('title', title);
+            formData.append('attachment', imageUrl);
             formData.append('description', description);
 
-            await fetch('http://localhost:8080/api/v1/tickets?' + 'title='+ title + '&description=' + description, {
+            alert(imageUrl)
+
+            await fetch('http://localhost:8080/api/v1/tickets?department=' + department.label + '&title='+ title + '&description=' + description, {
                 method: 'POST',
                 headers: {
+                    'Content-Type': 'multipart/form-data; boundary=--boundary123',
                     Authorization: 'Basic ' + localStorage.getItem('email_password_credentials'),
                 },
                 body: formData,
@@ -89,6 +100,30 @@ const Ticket: React.FC<TicketProps> = ({ setNotificationMessage }) => {
         display: block;
         margin: 0 auto;
     `;
+
+    const data = btoa("kamar254baraka@gmail.com:admin");
+    localStorage.setItem('owner', data)
+
+    const fetchDepartments = async () => {
+        try {
+            const response = await fetch('http://localhost:8080/api/v1/departments/all',{
+                method: "GET",
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Basic ' + localStorage.getItem('owner')
+                }
+            });
+            const data = await response.json();
+            const department = data.map((user) => user.departmentName);
+            // alert(department)
+            setDepartments(department);
+            // setDepartments(['department1','department2', 'department3'])
+        } catch (error) {
+            toast.error('Failed to fetch departments. Please try again.', {
+                position: toast.POSITION.BOTTOM_RIGHT,
+            });
+        }
+    };
 
     const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setDescription(e.target.value);
@@ -128,6 +163,18 @@ const Ticket: React.FC<TicketProps> = ({ setNotificationMessage }) => {
                                         ref={descriptionRef}
                                     ></textarea>
                                 </div>
+
+                                <div className="form-group">
+                                    <label htmlFor="department">Department *</label>
+                                    <Select
+                                        required
+                                        options={departments.map((dept) => ({ value: dept, label: dept }))}
+                                        value={department}
+                                        onChange={(selectedOption) => setDepartment(selectedOption)}
+                                        isSearchable
+                                    />
+                                </div>
+
                                 <div>
                                     <label htmlFor="attachment">Upload File</label>
                                     <input

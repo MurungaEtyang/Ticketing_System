@@ -1,12 +1,13 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-// import AssignTicket from "./admin/ticketAssignment/AssignTicket.tsx";
+// import Test from "./admin/Trash/test.tsx";
+import AssignTicket from "./admin/ticketAssignment/AssignTicket.tsx";
 import Home from './assets/component/Home';
-import Verification from './assets/component/Verification';
+import Verification from './admin/users/Verification.tsx';
 import Login from './assets/component/Login'
 import Dashboard from './assets/component/dashboard/Dashboard'
-import Registration from "./assets/component/Registration.tsx";
+import Registration from "./admin/users/Registration.tsx";
 import AdminDashboard from "./admin/AdminDashboard";
-// import GetAllTickets from "./admin/ticketAssignment/GetAllTickets.tsx";
+import EmployeeDashboard from "./employee/EmployeeDashboard.tsx";
 
 const App: React.FC = () => {
     return (
@@ -14,14 +15,14 @@ const App: React.FC = () => {
             <Router>
                 <div className="App">
                     <Routes>
-                        {/*<Route path='/' element={<AssignTicket/>}/>*/}
-                        {/*<Route path="/" element={<GetAllTickets/>}/>*/}
+                        {/*<Route path='/' element={<Test />}/>*/}
                         <Route path="/" element={<Home />} />
                         <Route path="/verification" element={<Verification />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/dashboard" element={<Dashboard />} />
                         <Route path="/register" element={<Registration />}/>
                         <Route path="/admin" element={<AdminDashboard />}/>
+                        <Route path="/employee" element={<EmployeeDashboard />}/>
                     </Routes>
                 </div>
 
