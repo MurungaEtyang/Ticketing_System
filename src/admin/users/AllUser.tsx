@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import 'react-toastify/dist/ReactToastify.css';
-import '../assets/stylesheet/GetAllTickets.css';
+import {useEffect, useState} from "react";
 import './AllUsers.css'
 
 const AllUser = () => {
@@ -34,6 +32,13 @@ const AllUser = () => {
         }
     }, []);
 
+    const owners = users.filter(user => user.authorities.includes('OWNER'));
+    const admins = users.filter(user => user.authorities.includes('ADMIN'));
+    const employees = users.filter(user => user.authorities.includes('EMPLOYEE'));
+    const regularUsers = users.filter(user => user.authorities.includes('USER'));
+
+    const allUsers = owners.length + admins.length + employees.length + regularUsers.length;
+
     const handleSearch = () => {
         const filtered = users.filter(user => user.username.toLowerCase().includes(searchUsername.toLowerCase()));
         setFilteredUsers(filtered);
@@ -60,9 +65,36 @@ const AllUser = () => {
                             <th>USERNAME</th>
                             <th>AUTHORITIES</th>
                             <th>RATING</th>
+
                         </tr>
                         </thead>
+
                         <tbody>
+                        <tr className="card-users-table-header">
+                            <td>ALL USERS</td>
+                            <td>{allUsers}</td>
+                            <td></td>
+
+                            <td>OWNERS</td>
+                            <td>{owners.length}</td>
+                            <td></td>
+
+                            <td>ADMINS</td>
+                            <td>{admins.length}</td>
+                            <td></td>
+
+                            <td>EMPLOYEES</td>
+                            <td>{employees.length}</td>
+                            <td></td>
+
+                            <td>REGULAR USERS</td>
+                            <td>{regularUsers.length}</td>
+                            <td></td>
+
+                        </tr>
+                        </tbody>
+                        <tbody>
+
                         {filteredUsers.map(user => (
                             <tr key={user.username}>
                                 <td>{user.username}</td>

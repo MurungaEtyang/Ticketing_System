@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import Login from './Login';
-import Registration from "./Registration";
 import './stylesheeet/home.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import logo from './images/logo.jpeg';
-import { ToastNotificationRegitration } from "./Registration";
 import { ToastNotificationLogin } from "./Login";
 
 const Home: React.FC = () => {
@@ -66,23 +64,13 @@ const Home: React.FC = () => {
                                 </button>
                             )}
 
-                            {showRegisterForm ? (
-                                <div className="form-container">
-                                    <Registration />
-                                </div>
-                            ) : (
-                                <button className="dropdown-button" onClick={() => handleButtonClick('register')}>
-                                    Register
-                                </button>
-                            )}
+
                         </div>
                     )}
                 </div>
 
             </nav>
 
-
-            <ToastNotificationRegitration /> {/* Include the ToastNotification component here */}
             <ToastNotificationLogin /> {/* Include the ToastNotification component here */}
 
 

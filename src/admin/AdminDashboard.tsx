@@ -8,6 +8,7 @@ import AddUserToDepartment from "./departmentMnagement/AddUserToDepartment.tsx";
 import CreateDepartment from "./departmentMnagement/CreateDepartment.tsx";
 import Registration from "./users/Registration.tsx";
 import AllUser from "./users/AllUser.tsx";
+import ElevateUser from "./users/ElevateUser.tsx";
 
 
 const AdminDashboard: React.FC = () => {
@@ -66,6 +67,8 @@ const AdminDashboard: React.FC = () => {
                 return (<div><AllUser /></div>);
             case "AllTickets":
                 return (<div><GetAllTickets /></div>);
+            case "ElevateUser":
+                return (<div><ElevateUser /></div>);
             case "AssignTicket":
                 return (<div><AssignTicket /></div>);
             case "CreateDepartment":
@@ -83,10 +86,10 @@ const AdminDashboard: React.FC = () => {
         <>
             <div className="admin-dashboard-container">
                 {/*logo*/}
-                <div>
-                    <img src={logo} alt="Logo" className="logo" />
-                    <button onClick={handleLogout}>Logout</button>
-                </div>
+                {/*<div>*/}
+                {/*    <img src={logo} alt="Logo" className="logo" />*/}
+                {/*    <button onClick={handleLogout}>Logout</button>*/}
+                {/*</div>*/}
                 <div className="profile">
                     <p>Hello {email}</p>
                     {/*<img src={profileImage} alt="Profile" />*/}
@@ -109,7 +112,7 @@ const AdminDashboard: React.FC = () => {
                                 </button>
                                 <button
                                     className="Ticket-Assignment-dropdown-button"
-                                    onClick={() => handleDropdownItemClick("UpgradeUser")}
+                                    onClick={() => handleDropdownItemClick("ElevateUser")}
                                 >
                                     Upgrade User
                                 </button>
