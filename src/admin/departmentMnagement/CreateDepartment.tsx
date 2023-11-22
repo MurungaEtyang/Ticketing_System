@@ -7,6 +7,7 @@ import Select from 'react-select';
 
 const CreateDepartment = () => {
     const [nameOfDepartment, setNameOfDepartment] = useState('');
+    const [emailOfDepartment, setEmailOfDepartment] = useState('');
     const [headOfDepartment, setHeadOfDepartment] = useState('');
     const [loading, setLoading] = useState(false);
     const [users, setUsers] = useState<{ name: string; }[]>([]);
@@ -37,41 +38,47 @@ const CreateDepartment = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (nameOfDepartment === '' || headOfDepartment === '') {
+        if (nameOfDepartment === '' || emailOfDepartment === '' || headOfDepartment === '') {
             toast.error('Please fill in all the input fields.', {
                 position: toast.POSITION.BOTTOM_RIGHT,
             });
             return;
         }
 
-        try {
             setLoading(true);
-            const formData = new FormData();
-            formData.append('department_name', nameOfDepartment);
-            formData.append('head_of_department', headOfDepartment.label);
-
-
             await fetch('http://localhost:8080/api/v1/departments?'+ 'department_name=' + nameOfDepartment +
-                '&head_of_department=' + headOfDepartment.label, {
+                '&email=' + emailOfDepartment + '&head_of_department=' + headOfDepartment.label, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Content-Type': 'application/json',
                     Authorization: 'Basic ' + localStorage.getItem('email_password_credentials'),
                 },
-                body: formData,
+                body: JSON.stringify({
+                    nameOfDepartment: nameOfDepartment,
+                    email: emailOfDepartment,
+                    headOfDepartment: headOfDepartment
+                }),
+            }).then((response) => {
+                if (response.ok){
+                    toast.success('Department created successfully.', {
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                    });
+                }else{
+                    toast.error('Department can not be created')
+                    // alert(response.status)
+                }
+            }).catch(error => {
+                toast.error(error, {
+                    position: toast.POSITION.BOTTOM_RIGHT,
+                });
+            }).finally(() => {
+                setLoading(false);
+                // Reset the form fields
+                setNameOfDepartment('');
+                setEmailOfDepartment('');
+                setHeadOfDepartment('');
             });
 
-            // Reset the form fields
-            setNameOfDepartment('');
-            setHeadOfDepartment('');
-
-        } catch (error) {
-            toast.error('Invalid name Of Department or head Of Department. Please try again.', {
-                position: toast.POSITION.BOTTOM_RIGHT,
-            });
-        } finally {
-            setLoading(false);
-        }
     };
 
     const override = css`
@@ -100,6 +107,16 @@ const CreateDepartment = () => {
                                         id="department"
                                         value={nameOfDepartment}
                                         onChange={(e) => setNameOfDepartment(e.target.value)}
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="nameOfDepart">Email of Department *</label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        id="department"
+                                        value={emailOfDepartment}
+                                        onChange={(e) => setEmailOfDepartment(e.target.value)}
                                     />
                                 </div>
                                 <div className="form-group">

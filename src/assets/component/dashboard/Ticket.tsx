@@ -56,19 +56,20 @@ const Ticket: React.FC<TicketProps> = ({ setNotificationMessage }) => {
                 });
                 return;
             }
-            
+
             const formData = new FormData();
-            formData.append('department', department.label)
+            formData.append('department', department.value)
             formData.append('title', title);
-            formData.append('attachment', imageUrl);
+            formData.append('attachment', file);
             formData.append('description', description);
 
-            alert(imageUrl)
 
+
+            let boundary = Math.random().toString(16).substring(2);
             await fetch('http://localhost:8080/api/v1/tickets?department=' + department.label + '&title='+ title + '&description=' + description, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'multipart/form-data; boundary=--boundary123',
+                    'Content-Type': 'multipart/form-data;boundary=----WebKitFormBoundary'+ boundary,
                     Authorization: 'Basic ' + localStorage.getItem('email_password_credentials'),
                 },
                 body: formData,
@@ -89,6 +90,7 @@ const Ticket: React.FC<TicketProps> = ({ setNotificationMessage }) => {
             // Reset the form fields
             setTitle('');
             setDescription('');
+
         } catch (error) {
             alert(error.value);
         } finally {
@@ -132,8 +134,6 @@ const Ticket: React.FC<TicketProps> = ({ setNotificationMessage }) => {
             descriptionRef.current.style.height = `${descriptionRef.current.scrollHeight}px`;
         }
     };
-
-
 
     return (
         <div className="container">

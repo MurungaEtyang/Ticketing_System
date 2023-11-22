@@ -2,55 +2,50 @@ import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ClipLoader from 'react-spinners/ClipLoader';
-import { Link, useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 
-const ElevateUser = () => {
+const DowngradeUser = () => {
     const [loading, setLoading] = useState(false);
     const [role, setRole] = useState<{ department: string }[]>([]);
     const [roles, setRoles] = useState<string[]>([]);
     const [user, setUser] = useState<{ department: string }>({ department: '' });
     const [users, setUsers] = useState<string[]>([]);
-    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setLoading(true); // Set loading state to true
+        setLoading(true);
+            try {
+                await fetch('http://localhost:8080/api/v1/users/management/downgrade?username='+ user.label +
+                    '&role_to_remove=' + role.label, {
+                    method: 'GET',
+                    headers: {
+                        Authorization: 'Basic ' + localStorage.getItem('email_password_credentials'),
+                    }
+                }).then((response) => {
+                    if (response.ok) {
 
-            const data = JSON.stringify({
-                role: role.label,
-                username: user.label
-            });
-
-            await fetch('http://localhost:8080/api/v1/users/management/elevate?authority='+ role.label +
-                '&username=' + user.label, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: 'Basic ' + localStorage.getItem('email_password_credentials'),
-                },
-                body: data,
-            }).then((response) => {
-                if (response.ok) {
-
-                    toast.success('User elevated successful!', {
-                        position: toast.POSITION.TOP_RIGHT,
+                        toast.success('User demoted successful!', {
+                            position: toast.POSITION.TOP_RIGHT,
+                        });
+                    } else {
+                        const errorResponse = response.json();
+                        throw new Error(errorResponse.message);
+                    }
+                }).catch((err) => {
+                    toast.error(err.message, {
+                        position: toast.POSITION.BOTTOM_RIGHT,
                     });
-                } else {
-                    const errorResponse = response.json();
-                    throw new Error(errorResponse.message);
-                }
-            }).catch(error => {
-                toast.error(error.message, {
-                    position: toast.POSITION.BOTTOM_RIGHT,
+                }).finally(() => {
+                    setUser(null);
+                    setUser(null);
+                    setLoading(false);
                 });
-            }).finally(() => {
-                setUser(null);
-                setUser(null)
+            }catch (err) {
+                alert(err.message)
                 setLoading(false);
-            });
+            }
+        setLoading(false);
 
-            setLoading(false)
     };
 
     useEffect(() => {
@@ -88,7 +83,7 @@ const ElevateUser = () => {
             const users = data.map((user) => ({ value: user.username, label: user.username }));
             setUsers(users);
         } catch (error) {
-            toast.error(error, {
+            toast.error('Failed to fetch users. Please try again.', {
                 position: toast.POSITION.BOTTOM_RIGHT,
             });
         }
@@ -101,7 +96,7 @@ const ElevateUser = () => {
                     <div className="col-md-6">
                         <div className="card">
                             <div className="card-body">
-                                <h3 className="card-title">ELEVATE USERS</h3>
+                                <h3 className="card-title">DEMOTE USERS</h3>
                                 <form onSubmit={handleSubmit}>
                                     <div className="form-group">
                                         <label htmlFor="roles">ROLES *</label>
@@ -126,7 +121,7 @@ const ElevateUser = () => {
                                         {loading ? (
                                             <ClipLoader color="#ffffff" loading={loading} size={20} />
                                         ) : (
-                                            'Elevate Users'
+                                            'Demote Users'
                                         )}
                                     </button>
                                 </form>
@@ -140,7 +135,7 @@ const ElevateUser = () => {
     );
 };
 
-export default ElevateUser;
+export default DowngradeUser;
 
 export const ToastNotificationRegitration = () => {
     return <ToastContainer />;

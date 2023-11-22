@@ -7,7 +7,6 @@ import Logo from '../images/Logo.png';
 import Ticket from './Ticket';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell } from '@fortawesome/free-solid-svg-icons';
-import axios from "axios";
 
 const Dashboard: React.FC = () => {
     const location = useLocation();
@@ -60,9 +59,6 @@ const Dashboard: React.FC = () => {
         navigate('/login');
     };
 
-    const handleRegister = () => {
-        navigate('/register');
-    };
 
     const handleNotification = (message: string) => {
         setNotificationMessage(message);
@@ -76,46 +72,35 @@ const Dashboard: React.FC = () => {
 
     return (
         <div className="container">
-            <div className="content-container">
-                <div className="upload-logo-container">
-                    <img src={Logo} alt="Logo"  />
-                </div>
-                <h1 className="home-title">CUSTOMER SERVICE PORTAL</h1>
-                <p className="content-text">
-                    Click the profile icon to access your account.
-                </p>
-                <p className="content-text">
-                    If you don't have an account, click "Register" to create one.
-                </p>
-                <p className="content-text">
-                    If you have registered for the first time, you need to verify your account.
-                </p>
-            </div>
+
             <nav className="nav-container">
 
 
                 <div className="nav-right">
                     {email && (
                         <>
+
                             <button className="btn btn-primary" onClick={handleBookTicket}>
                                 {showTicket ? 'Hide Ticket' : 'Book Ticket'}
                             </button>
                             <div className="notification-icon">
-                                <FontAwesomeIcon icon={faBell} onClick={handleShowMessages} />
-                                {showMessageDropdown && (
-                                    <div className="message-dropdown">
-                                        {notificationMessage ? (
-                                            <span className="message-item">{notificationMessage}</span>
-                                        ) : (
-                                            <span className="message-item">No new notifications</span>
-                                        )}
-                                    </div>
-                                )}
-                                {newNotificationCount > 0 && (
-                                    <div className={`badge ${showMessageDropdown ? 'empty' : ''}`}>
-                                        {newNotificationCount}
-                                    </div>
-                                )}
+                                {/*<FontAwesomeIcon icon={faBell} onClick={handleShowMessages} />*/}
+                                {/*{showMessageDropdown && (*/}
+                                {/*    <div className="message-dropdown">*/}
+                                {/*        {notificationMessage ? (*/}
+                                {/*            <span className="message-item">{notificationMessage}</span>*/}
+                                {/*        ) : (*/}
+                                {/*            <span className="message-item">No new notifications</span>*/}
+                                {/*        )}*/}
+                                {/*    </div>*/}
+                                {/*)}*/}
+                                {/*{newNotificationCount > 0 && (*/}
+                                {/*    <div className={`badge ${showMessageDropdown ? 'empty' : ''}`}>*/}
+                                {/*        {newNotificationCount}*/}
+                                {/*    </div>*/}
+                                {/*)}*/}
+
+
                             </div>
 
                             <div className="profile-dropdown">
@@ -143,15 +128,18 @@ const Dashboard: React.FC = () => {
                                     <button className="dropdown-button" onClick={handleLogin}>
                                         Login
                                     </button>
-                                    <button className="dropdown-button" onClick={handleRegister}>
-                                        Register
-                                    </button>
+
                                 </div>
                             )}
                         </div>
                     )}
                 </div>
+
             </nav>
+
+            {/*<div className="content-container">*/}
+            {/*    */}
+            {/*</div>*/}
             {showTicket && <Ticket setNotificationMessage={handleNotification} />}
             <ToastContainer />
         </div>

@@ -5,8 +5,6 @@ import { BeatLoader } from 'react-spinners';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '../assets/stylesheet/AssignTicket.css';
-import { formatDate } from 'react-datepicker';
-import Calendar from 'react-calendar';
 
 const AssignTicket = () => {
     const [currentForm, setCurrentForm] = useState<'check' | 'content' | 'assign'>('check');
@@ -85,20 +83,19 @@ const AssignTicket = () => {
         setIsLoading(true);
 
         if (currentForm === 'check') {
-
-            // // API FOR TICKET ID
-
-            alert('testing');
+            ;
             try {
-                const formData = new FormData();
-                formData.append('ticket', ticketId);
-                await fetch('http://localhost:8080/api/v1/tickets/submit?'+ 'ticket_id=' + ticketId, {
+                // const formData = new FormData();
+                // formData.append('ticket', ticketId);
+                await fetch('http://localhost:8080/api/v1/tickets/submit?ticket_id=' + ticketId, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'Content-Type': 'application/json',
                         Authorization: 'Basic ' + localStorage.getItem('email_password_credentials')
                     },
-                    body: formData
+                    body: JSON.stringify({
+                        'ticket': ticketId
+                    })
                 });
 
 
@@ -113,49 +110,47 @@ const AssignTicket = () => {
         } else if (currentForm === 'assign') {
             // API FOR ASSIGNING TICKET TO EMPLOYEE
 
-            try {
-                const formData = new FormData()
-                formData.append('ticketId', ticketId);
-                formData.append('assignTo', assignTo);
-                formData.append('priority', priority);
-                formData.append('deadline', deadline);
 
                     const response = await fetch('http://localhost:8080/api/v1/tickets/assign?id=' +
                         ticketId + '&to=' + assignTo + '&priority=' + priority + '&deadline=' + deadline, {
                         method: 'POST',
                         headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'Content-Type': 'application/json',
                             Authorization: 'Basic ' + localStorage.getItem('email_password_credentials')
                         },
-                        body: formData
-                    });
+                        body: JSON.stringify({
+                            'ticketId': ticketId,
+                            'assignTo': assignTo,
+                            'priority': priority,
+                            'deadline': deadline
 
-                    if (response.ok) {
-                        // console.log('Ticket assigned successfully');
-                        toast.success('Ticket assigned successfully', {
-                            position: toast.POSITION.TOP_RIGHT,
-                        });
-                        setShowForm(false);
-                        setCurrentForm('check');
-                    } else {
-                        toast.error('Error assigning ticket', {
+                        })
+                    }).then(response => {
+                        if (response.ok) {
+                            // console.log('Ticket assigned successfully');
+                            toast.success('Ticket assigned successfully', {
+                                position: toast.POSITION.TOP_RIGHT,
+                            });
+                            setShowForm(false);
+                            setCurrentForm('check');
+                        } else {
+                            toast.error('Error assigning ticket', {
+                                position: toast.POSITION.BOTTOM_RIGHT,
+                            });
+
+                        }
+                    }).catch(() =>{
+                        toast.error('Error fetching ticket content', {
                             position: toast.POSITION.BOTTOM_RIGHT,
                         });
+                    }).finally(() => {
+                        setTicketId('');
+                        setAssignTo('');
+                        setPriority('');
+                        setDeadline(null);
+                        setCurrentForm('check');
+                    });
 
-                    }
-
-            } catch (error) {
-                toast.error('Error fetching ticket content', {
-                    position: toast.POSITION.BOTTOM_RIGHT,
-                });
-            }
-            alert(deadline)
-            // Reset the form
-            setTicketId('');
-            setAssignTo('');
-            setPriority('');
-            setDeadline(null);
-            setCurrentForm('check');
         }
 
         setIsLoading(false);
@@ -166,7 +161,6 @@ const AssignTicket = () => {
             const response = await fetch('http://localhost:8080/api/v1/tickets/management/get?ticket_id=' + ticketId, {
                 method: 'GET',
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
                     Authorization: 'Basic ' + localStorage.getItem('email_password_credentials')
                 }
             });

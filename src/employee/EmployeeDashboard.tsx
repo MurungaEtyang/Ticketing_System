@@ -1,98 +1,104 @@
-import React, { useState, useEffect } from 'react';
-import 'react-toastify/dist/ReactToastify.css';
-import {useNavigate} from "react-router-dom";
-import logo from "../admin/assets/images/logo.jpeg";
+import React, { useEffect, useState } from "react";
+import {useLocation, useNavigate} from "react-router-dom";
+import RaisedTicket from "./RaisedTicket.tsx";
 
-const EmployeeDashboard = () => {
-    const [tickets, setTickets] = useState([]);
-    const [error, setError] = useState('');
 
+const AdminDashboard: React.FC = () => {
+    const location = useLocation();
+    const email = location.state?.email || "";
+    const [UserManagement, setUserManagement] = useState(false);
+    const [TicketAssignment, setTicketAssignment] = useState(false);
+    const [DepartmentManagement, setDepartmentManagement] = useState(false);
+    const [selectedMenuItem, setSelectedMenuItem] = useState("");
 
     const handleLogout = async () => {
-        try {
-            await fetch("http://localhost:8080/logout", {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": "Basic " + localStorage.getItem('email_password_credentials')
-                },
-            });
 
-            const navigate = useNavigate();
-            navigate("/");
-        } catch (error) {
-            alert("Logout failed: " + error);
+        await fetch("http://localhost:8080/logout", {
+            method: "GET",
+            headers: {
+                "Authorization": "Basic " + localStorage.getItem('email_password_credentials')
+            },
+        }).then(response => {
+            alert(response.status);
+            if (response.status === 204) {
+                const navigate = useNavigate();
+                navigate("/");
+                return;
+            }else{
+                alert("Logout failed.");
+            }
+        }).catch(error => alert("Logout failed: " + error)
+
+        );
+
+    };
+
+
+
+    const handleDropdownManageUsers = () => {
+        setUserManagement(!UserManagement);
+    };
+
+    const handleDropdownTicketAssignment = () => {
+        setTicketAssignment(!TicketAssignment);
+    };
+
+    const handleDropDownDepartmentManagement = () => {
+        setDepartmentManagement(!DepartmentManagement);
+    };
+
+    const handleDropdownItemClick = (menuItem: string) => {
+        setSelectedMenuItem(menuItem);
+    };
+
+    const renderAssociatedFiles = () => {
+        switch (selectedMenuItem) {
+            case "RaisedTickets":
+                return (<div><RaisedTicket/></div>);
+            default:
+                return null;
         }
     };
 
-    useEffect(() => {
-        try {
-            const apiEndpoint = 'http://localhost:8080/api/v1/tickets/report';
-
-            fetch(apiEndpoint,{
-                method: "GET",
-                headers: {
-                    Authorization: 'Basic ' + localStorage.getItem('email_password_credentials')
-                }
-            })
-                .then(response => response.json())
-                .then(data => setTickets(data))
-                .catch(error => {
-                    console.error('Error fetching ticket data:', error);
-                    setError('An error occurred while fetching ticket data.');
-                });
-        } catch (error) {
-            console.error('Error fetching ticket data:', error);
-            setError('An error occurred while fetching ticket data.');
-        }
-
-    }, []);
-
     return (
-        <div>
-            <div><img src={logo} alt="Logo" className="logo" /></div>
-            <div>
+        <body>
 
-                <button onClick={handleLogout}>Logout</button>
-            </div>
-            {error && <div className="error">{error}</div>}
-
-            <form className="employee-container">
-                <div className="employee-container-body">
-                    <table className="table">
-                        <thead>
-                        <tr className="employee-container-table-header">
-                            <th>ID</th>
-                            <th>Title</th>
-                            <th>Description</th>
-                            <th>Priority</th>
-                            <th>Status</th>
-                            <th>Raised By</th>
-                            <th>Assigned To</th>
-                            <th>Deadline</th>
-                            <th>Download Attachment</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {tickets.map(ticket => (
-                            <tr key={ticket.id}>
-                                <td>{ticket.id}</td>
-                                <td>{ticket.title}</td>
-                                <td className="description-column">{ticket.description}</td>
-                                <td>{ticket.priority}</td>
-                                <td>{ticket.status}</td>
-                                <td>{ticket.raisedBy}</td>
-                                <td>{ticket.assignedTo}</td>
-                                <td>{ticket.deadline}</td>
-
-                            </tr>
-                        ))}
-                        </tbody>
-                    </table>
+        <>
+            <div className="admin-dashboard-container">
+                {/*logo*/}
+                {/*<div>*/}
+                {/*    <img src={logo} alt="Logo" className="logo" />*/}
+                {/*    <button onClick={handleLogout}>Logout</button>*/}
+                {/*</div>*/}
+                <div className="profile">
+                    <p>Hello {email}</p>
+                    {/*<img src={profileImage} alt="Profile" />*/}
                 </div>
-            </form>
-        </div>
+
+                <div className="side-nav-bar raised">
+                    {/*User Management*/}
+                    <div className="users-management-dropdown">
+                        {/* Add dropdown */}
+                        <button className="Ticket-Assignment-button" onClick={handleDropdownManageUsers}>
+                            TICKETS
+                        </button>
+                        {UserManagement && (
+                            <div className="Ticket-Assignment-content">
+                                <button
+                                    className="Ticket-Assignment-dropdown-button"
+                                    onClick={() => handleDropdownItemClick("RaisedTickets")}
+                                >
+                                    RAISED TICKETS
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </div>
+            {renderAssociatedFiles()}
+        </>
+        </body>
     );
 };
 
-export default EmployeeDashboard;
+export default AdminDashboard;

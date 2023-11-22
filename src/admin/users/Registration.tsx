@@ -89,7 +89,7 @@ const Registration = () => {
                     <div className="col-md-6">
                         <div className="card">
                             <div className="card-body">
-                                <h3 className="card-title">REGISTER TO CUSTOMER SERVICE PORTAL</h3>
+                                <h3 className="card-title">ADD USERS</h3>
                                 <form onSubmit={handleSubmit}>
                                     <div className="form-group">
                                         <label htmlFor="department">Roles *</label>

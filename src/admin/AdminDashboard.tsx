@@ -9,6 +9,7 @@ import CreateDepartment from "./departmentMnagement/CreateDepartment.tsx";
 import Registration from "./users/Registration.tsx";
 import AllUser from "./users/AllUser.tsx";
 import ElevateUser from "./users/ElevateUser.tsx";
+import DowngradeUser from "./users/DowngradeUser.tsx";
 
 
 const AdminDashboard: React.FC = () => {
@@ -67,6 +68,8 @@ const AdminDashboard: React.FC = () => {
                 return (<div><AllUser /></div>);
             case "AllTickets":
                 return (<div><GetAllTickets /></div>);
+            case "DowngradeUser":
+                return (<div><DowngradeUser /></div>);
             case "ElevateUser":
                 return (<div><ElevateUser /></div>);
             case "AssignTicket":
@@ -121,6 +124,13 @@ const AdminDashboard: React.FC = () => {
                                     onClick={() => handleDropdownItemClick("ALLUsers")}
                                 >
                                     All users
+                                </button>
+
+                                <button
+                                    className="Ticket-Assignment-dropdown-button"
+                                    onClick={() => handleDropdownItemClick("DowngradeUser")}
+                                >
+                                    lower user role
                                 </button>
                             </div>
                         )}
