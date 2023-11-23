@@ -23,8 +23,13 @@ const Ticket: React.FC<TicketProps> = ({ setNotificationMessage }) => {
         fetchDepartments();
     }, []);
 
+    let ftp: File;
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
+        // const file: File = e.target.files?.[0];
+        const file: File = e.target.files.item(0);
+
+        ftp = file;
+
         if (file) {
             const reader = new FileReader();
             reader.onloadend = () => {
@@ -48,28 +53,29 @@ const Ticket: React.FC<TicketProps> = ({ setNotificationMessage }) => {
             setLoading(true);
 
             const fileInput = document.getElementById('attachment') as HTMLInputElement;
-            const file = fileInput.files;
+            const filef: File = fileInput.files?.item(0);
 
-            if (!file) {
+            if (!filef) {
                 toast.error('Please select a file.', {
                     position: toast.POSITION.BOTTOM_RIGHT,
                 });
                 return;
             }
 
-            const formData = new FormData();
-            formData.append('department', department.value)
-            formData.append('title', title);
-            formData.append('attachment', file);
-            formData.append('description', description);
+            if (ftp === null || ftp === undefined) {
 
-
+                alert("before");
+            }
+            let formData = new FormData();
+            formData.set('attachment', ftp);
 
             let boundary = Math.random().toString(16).substring(2);
-            await fetch('http://localhost:8080/api/v1/tickets?department=' + department.label + '&title='+ title + '&description=' + description, {
+            await fetch('http://localhost:8080/api/v1/tickets?department=' + department.label + '&title='+ title + '&description=' + description,
+                {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'multipart/form-data;boundary=----WebKitFormBoundary'+ boundary,
+                    'Content-Type': 'multipart/form-data;boundary=------WebKitFormBoundary'+ boundary,
+                    // 'Content-Type': 'application/json',
                     Authorization: 'Basic ' + localStorage.getItem('email_password_credentials'),
                 },
                 body: formData,

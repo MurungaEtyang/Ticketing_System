@@ -8,6 +8,7 @@ import Dashboard from './assets/component/dashboard/Dashboard'
 import Registration from "./admin/users/Registration.tsx";
 import AdminDashboard from "./admin/AdminDashboard";
 import EmployeeDashboard from "./employee/EmployeeDashboard.tsx";
+import NotFound from "./privateRoute/NotFound";
 
 const App: React.FC = () => {
     return (
@@ -23,6 +24,7 @@ const App: React.FC = () => {
                         <Route path="/register" element={<Registration />}/>
                         <Route path="/admin" element={<AdminDashboard />}/>
                         <Route path="/employee" element={<EmployeeDashboard />}/>
+                        <Route path="/*" element={<NotFound />}/>
                     </Routes>
                 </div>
 
