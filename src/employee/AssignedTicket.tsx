@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 
-const EmployeeDashboard = () => {
+const AssignedTicket = () => {
     const [raisedTickets, setRaisedTickets] = useState([]);
     const [error, setError] = useState('');
 
@@ -72,4 +72,4 @@ const EmployeeDashboard = () => {
     );
 };
 
-export default EmployeeDashboard;
+export default AssignedTicket;

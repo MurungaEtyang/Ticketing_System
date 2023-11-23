@@ -12,7 +12,7 @@ const AssignTicket = () => {
     const [ticketId, setTicketId] = useState('');
     const [assignTo, setAssignTo] = useState('');
     const [priority, setPriority] = useState('');
-    const [deadline, setDeadline] = useState<Date | null>(null);
+    const [deadline, setDeadline] = useState('');
     const [assignToOptions, setAssignToOptions] = useState<string[]>([]);
     const [showForm, setShowForm] = useState(false);
     const [ticketContent, setTicketContent] = useState<{
@@ -26,19 +26,19 @@ const AssignTicket = () => {
         deadline: string;
     } | null>(null);
 
-    const handleDateChange = (date: Date | null) => {
-        if (date) {
-            setDeadline(date);
-        }
-    };
-    const formatDate = (deadline: Date | null) => {
-        if (deadline) {
-            const options: Intl.DateTimeFormatOptions = { month: 'numeric', day: 'numeric', year: 'numeric' };
-            return deadline.toLocaleDateString('en-US', options).replace(/ /g, '/');
-        } else {
-            return 'No date selected';
-        }
-    };
+    // const handleDateChange = (date: Date | null) => {
+    //     if (date) {
+    //         setDeadline(date);
+    //     }
+    // };
+    // const formatDate = (deadline: Date | null) => {
+    //     if (deadline) {
+    //         const options: Intl.DateTimeFormatOptions = { month: 'numeric', day: 'numeric', year: 'numeric' };
+    //         return deadline.toLocaleDateString('en-US', options).replace(/ /g, '/');
+    //     } else {
+    //         return 'No date selected';
+    //     }
+    // };
 
     useEffect(() => {
         // Fetch the Assign To options from the API endpoint
@@ -74,9 +74,9 @@ const AssignTicket = () => {
         setPriority(event.target.value);
     };
 
-    // const handleDeadlineChange = (date: Date | null) => {
-    //     setDeadline(date);
-    // };
+    const handleDeadlineChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setDeadline(event.target.value);
+    };
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
@@ -150,6 +150,9 @@ const AssignTicket = () => {
                         setDeadline(null);
                         setCurrentForm('check');
                     });
+
+                    alert(ticketId);
+                    alert(deadline);
 
         }
 
@@ -295,13 +298,21 @@ const AssignTicket = () => {
                         {/*    value={deadline} */}
                         {/*    onChange={handleDateChange} */}
                         {/*/>*/}
-                        <DatePicker
+
+                        <input
                             required
-                            id="deadline"
-                            selected={deadline}
-                            onChange={handleDateChange}
-                            dateFormat={formatDate(deadline)}
+                            type="text"
+                            id="priority"
+                            value={deadline}
+                            onChange={handleDeadlineChange}
                         />
+                        {/*<DatePicker*/}
+                        {/*    required*/}
+                        {/*    id="deadline"*/}
+                        {/*    selected={deadline}*/}
+                        {/*    onChange={handleDateChange}*/}
+                        {/*    dateFormat={formatDate(deadline)}*/}
+                        {/*/>*/}
                     </div>
                     <div>
                         {isLoading ? (

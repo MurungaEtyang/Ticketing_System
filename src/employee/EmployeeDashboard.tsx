@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import {useLocation, useNavigate} from "react-router-dom";
-import RaisedTicket from "./RaisedTicket.tsx";
+import RaisedTicket from "./AssignedTicket.tsx";
 
 
-const AdminDashboard: React.FC = () => {
+const EmployeeDashboard: React.FC = () => {
     const location = useLocation();
     const email = location.state?.email || "";
     const [UserManagement, setUserManagement] = useState(false);
@@ -101,4 +101,4 @@ const AdminDashboard: React.FC = () => {
     );
 };
 
-export default AdminDashboard;
+export default EmployeeDashboard;
