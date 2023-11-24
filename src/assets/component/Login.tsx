@@ -28,6 +28,7 @@ const Login = () => {
             const credentials: string = btoa(email + ":" + password)
 
             localStorage.setItem("email_password_credentials", credentials);
+            localStorage.setItem("login_emails", email)
 
             const response = await fetch('http://localhost:8080/api/v1/login', {
                 method: "GET",
@@ -42,16 +43,16 @@ const Login = () => {
 
                 // store data authority in local storage
                 localStorage.setItem('data_authority', data.authorities);
-
+                alert(localStorage.getItem('data_authority'))
                 if (data.authorities == 'USER') {
                     navigate('/dashboard', { state: { email } });
                 } else if (data.authorities == 'EMPLOYEE') {
                     navigate('/employee', { state: { email } });
-                } else if (data.authorities == 'ADMIN' || data.authorities == 'OWNER') {
+                } else if (data.authorities == 'ADMIN' || data.authorities == 'OWNER' || data.authorities == 'DEPARTMENT_ADMIN'){
                     navigate('./admin', { state: { email } });
 
                 } else {
-                    toast.error('Invalid authority. Please contact the administrator.', {
+                    toast.error('You are not authorized. Please contact the administrator.', {
                         position: toast.POSITION.TOP_RIGHT,
                     });
                 }

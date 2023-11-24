@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import './dashboard.css';
-import Logo from '../images/Logo.png';
+import '../stylesheeet/dashboard.css';
+import Logo from "../images/Logo.png"
 import Ticket from './Ticket';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell } from '@fortawesome/free-solid-svg-icons';
@@ -77,28 +77,25 @@ const Dashboard: React.FC = () => {
 
 
                 <div className="nav-right">
+
                     {email && (
                         <>
-
-                            <button className="btn btn-primary" onClick={handleBookTicket}>
-                                {showTicket ? 'Hide Ticket' : 'Book Ticket'}
-                            </button>
                             <div className="notification-icon">
-                                {/*<FontAwesomeIcon icon={faBell} onClick={handleShowMessages} />*/}
-                                {/*{showMessageDropdown && (*/}
-                                {/*    <div className="message-dropdown">*/}
-                                {/*        {notificationMessage ? (*/}
-                                {/*            <span className="message-item">{notificationMessage}</span>*/}
-                                {/*        ) : (*/}
-                                {/*            <span className="message-item">No new notifications</span>*/}
-                                {/*        )}*/}
-                                {/*    </div>*/}
-                                {/*)}*/}
-                                {/*{newNotificationCount > 0 && (*/}
-                                {/*    <div className={`badge ${showMessageDropdown ? 'empty' : ''}`}>*/}
-                                {/*        {newNotificationCount}*/}
-                                {/*    </div>*/}
-                                {/*)}*/}
+                                <FontAwesomeIcon icon={faBell} onClick={handleShowMessages} />
+                                {showMessageDropdown && (
+                                    <div className="message-dropdown">
+                                        {notificationMessage ? (
+                                            <span className="message-item">{notificationMessage}</span>
+                                        ) : (
+                                            <span className="message-item">No new notifications</span>
+                                        )}
+                                    </div>
+                                )}
+                                {newNotificationCount > 0 && (
+                                    <div className={`badge ${showMessageDropdown ? 'empty' : ''}`}>
+                                        {newNotificationCount}
+                                    </div>
+                                )}
 
 
                             </div>
@@ -137,11 +134,22 @@ const Dashboard: React.FC = () => {
 
             </nav>
 
-            {/*<div className="content-container">*/}
-            {/*    */}
-            {/*</div>*/}
-            {showTicket && <Ticket setNotificationMessage={handleNotification} />}
-            <ToastContainer />
+            <div className="dashboard-body-container">
+
+                <img src={Logo}/>
+
+                <div className="dashboard-content-container">
+
+                    {/*<button className="btn btn-primary" onClick={handleBookTicket}>*/}
+                    {/*    {showTicket ? 'Hide Ticket' : 'Book Ticket'}*/}
+                    {/*</button>*/}
+
+                    <Ticket/>
+
+                </div>
+                {showTicket && <Ticket setNotificationMessage={handleNotification} />}
+                <ToastContainer />
+            </div>
         </div>
     );
 };

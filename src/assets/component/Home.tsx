@@ -43,6 +43,7 @@ const Home: React.FC = () => {
 
             localStorage.setItem("email_password_credentials", credentials);
 
+            localStorage.setItem("login_emails", email)
             const response = await fetch('http://localhost:8080/api/v1/login', {
                 method: "GET",
                 headers: {
@@ -56,12 +57,12 @@ const Home: React.FC = () => {
 
                 // store data authority in local storage
                 localStorage.setItem('data_authority', data.authorities);
-
+                // alert(localStorage.getItem('data_authority'))
                 if (data.authorities == 'USER') {
                     navigate('/dashboard', { state: { email } });
                 } else if (data.authorities == 'EMPLOYEE') {
                     navigate('/employee', { state: { email } });
-                } else if (data.authorities == 'ADMIN' || data.authorities == 'OWNER') {
+                } else if (data.authorities == 'ADMIN' || data.authorities == 'OWNER' || data.authorities == 'DEPARTMENT_ADMIN') {
                     navigate('./admin', { state: { email } });
 
                 } else {

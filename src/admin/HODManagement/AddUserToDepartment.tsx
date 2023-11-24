@@ -69,7 +69,7 @@ const AddUserToDepartment = () => {
             formData.append("department", department.label);
 
             await fetch('http://localhost:8080/api/v1/departments/add?users=' + selectedEmail.label +
-            '&department_name=' + department.label, {
+                '&department_name=' + department.label, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
