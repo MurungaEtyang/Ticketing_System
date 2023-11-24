@@ -42,6 +42,39 @@ const GetAllTickets = () => {
         setLoading(false);
     };
 
+    const downloadTicket = (ticketId) => {
+        const apiEndpoint = `http://localhost:8080/api/v1/tickets/management/attachment?ticket_id=${ticketId}`;
+
+        fetch(apiEndpoint, {
+            method: "GET",
+            headers: {
+                Authorization: 'Basic ' + localStorage.getItem('email_password_credentials')
+            }
+        }).then(response => {
+            if(response.ok){
+                const disposition = response.headers.get('content-disposition');
+                const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                const matches = filenameRegex.exec(disposition);
+                const filename = matches !== null && matches[1] ? matches[1].replace(/['"]/g, '') : 'attachment';
+
+                response.blob().then(blob => {
+                    const url = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = filename;
+                    link.click();
+                    URL.revokeObjectURL(url);
+                });
+
+            }else {
+                alert("Error downloading ticket attachment: Can not locate file")
+            }
+        }).catch(error => {
+            console.error('Error downloading ticket attachment:', error.message);
+            setError('An error occurred while downloading the ticket attachment.');
+        });
+    };
+
     return (
         <div>
             {error && <div className="error">{error}</div>}
@@ -86,6 +119,7 @@ const GetAllTickets = () => {
                                         <th>Raised By</th>
                                         <th>Assigned To</th>
                                         <th>Deadline</th>
+                                        <th>Department</th>
                                         <th>Download Attachment</th>
                                     </tr>
                                     </thead>
@@ -100,6 +134,10 @@ const GetAllTickets = () => {
                                             <td>{ticket.raisedBy}</td>
                                             <td>{ticket.assignedTo}</td>
                                             <td>{ticket.deadline}</td>
+                                            <td>{ticket.departmentAssigned}</td>
+                                            <td>
+                                                <button type="button" onClick={() => downloadTicket(ticket.id)}>Download Attachment</button>
+                                            </td>
                                         </tr>
                                     ))}
                                     </tbody>

@@ -1,6 +1,4 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-// import Test from "./admin/Trash/test.tsx";
-import AssignTicket from "./admin/ticketAssignment/AssignTicket.tsx";
 import Home from './assets/component/Home';
 import Verification from './admin/users/Verification.tsx';
 import Login from './assets/component/Login'
@@ -16,15 +14,23 @@ const App: React.FC = () => {
             <Router>
                 <div className="App">
                     <Routes>
-                        {/*<Route path='/' element={<Test />}/>*/}
+                        {/* <Route path='/' element={<Test />}/> */}
                         <Route path="/" element={<Home />} />
                         <Route path="/verification" element={<Verification />} />
                         <Route path="/login" element={<Login />} />
-                        <Route path="/dashboard" element={<Dashboard />} />
-                        <Route path="/register" element={<Registration />}/>
-                        <Route path="/admin" element={<AdminDashboard />}/>
-                        <Route path="/employee" element={<EmployeeDashboard />}/>
-                        <Route path="/*" element={<NotFound />}/>
+                        <Route path="/dashboard"
+                            element={<Dashboard />}
+                        />
+                        <Route path="/register" element={<Registration />} />
+                        <Route
+                            path="/admin"
+                            element={<AdminDashboard />}
+                        />
+                        <Route
+                            path="/employee"
+                            element={<EmployeeDashboard />}
+                        />
+                        <Route path="/*" element={<NotFound />} />
                     </Routes>
                 </div>
 

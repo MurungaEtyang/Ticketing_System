@@ -96,7 +96,7 @@ const Login = () => {
                                     <label htmlFor="email">Email *</label>
                                     <input
                                         type="email"
-                                        className="form-control"
+                                        // className="form-control"
                                         id="email"
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}

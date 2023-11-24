@@ -1,80 +1,161 @@
 import React, { useState } from 'react';
-import Login from './Login';
 import './stylesheeet/home.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
 import Logo from './images/Logo.png';
-import { ToastNotificationLogin } from "./Login";
+import {ClipLoader} from "react-spinners";
+import {toast, ToastContainer} from "react-toastify";
+import { useNavigate, Link } from 'react-router-dom';
 
 const Home: React.FC = () => {
+    const [loading, setLoading] = useState(false);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+    const [nextClicked, setNextClicked] = useState(false);
+    const navigate = useNavigate();
 
-    const [showLoginForm, setShowLoginForm] = useState(false);
-    const [showRegisterForm, setShowRegisterForm] = useState(false);
-    const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setEmail(e.target.value);
+    };
 
-    const handleButtonClick = (formType: string) => {
-        if (formType === 'login') {
-            setShowLoginForm(true);
-            setShowRegisterForm(false);
-        } else if (formType === 'register') {
-            setShowLoginForm(false);
-            setShowRegisterForm(true);
+    const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setPassword(e.target.value);
+    };
+
+    const handleNextClick = () => {
+        setNextClicked(true);
+        setShowPassword(true);
+    };
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        if (email === '' || password === '') {
+            toast.error('Please fill in all the input fields.', {
+                position: toast.POSITION.BOTTOM_RIGHT,
+            });
+            return;
+        }
+
+        try {
+            setLoading(true);
+
+            const credentials: string = btoa(email + ":" + password)
+
+            localStorage.setItem("email_password_credentials", credentials);
+
+            const response = await fetch('http://localhost:8080/api/v1/login', {
+                method: "GET",
+                headers: {
+                    // 'Content-Type': 'application/json',
+                    Authorization: 'Basic ' + credentials,
+                }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+
+                // store data authority in local storage
+                localStorage.setItem('data_authority', data.authorities);
+
+                if (data.authorities == 'USER') {
+                    navigate('/dashboard', { state: { email } });
+                } else if (data.authorities == 'EMPLOYEE') {
+                    navigate('/employee', { state: { email } });
+                } else if (data.authorities == 'ADMIN' || data.authorities == 'OWNER') {
+                    navigate('./admin', { state: { email } });
+
+                } else {
+                    toast.error('Invalid authority. Please contact the administrator.', {
+                        position: toast.POSITION.TOP_RIGHT,
+                    });
+                }
+            } else if (response.status === 401) {
+                toast.error('Invalid email or password. Please try again.', {
+                    position: toast.POSITION.TOP_RIGHT,
+                });
+            } else if (response.status === 403) {
+                toast.error('Email not verified. Please verify your email.', {
+                    position: toast.POSITION.TOP_RIGHT,
+                });
+            } else {
+                throw new Error('Server error');
+            }
+        } catch (error) {
+            toast.error(error.message+' Failed to login. Please try again later.', {
+                position: toast.POSITION.BOTTOM_RIGHT,
+            });
+        } finally {
+            setLoading(false);
         }
     };
 
-    const handleProfileClick = () => {
-        setShowProfileDropdown(!showProfileDropdown);
-    };
-
-
     return (
-        <div className="home-container">
-            <div className="content-container">
-                <h1 className="home-title" >CUSTOMER SERVICE PORTAL</h1>
-                <p className="content-text">
-                    Click the profile icon to access your account.
-                </p>
-                <p className="content-text">
-                    If you don't have an account, click "Register" to create one.
-                </p>
-                <p className="content-text">
-                    If you have registered for the first time, you need to verify your account.
-                </p>
-            </div>
-
-            <nav className="nav-container">
-                <img src={Logo} alt="Logo" className="logo" />
-
-                <div className="profile-dropdown">
-                    <button className="profile-button" onClick={handleProfileClick}>
-                        <FontAwesomeIcon icon={faUser} />
-                        Profile
-                    </button>
-
-
-                    {showProfileDropdown && (
-                        <div className="dropdown-content">
-                            {showLoginForm ? (
-                                <div className="form-container">
-                                    <Login />
-                                </div>
-                            ) : (
-                                <button className="dropdown-button" onClick={() => handleButtonClick('login')}>
-                                    Login
-                                </button>
-                            )}
-
-
-                        </div>
-                    )}
+        <>
+            <div className="home-container">
+                <nav className="nav-container"></nav>
+                <div className="content-container">
+                    <img src={Logo} alt="Logo" className="logo" />
+                    <h1 className="home-title">CUSTOMER SERVICE PORTAL</h1>
                 </div>
 
-            </nav>
+                {/*<footer className="footer">*/}
+                {/*    <p className="footer-text">© 2022 Customer Service Portal. All rights reserved.</p>*/}
+                {/*</footer>*/}
+            </div>
 
-            <ToastNotificationLogin /> {/* Include the ToastNotification component here */}
+            <div>
+                <form className="login-form" onSubmit={handleSubmit}>
+                    <div className="input-container">
+                        <input
+                            type="text"
+                            placeholder="Email"
+                            value={email}
+                            onChange={handleEmailChange}
+                            className="login-input"
+                        />
+                        {!nextClicked && (
+                            <button
+                                type="button"
+                                className="btn btn-primary"
+                                disabled={loading}
+                                onClick={handleNextClick}
+                            >
+                                {loading ? (
+                                    <ClipLoader color="#ffffff" loading={loading} size={20} />
+                                ) : (
+                                    'Next'
+                                )}
+                            </button>
+                        )}
+                    </div>
+                    {nextClicked && showPassword && (
+                        <>
+                            <input
+                                class="password"
+                                type="password"
+                                placeholder="Password"
+                                value={password}
+                                onChange={handlePasswordChange}
+                                className="login-input"
+                            />
+                            <button type="submit" className="btn btn-primary" disabled={loading}>
+                                {loading ? (
+                                    <ClipLoader color="#ffffff" loading={loading} size={20} />
+                                ) : (
+                                    'Login'
+                                )}
+                            </button>
+                        </>
+                    )}
+                </form>
 
+                <footer className="footer">
+                    <p className="footer-text">© 2022 Customer Service Portal. All rights reserved.</p>
+                </footer>
+            </div>
+            <ToastContainer />
+        </>
 
-        </div>
     );
 };
 

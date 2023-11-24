@@ -45,6 +45,7 @@ const AssignedTicket = () => {
                             <th>Priority</th>
                             <th>Status</th>
                             <th>Raised By</th>
+                            <th>Department</th>
                             <th>Assigned To</th>
                             <th>Deadline</th>
                             <th>Download Attachment</th>
@@ -59,6 +60,7 @@ const AssignedTicket = () => {
                                 <td>{ticket.priority}</td>
                                 <td>{ticket.status}</td>
                                 <td>{ticket.raisedBy}</td>
+                                <rd>{ticket.departmentAssigned}</rd>
                                 <td>{ticket.assignedTo}</td>
                                 <td>{ticket.deadline}</td>
 
