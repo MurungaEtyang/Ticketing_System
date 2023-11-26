@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import '../assets/stylesheet/GetAllTickets.css';
+import {faDownload} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 const GetAllTickets = () => {
     const [tickets, setTickets] = useState([]);
@@ -136,7 +138,7 @@ const GetAllTickets = () => {
                                             <td>{ticket.deadline}</td>
                                             <td>{ticket.departmentAssigned}</td>
                                             <td>
-                                                <button type="button" onClick={() => downloadTicket(ticket.id)}>Download Attachment</button>
+                                                <button type="button" onClick={() => downloadTicket(ticket.id)}><FontAwesomeIcon icon={faDownload} /></button>
                                             </td>
                                         </tr>
                                     ))}

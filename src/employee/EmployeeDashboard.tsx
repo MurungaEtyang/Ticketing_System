@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
 import {useLocation, useNavigate} from "react-router-dom";
-import RaisedTicket from "./AssignedTicket.tsx";
+import AssignedTicket from "./AssignedTicket.tsx";
+import Logo from "../assets/component/images/Logo.png"
 
 
 const EmployeeDashboard: React.FC = () => {
     const location = useLocation();
-    const email = location.state?.email || "";
-    const [UserManagement, setUserManagement] = useState(false);
-    const [TicketAssignment, setTicketAssignment] = useState(false);
-    const [DepartmentManagement, setDepartmentManagement] = useState(false);
+    const email = localStorage.getItem("login_emails");
     const [selectedMenuItem, setSelectedMenuItem] = useState("");
 
     const handleLogout = async () => {
@@ -34,68 +32,26 @@ const EmployeeDashboard: React.FC = () => {
     };
 
 
-
-    const handleDropdownManageUsers = () => {
-        setUserManagement(!UserManagement);
-    };
-
-    const handleDropdownTicketAssignment = () => {
-        setTicketAssignment(!TicketAssignment);
-    };
-
-    const handleDropDownDepartmentManagement = () => {
-        setDepartmentManagement(!DepartmentManagement);
-    };
-
-    const handleDropdownItemClick = (menuItem: string) => {
-        setSelectedMenuItem(menuItem);
-    };
-
-    const renderAssociatedFiles = () => {
-        switch (selectedMenuItem) {
-            case "RaisedTickets":
-                return (<div><RaisedTicket/></div>);
-            default:
-                return null;
-        }
-    };
-
     return (
         <body>
 
         <>
             <div className="admin-dashboard-container">
-                {/*logo*/}
-                {/*<div>*/}
-                {/*    <img src={logo} alt="Logo" className="logo" />*/}
-                {/*    <button onClick={handleLogout}>Logout</button>*/}
-                {/*</div>*/}
-                <div className="profile">
-                    <p>Hello {email}</p>
-                    {/*<img src={profileImage} alt="Profile" />*/}
-                </div>
-
-                <div className="side-nav-bar raised">
-                    {/*User Management*/}
-                    <div className="users-management-dropdown">
-                        {/* Add dropdown */}
-                        <button className="Ticket-Assignment-button" onClick={handleDropdownManageUsers}>
-                            TICKETS
-                        </button>
-                        {UserManagement && (
-                            <div className="Ticket-Assignment-content">
-                                <button
-                                    className="Ticket-Assignment-dropdown-button"
-                                    onClick={() => handleDropdownItemClick("RaisedTickets")}
-                                >
-                                    RAISED TICKETS
-                                </button>
-                            </div>
-                        )}
+                <nav className="nav-container">
+                    <div>
+                        <img src={Logo} alt="Logo" />
+                        <button onClick={handleLogout} className="logout-button">Logout</button>
                     </div>
-                </div>
+
+                    <div className="profile-email">
+                        <p>{email}</p>
+                        {/*<img src={profileImage} alt="Profile" />*/}
+                    </div>
+                </nav>
+
+                <div className="employee-dashboard-content"> <AssignedTicket /> </div>
             </div>
-            {renderAssociatedFiles()}
+
         </>
         </body>
     );

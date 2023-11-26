@@ -74,7 +74,7 @@ const Dashboard: React.FC = () => {
         <div className="container">
 
             <nav className="nav-container">
-
+                <img src={Logo}/>
 
                 <div className="nav-right">
 
@@ -136,16 +136,8 @@ const Dashboard: React.FC = () => {
 
             <div className="dashboard-body-container">
 
-                <img src={Logo}/>
-
                 <div className="dashboard-content-container">
-
-                    {/*<button className="btn btn-primary" onClick={handleBookTicket}>*/}
-                    {/*    {showTicket ? 'Hide Ticket' : 'Book Ticket'}*/}
-                    {/*</button>*/}
-
                     <Ticket/>
-
                 </div>
                 {showTicket && <Ticket setNotificationMessage={handleNotification} />}
                 <ToastContainer />

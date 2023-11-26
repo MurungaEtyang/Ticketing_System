@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { css } from '@emotion/react';
@@ -16,28 +16,30 @@ const Ticket: React.FC<TicketProps> = ({ setNotificationMessage }) => {
     const [loading, setLoading] = useState(false);
     const [imageUrl, setImageUrl] = useState('');
     const descriptionRef = useRef<HTMLTextAreaElement>(null);
-    const [department, setDepartment] = useState<{ department: string; }[]>([]);
+    const [department, setDepartment] = useState<{ label: string; value: string } | null>(null); // Change department state type
     const [departments, setDepartments] = useState<string[]>([]);
+    const [ftp, setFtp] = useState<File | undefined>(undefined);
+    // let ftp: File | undefined;
 
     useEffect(() => {
         fetchDepartments();
     }, []);
 
-    let ftp: File;
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        // const file: File = e.target.files?.[0];
-        const file: File = e.target.files.item(0);
-
-        ftp = file;
+        const file: File | null = e.target.files?.[0] || null;
 
         if (file) {
             const reader = new FileReader();
             reader.onloadend = () => {
                 setImageUrl(reader.result as string);
+                setFtp(file);
+                console.log('ftp:', ftp);
             };
             reader.readAsDataURL(file);
         }
     };
+
+
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -49,37 +51,33 @@ const Ticket: React.FC<TicketProps> = ({ setNotificationMessage }) => {
             return;
         }
 
-        try {
+        if (!ftp) {
+            toast.error('Please select a file to upload.', {
+                position: toast.POSITION.BOTTOM_RIGHT,
+            });
+            return;
+        }
+
             setLoading(true);
 
-            const fileInput = document.getElementById('attachment') as HTMLInputElement;
-            const filef: File = fileInput.files?.item(0);
+            const formData = new FormData();
+            formData.append('department', department?.label || '');
+            formData.append('title', title);
+            formData.append('description', description);
+            formData.append('attachment', ftp);
 
-            if (!filef) {
-                toast.error('Please select a file.', {
-                    position: toast.POSITION.BOTTOM_RIGHT,
-                });
-                return;
-            }
-
-            if (ftp === null || ftp === undefined) {
-
-                alert("before");
-            }
-            let formData = new FormData();
-            formData.set('attachment', ftp);
-
-            let boundary = Math.random().toString(16).substring(2);
-            await fetch('http://localhost:8080/api/v1/tickets?department=' + department.label + '&title='+ title + '&description=' + description,
-                {
+            console.log('Selected file:', ftp);
+            console.log('formData:', formData);
+            alert(department?.label || '')
+            await fetch('http://localhost:8080/api/v1/tickets?department=' + department?.label +
+                '&title='+ title + '&description=' + description, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'multipart/form-data;boundary=------WebKitFormBoundary'+ boundary,
-                    // 'Content-Type': 'application/json',
+                    'Content-Type': 'multipart/form-data; boundary=----123',
                     Authorization: 'Basic ' + localStorage.getItem('email_password_credentials'),
                 },
                 body: formData,
-            }).then((response) => {
+            }).then(response => {
                 if (response.ok) {
                     // Show success toast notification
                     toast.success('Ticket submitted successfully!', {
@@ -89,20 +87,18 @@ const Ticket: React.FC<TicketProps> = ({ setNotificationMessage }) => {
                     // Set the notification message
                     setNotificationMessage('Message has been sent');
                 } else {
-                    alert(response.status);
+                    console.log(response.status);
                 }
-            }).catch((error) => toast.error(error.message));
+            }).catch(error => {
+                toast.error(error, {
+                    position: toast.POSITION.BOTTOM_RIGHT,
+                });
+            }).finally(() => {
+                setLoading(false);
+            });
 
-            // Reset the form fields
-            setTitle('');
-            setDescription('');
-
-        } catch (error) {
-            alert(error.value);
-        } finally {
-            setLoading(false);
-        }
     };
+
 
     const override = css`
         display: block;
@@ -110,11 +106,11 @@ const Ticket: React.FC<TicketProps> = ({ setNotificationMessage }) => {
     `;
 
     const data = btoa("kamar254baraka@gmail.com:admin");
-    localStorage.setItem('owner', data)
+    localStorage.setItem('owner', data);
 
     const fetchDepartments = async () => {
         try {
-            const response = await fetch('http://localhost:8080/api/v1/departments/all',{
+            const response = await fetch('http://localhost:8080/api/v1/departments/all', {
                 method: "GET",
                 headers: {
                     'Content-Type': 'application/json',
@@ -122,10 +118,11 @@ const Ticket: React.FC<TicketProps> = ({ setNotificationMessage }) => {
                 }
             });
             const data = await response.json();
-            const department = data.map((user) => user.departmentName);
-            // alert(department)
-            setDepartments(department);
-            // setDepartments(['department1','department2', 'department3'])
+            const departmentOptions = data.map((dept: { departmentName: string }) => ({
+                value: dept.departmentName,
+                label: dept.departmentName,
+            }));
+            setDepartments(departmentOptions);
         } catch (error) {
             toast.error('Failed to fetch departments. Please try again.', {
                 position: toast.POSITION.BOTTOM_RIGHT,
@@ -174,7 +171,7 @@ const Ticket: React.FC<TicketProps> = ({ setNotificationMessage }) => {
                                     <label htmlFor="department">Department *</label>
                                     <Select
                                         required
-                                        options={departments.map((dept) => ({ value: dept, label: dept }))}
+                                        options={departments}
                                         value={department}
                                         onChange={(selectedOption) => setDepartment(selectedOption)}
                                         isSearchable

@@ -11,6 +11,8 @@ import AllUser from "./users/AllUser.tsx";
 import ElevateUser from "./users/ElevateUser.tsx";
 import DowngradeUser from "./users/DowngradeUser.tsx";
 import DepartmentTicket from "./HODManagement/DepartmentTicket";
+import Logo from "../assets/component/images/Logo.png";
+import AssignedTicket from "../employee/AssignedTicket";
 
 
 const AdminDashboard: React.FC = () => {
@@ -102,16 +104,25 @@ const AdminDashboard: React.FC = () => {
             <body>
 
             <>
+
                 <div className="admin-dashboard-container">
+                    <nav className="nav-container">
+                        <div>
+                            <img src={Logo} alt="Logo" />
+                            <button onClick={handleLogout} className="logout-button">Logout</button>
+                        </div>
+
+                        <div className="profile">
+                            <p>Hello {email}</p>
+                            {/*<img src={profileImage} alt="Profile" />*/}
+                        </div>
+                    </nav>
                     {/*logo*/}
                     {/*<div>*/}
                     {/*    <img src={logo} alt="Logo" className="logo" />*/}
                     {/*    <button onClick={handleLogout}>Logout</button>*/}
                     {/*</div>*/}
-                    <div className="profile">
-                        <p>Hello {email}</p>
-                        {/*<img src={profileImage} alt="Profile" />*/}
-                    </div>
+
 
                     <div className="side-nav-bar raised">
                         {/*User Management*/}
@@ -212,11 +223,20 @@ const AdminDashboard: React.FC = () => {
 
             <>
                 <div className="admin-dashboard-container">
+
+                    <nav className="nav-container">
+                        <div>
+                            <img src={Logo} alt="Logo" />
+                            <button onClick={handleLogout} className="logout-button">Logout</button>
+                        </div>
+
+                        <div className="profile">
+                            <p>{email}</p>
+                            {/*<img src={profileImage} alt="Profile" />*/}
+                        </div>
+                    </nav>
                     {/*logo*/}
-                    {/*<div>*/}
-                    {/*    <img src={logo} alt="Logo" className="logo" />*/}
-                    {/*    <button onClick={handleLogout}>Logout</button>*/}
-                    {/*</div>*/}
+
                     <div className="profile">
                         <p>Hello {email}</p>
                         {/*<img src={profileImage} alt="Profile" />*/}
