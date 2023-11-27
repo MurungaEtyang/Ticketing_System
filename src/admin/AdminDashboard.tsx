@@ -10,9 +10,10 @@ import Registration from "./users/Registration.tsx";
 import AllUser from "./users/AllUser.tsx";
 import ElevateUser from "./users/ElevateUser.tsx";
 import DowngradeUser from "./users/DowngradeUser.tsx";
-import DepartmentTicket from "./HODManagement/DepartmentTicket";
+import DepartmentTicket from "./ticketAssignment/DepartmentTicket";
 import Logo from "../assets/component/images/Logo.png";
 import AssignedTicket from "../employee/AssignedTicket";
+import DepartmentAssignTicket from "./ticketAssignment/DepartmentAssignTicket";
 
 
 const AdminDashboard: React.FC = () => {
@@ -80,7 +81,8 @@ const AdminDashboard: React.FC = () => {
                     return <div><AllUser /></div>;
                 case "AllTickets":
                     return <div><GetAllTickets /></div>;
-
+                case "DepartmentAssignTicket":
+                    return <div><DepartmentAssignTicket /></div>;
                 case "DepartmentTickets":
                     return <div><DepartmentTicket /></div>;
                 case "DowngradeUser":
@@ -259,7 +261,7 @@ const AdminDashboard: React.FC = () => {
                                     </button>
                                     <button
                                         className="Ticket-Assignment-dropdown-button"
-                                        onClick={() => handleDropdownItemClick("AssignTicket")}
+                                        onClick={() => handleDropdownItemClick("DepartmentAssignTicket")}
                                     >
                                         Assign Ticket
                                     </button>
@@ -274,7 +276,7 @@ const AdminDashboard: React.FC = () => {
             </body>
         );
     }else{
-        alert("You are not allowed")
+        alert("You are not allowed");
     }
 
 };

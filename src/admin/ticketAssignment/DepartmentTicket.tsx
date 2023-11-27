@@ -102,7 +102,7 @@ const DepartmentTicket = () => {
                             <div>Title: {searchedTicket.title}</div>
                             <div>Description: {searchedTicket.description}</div>
                             <div>Status: {searchedTicket.status}</div>
-                            <div>Raised By: {searchedTicket.raisedBy}</div>
+                            {/*<div>Raised By: {searchedTicket.raisedBy}</div>*/}
                             <div>Assigned To: {searchedTicket.assignedTo}</div>
                             <div>Deadline: {searchedTicket.deadline}</div>
                         </div>
@@ -119,7 +119,7 @@ const DepartmentTicket = () => {
                                         <th>Description</th>
                                         <th>Priority</th>
                                         <th>Status</th>
-                                        <th>Raised By</th>
+                                        {/*<th>Raised By</th>*/}
                                         <th>Assigned To</th>
                                         <th>Deadline</th>
                                         <th>Department</th>
@@ -134,7 +134,7 @@ const DepartmentTicket = () => {
                                             <td className="description-column">{ticket.description}</td>
                                             <td>{ticket.priority}</td>
                                             <td>{ticket.status}</td>
-                                            <td>{ticket.raisedBy}</td>
+                                            {/*<td>{ticket.raisedBy}</td>*/}
                                             <td>{ticket.assignedTo}</td>
                                             <td>{ticket.deadline}</td>
                                             <td>{ticket.departmentAssigned}</td>

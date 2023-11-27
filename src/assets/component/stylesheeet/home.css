@@ -26,12 +26,12 @@ body {
     padding: 30px;
 }
 
-.home-title {
+h1 {
     text-align: center;
     font-size: 3rem;
     margin-top: 0px;
     transform: translateX(20%);
-    position: fixed;
+    position: absolute;
     top: 40%;
 }
 
@@ -40,7 +40,7 @@ body {
     height: 100px;
     margin: auto;
     border-radius: 14px;
-    position: fixed;
+    position: absolute;
     top: 25%;
     left: 50%;
     transform: translate(-50%, -50%);

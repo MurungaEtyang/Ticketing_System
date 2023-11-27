@@ -94,9 +94,9 @@ const Home: React.FC = () => {
         <>
             <div className="home-container">
                 <nav className="nav-container"></nav>
-                <div className="content-container">
+                <div>
                     <img src={Logo} alt="Logo" className="logo" />
-                    <h1 className="home-title">CUSTOMER SERVICE PORTAL</h1>
+                    <h1>CUSTOMER SERVICE PORTAL</h1>
                 </div>
 
                 {/*<footer className="footer">*/}

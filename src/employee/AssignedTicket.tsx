@@ -12,7 +12,7 @@ const AssignedTicket = () => {
     const [raisedTickets, setRaisedTickets] = useState([]);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
-    const [users, setUsers] = useState([]);
+    const [users, setUsers] = useState<string[]>([]);
     const [selectedEmail, setSelectedEmail] = useState('');
 
     useEffect(() => {
@@ -99,26 +99,30 @@ const AssignedTicket = () => {
         })
     }
 
-    const fetchUsers = async () => {
-        try {
-            const response = await fetch('http://localhost:8080/api/v1/users/management/authority?authority=employee', {
-                method: "GET",
-                headers: {
-                    Authorization: 'Basic ' + localStorage.getItem('email_password_credentials')
-                }
-            });
-            const data = await response.json();
-            const userNames = data.map((user) => user.username);
-            setUsers(userNames.map((name) => ({ emails: name })));
-        } catch (error) {
-            toast.error(error, {
-                position: toast.POSITION.BOTTOM_RIGHT,
-            });
-        }
-    };
-
     useEffect(() => {
-        fetchUsers();
+        const fetchData = async () => {
+            try {
+                const response = await fetch('http://localhost:8080/api/v1/tickets/referral/refer', {
+                    method: "GET",
+                    headers: {
+                        Authorization: 'Basic ' + localStorage.getItem('email_password_credentials')
+                    }
+                });
+                const data = await response.json();
+                if (data) {
+                    setUsers(data.members);
+                    // console.log(data.members);
+                } else {
+                    alert("");
+                }
+            } catch (error) {
+                toast.error(error, {
+                    position: toast.POSITION.BOTTOM_RIGHT,
+                });
+            }
+        };
+
+        fetchData();
     }, []);
 
     const referTicket = (ticketId) => {
@@ -178,12 +182,12 @@ const AssignedTicket = () => {
                             <tr key={ticket.id}>
                                 <td>{ticket.id}</td>
                                 <td>{ticket.title}</td>
-                                <td className="description-columniui">{ticket.description}</td>
+                                <td>{ticket.description}</td>
                                 <td>{ticket.deadline}</td>
                                 <td>
                                     <button
-                                        onClick={() => submitTicket(ticket.id)} // Pass ticketId as parameter
-                                        disabled={loading} // Disable button while loading
+                                        onClick={() => submitTicket(ticket.id)}
+                                        disabled={loading}
                                     >
                                         {loading ? "Submitting..." : <FontAwesomeIcon icon={faCheck} />}
                                     </button>
@@ -193,7 +197,7 @@ const AssignedTicket = () => {
                                         <div className="refer-container">
                                             <Select
                                                 required
-                                                options={users.map((email) => ({ value: email.emails, label: email.emails }))}
+                                                options={users.map((email) => ({ value: email, label: email }))}
                                                 value={selectedEmail}
                                                 onChange={(selectedOption) => setSelectedEmail(selectedOption)}
                                                 isSearchable

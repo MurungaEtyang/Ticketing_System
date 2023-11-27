@@ -18,13 +18,7 @@
     margin-bottom: 20px;
 }
 
-.ticket-card-body form {
-    /* Add your form styles here */
-}
 
-.ticket-card-body .message {
-    margin-bottom: 10px;
-}
 
 .ticket-card-body input[type="text"],
 .ticket-card-body textarea {
@@ -46,14 +40,31 @@
     font-size: 16px;
 }
 
+textarea{
+    height: 100px;
+    min-height: 80px;
+    width: 390px;
+    max-width: 390px;
+    min-width: 390px;
+    border-radius: 5px;
+    background-color: white;
+    color: black;
+    font-size: 20px;
+    font-family: "Times New Roman";
+}
+
+input{
+    height: 20px;
+    width: 376px;
+    max-width: 390px;
+    /*min-width: 390px;*/
+    border-radius: 5px;
+    background-color: white;
+    color: black;
+    font-size: 20px;
+    font-family: "Times New Roman";
+}
+
 .ticket-card-body input[type="submit"]:hover {
     background-color: #45a049;
-}
-
-.uploaded-image {
-    margin-top: 20px;
-}
-
-.uploaded-image img {
-    max-width: 100%;
 }
