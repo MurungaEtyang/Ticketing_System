@@ -33,6 +33,7 @@ h1 {
     transform: translateX(20%);
     position: absolute;
     top: 40%;
+    left: 0%;
 }
 
 .logo {
@@ -41,7 +42,7 @@ h1 {
     margin: auto;
     border-radius: 14px;
     position: absolute;
-    top: 25%;
+    top: 30%;
     left: 50%;
     transform: translate(-50%, -50%);
 }

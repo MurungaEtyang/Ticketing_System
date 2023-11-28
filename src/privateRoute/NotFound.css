@@ -1,0 +1,51 @@
+.not-found-card{
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    height: 100vh;
+}
+.not-found-form{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: flex-end;
+    padding: 20px;
+    /*background-color: #f2f2f2;*/
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.not-found-card h1{
+    font-size: 34px;
+    margin-bottom: 30px;
+    text-align: center;
+    margin-left: -40px;
+}
+.not-found-card p{
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 0px;
+    text-align: center;
+
+}
+.not-found-form input[type="submit"]{
+    padding: 20px 40px;
+    background-color: #007bff;
+    color: #fff;
+    border: none ;
+    font-size: 20px;
+    border-radius: 5px;
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    width: 400px;
+}
+.not-found-form input[type="submit"]:hover{
+    background-color: #0056b3;
+}

@@ -7,6 +7,7 @@ import Registration from "./admin/users/Registration.tsx";
 import AdminDashboard from "./admin/AdminDashboard";
 import EmployeeDashboard from "./employee/EmployeeDashboard.tsx";
 import NotFound from "./privateRoute/NotFound";
+import TicketTrackProgress from "./assets/component/dashboard/ticketHandle/TicketTrackProgress";
 
 const App: React.FC = () => {
     return (
@@ -29,6 +30,11 @@ const App: React.FC = () => {
                         <Route
                             path="/employee"
                             element={<EmployeeDashboard />}
+                        />
+
+                        <Route
+                        path="/tickets_check"
+                        element={<TicketTrackProgress />}
                         />
                         <Route path="/*" element={<NotFound />} />
                     </Routes>

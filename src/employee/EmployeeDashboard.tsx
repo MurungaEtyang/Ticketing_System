@@ -18,7 +18,7 @@ const EmployeeDashboard: React.FC = () => {
             },
         }).then(response => {
             alert(response.status);
-            if (response.status === 204) {
+            if (response.ok) {
                 const navigate = useNavigate();
                 navigate("/");
                 return;

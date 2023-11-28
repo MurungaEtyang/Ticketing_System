@@ -3,7 +3,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { css } from '@emotion/react';
 import { ClipLoader } from 'react-spinners';
-import '../stylesheeet/ticket.css';
+import '../../stylesheeet/ticket.css';
 import Select from "react-select";
 
 interface TicketProps {
