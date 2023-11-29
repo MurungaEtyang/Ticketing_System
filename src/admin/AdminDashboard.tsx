@@ -10,13 +10,14 @@ import Registration from "./users/Registration.tsx";
 import AllUser from "./users/AllUser.tsx";
 import ElevateUser from "./users/ElevateUser.tsx";
 import DowngradeUser from "./users/DowngradeUser.tsx";
-import DepartmentTicket from "./ticketAssignment/DepartmentTicket";
+import DepartmentTicket from "./HODManagement/DepartmentTicket";
 import Logo from "../assets/component/images/Logo.png";
 import AssignedTicket from "../employee/AssignedTicket";
-import DepartmentAssignTicket from "./ticketAssignment/DepartmentAssignTicket";
+import DepartmentAssignTicket from "./HODManagement/DepartmentAssignTicket";
 
 
 const AdminDashboard: React.FC = () => {
+    const navigate = useNavigate();
     const location = useLocation();
     const email = localStorage.getItem("login_emails")
     const [UserManagement, setUserManagement] = useState(false);
@@ -99,6 +100,11 @@ const AdminDashboard: React.FC = () => {
                     return null;
             }
     };
+
+    const navigation = () => {
+
+        return navigate('/')
+    }
 
 
     if (department == "ADMIN" || department == "OWNER") {
@@ -276,7 +282,7 @@ const AdminDashboard: React.FC = () => {
             </body>
         );
     }else{
-        alert("You are not allowed");
+        navigation();
     }
 
 };

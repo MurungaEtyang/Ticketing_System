@@ -113,6 +113,7 @@ const Home: React.FC = () => {
                             value={email}
                             onChange={handleEmailChange}
                             className="login-input"
+                            required
                         />
                         {!nextClicked && (
                             <button
@@ -138,6 +139,7 @@ const Home: React.FC = () => {
                                 value={password}
                                 onChange={handlePasswordChange}
                                 className="login-input"
+                                required
                             />
                             <button type="submit" className="btn btn-primary" disabled={loading}>
                                 {loading ? (

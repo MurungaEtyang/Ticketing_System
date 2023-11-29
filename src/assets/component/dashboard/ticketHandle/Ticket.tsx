@@ -158,6 +158,7 @@ const Ticket: React.FC<TicketProps> = ({ setNotificationMessage }) => {
                                 <div className="form-group">
                                     <label htmlFor="description">Description*</label>
                                     <textarea
+                                        className="message-description"
                                         id="description"
                                         value={description}
                                         onChange={handleDescriptionChange}

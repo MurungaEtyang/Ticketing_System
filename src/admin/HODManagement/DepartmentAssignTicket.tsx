@@ -5,6 +5,7 @@ import { BeatLoader } from 'react-spinners';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '../assets/stylesheet/AssignTicket.css';
+import moment from "moment";
 
 const DepartmentAssignTicket = () => {
     const [currentForm, setCurrentForm] = useState<'check' | 'content' | 'assign'>('check');
@@ -26,20 +27,6 @@ const DepartmentAssignTicket = () => {
         deadline: string;
     } | null>(null);
 
-    // const handleDateChange = (date: Date | null) => {
-    //     if (date) {
-    //         setDeadline(date);
-    //     }
-    // };
-    // const formatDate = (deadline: Date | null) => {
-    //     if (deadline) {
-    //         const options: Intl.DateTimeFormatOptions = { month: 'numeric', day: 'numeric', year: 'numeric' };
-    //         return deadline.toLocaleDateString('en-US', options).replace(/ /g, '/');
-    //     } else {
-    //         return 'No date selected';
-    //     }
-    // };
-
     useEffect(() => {
         // Fetch the Assign To options from the API endpoint
         const fetchAssignToOptions = async () => {
@@ -59,8 +46,6 @@ const DepartmentAssignTicket = () => {
                         alert("")
                     }
                 });
-
-
             } catch (error) {
                 console.error('Error fetching Assign To options:', error);
             }
@@ -77,12 +62,9 @@ const DepartmentAssignTicket = () => {
         setAssignTo(event.target.value);
     };
 
-    const handlePriorityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setPriority(event.target.value);
-    };
-
-    const handleDeadlineChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setDeadline(event.target.value);
+    const handleDeadlineChange = (date: Date | null) => {
+        setDeadline(moment(date).format('MM/DD/YYYY'));
+        // alert(moment(date).format('MM/DD/YYYY'))
     };
 
     const handleSubmit = async (event: React.FormEvent) => {
@@ -90,7 +72,6 @@ const DepartmentAssignTicket = () => {
         setIsLoading(true);
 
         if (currentForm === 'check') {
-            ;
             try {
                 // const formData = new FormData();
                 // formData.append('ticket', ticketId);
@@ -142,7 +123,7 @@ const DepartmentAssignTicket = () => {
                     setCurrentForm('check');
                     // setIsLoading()
                 } else {
-                    toast.error('Error assigning ticket', {
+                    toast.error('Error assigning ticket.', {
                         position: toast.POSITION.BOTTOM_RIGHT,
                     });
 
@@ -159,8 +140,10 @@ const DepartmentAssignTicket = () => {
                 setCurrentForm('check');
             });
 
-            alert(ticketId);
-            alert(deadline);
+            // alert(ticketId);
+            // alert(deadline);
+            // alert(priority);
+            // alert(assignTo)
 
         }
 
@@ -290,37 +273,32 @@ const DepartmentAssignTicket = () => {
                             ))}
                         </select>
                     </div>
-                    <div>
-                        <label htmlFor="priority">Priority:</label>
-                        <input
-                            required
-                            type="text"
+                    <div className="form-group">
+                        <label htmlFor="priority">Priority</label>
+                        <select
+                            className="form-control"
                             id="priority"
                             value={priority}
-                            onChange={handlePriorityChange}
-                        />
+                            onChange={(e) => setPriority(e.target.value)}
+                        >
+                            <option value="">Select Priority</option>
+                            <option value="LOW">LOW</option>
+                            <option value="MEDIUM">MEDIUM</option>
+                            <option value="HIGH">HIGH</option>
+                        </select>
                     </div>
                     <div>
-                        <label htmlFor="deadline">Deadline:</label>
-                        {/*<Calendar */}
-                        {/*    value={deadline} */}
-                        {/*    onChange={handleDateChange} */}
-                        {/*/>*/}
+                        <div>
+                            <label htmlFor="deadline">Deadline:</label>
+                            <DatePicker
+                                id="deadline"
+                                value={deadline}
+                                onChange={handleDeadlineChange}
+                                dateFormat="dd/MM/yyyy"
+                                placeholderText="Select a date"
 
-                        <input
-                            required
-                            type="text"
-                            id="deadline"
-                            value={deadline}
-                            onChange={handleDeadlineChange}
-                        />
-                        {/*<DatePicker*/}
-                        {/*    required*/}
-                        {/*    id="deadline"*/}
-                        {/*    selected={deadline}*/}
-                        {/*    onChange={handleDateChange}*/}
-                        {/*    dateFormat={formatDate(deadline)}*/}
-                        {/*/>*/}
+                            />
+                        </div>
                     </div>
                     <div>
                         {isLoading ? (

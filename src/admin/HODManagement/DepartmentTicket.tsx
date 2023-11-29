@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
-// import '../assets/stylesheet/GetAllTickets.css';
+import '../assets/stylesheet/GetAllTickets.css';
 import {faDownload} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
-const AllSentTickets = () => {
+const DepartmentTicket = () => {
     const [tickets, setTickets] = useState([]);
     const [error, setError] = useState('');
     const [searchId, setSearchId] = useState('');
@@ -44,6 +44,39 @@ const AllSentTickets = () => {
         setLoading(false);
     };
 
+    const downloadTicket = (ticketId) => {
+        const apiEndpoint = `http://localhost:8080/api/v1/tickets/management/attachment?ticket_id=${ticketId}`;
+
+        fetch(apiEndpoint, {
+            method: "GET",
+            headers: {
+                Authorization: 'Basic ' + localStorage.getItem('email_password_credentials')
+            }
+        }).then(response => {
+            if(response.ok){
+                const disposition = response.headers.get('content-disposition');
+                const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                const matches = filenameRegex.exec(disposition);
+                const filename = matches !== null && matches[1] ? matches[1].replace(/['"]/g, '') : 'attachment';
+
+                response.blob().then(blob => {
+                    const url = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = filename;
+                    link.click();
+                    URL.revokeObjectURL(url);
+                });
+
+            }else {
+                alert("Error downloading ticket attachment: Can not locate file")
+            }
+        }).catch(error => {
+            console.error('Error downloading ticket attachment:', error.message);
+            setError('An error occurred while downloading the ticket attachment.');
+        });
+    };
+
     return (
         <div>
             {error && <div className="error">{error}</div>}
@@ -64,8 +97,11 @@ const AllSentTickets = () => {
                         <div className="searched-ticket">
                             <h3>Search Result:</h3>
                             <div>ID: {searchedTicket.id}</div>
+                            <div>Title: {searchedTicket.title}</div>
                             <div>Description: {searchedTicket.description}</div>
+                            <div>Priority: {searchedTicket.priority}</div>
                             <div>Status: {searchedTicket.status}</div>
+                            <div>Raised By: {searchedTicket.raisedBy}</div>
                             <div>Assigned To: {searchedTicket.assignedTo}</div>
                             <div>Deadline: {searchedTicket.deadline}</div>
                         </div>
@@ -77,21 +113,33 @@ const AllSentTickets = () => {
                                 <table className="card-tickets-table">
                                     <thead>
                                     <tr className="card-tickets-table-header">
-                                        <th>Ticket ID</th>
+                                        <th>ID</th>
+                                        <th>Title</th>
+                                        <th>Description</th>
+                                        {/*<th>Priority</th>*/}
                                         <th>Status</th>
+                                        <th>Raised By</th>
                                         <th>Assigned To</th>
-                                        <th>Deadline</th>
+                                        {/*<th>Deadline</th>*/}
                                         <th>Department</th>
+                                        <th>Download Attachment</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     {tickets.map(ticket => (
                                         <tr key={ticket.id}>
                                             <td>{ticket.id}</td>
+                                            <td>{ticket.title}</td>
+                                            <td className="description-column">{ticket.description}</td>
+                                            {/*<td>{ticket.priority}</td>*/}
                                             <td>{ticket.status}</td>
+                                            <td>{ticket.raisedBy}</td>
                                             <td>{ticket.assignedTo}</td>
-                                            <td>{ticket.deadline}</td>
+                                            {/*<td>{ticket.deadline}</td>*/}
                                             <td>{ticket.departmentAssigned}</td>
+                                            <td>
+                                                <button type="button" onClick={() => downloadTicket(ticket.id)}><FontAwesomeIcon icon={faDownload} /></button>
+                                            </td>
                                         </tr>
                                     ))}
                                     </tbody>
@@ -105,4 +153,4 @@ const AllSentTickets = () => {
     );
 };
 
-export default AllSentTickets;
+export default DepartmentTicket;

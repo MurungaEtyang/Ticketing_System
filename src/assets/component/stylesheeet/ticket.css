@@ -40,7 +40,7 @@
     font-size: 16px;
 }
 
-textarea{
+.message-description{
     height: 100px;
     min-height: 80px;
     width: 390px;

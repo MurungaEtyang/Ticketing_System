@@ -187,6 +187,7 @@ const Dashboard: React.FC = () => {
                         {showTicketTracking && <TicketTrackProgress />}
                     </div>
                 </div>
+            <div/>
 
                 {/*footer*/}
                 <div>
