@@ -27,6 +27,7 @@ const DepartmentAssignTicket = () => {
         deadline: string;
     } | null>(null);
 
+
     useEffect(() => {
         // Fetch the Assign To options from the API endpoint
         const fetchAssignToOptions = async () => {
@@ -63,7 +64,7 @@ const DepartmentAssignTicket = () => {
     };
 
     const handleDeadlineChange = (date: Date | null) => {
-        setDeadline(moment(date).format('MM/DD/YYYY'));
+        setDeadline(moment(date).format('DD/MM/YYYY'));
         // alert(moment(date).format('MM/DD/YYYY'))
     };
 
@@ -75,14 +76,14 @@ const DepartmentAssignTicket = () => {
             try {
                 // const formData = new FormData();
                 // formData.append('ticket', ticketId);
-                await fetch('http://localhost:8080/api/v1/tickets/submit?ticket_id=' + ticketId, {
+                await fetch('http://localhost:8080/api/v1/tickets/management/get?ticket_number=%' + encodeURIComponent(ticketId), {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         Authorization: 'Basic ' + localStorage.getItem('email_password_credentials')
                     },
                     body: JSON.stringify({
-                        'ticket': ticketId
+                        'ticket': encodeURIComponent(ticketId)
                     })
                 });
 
@@ -99,18 +100,21 @@ const DepartmentAssignTicket = () => {
             // API FOR ASSIGNING TICKET TO EMPLOYEE
 
 
-            const response = await fetch('http://localhost:8080/api/v1/tickets/assign?id=' +
-                ticketId + '&to=' + assignTo + '&priority=' + priority + '&deadline=' + deadline, {
+             await fetch('http://localhost:8080/api/v1/tickets/assign?' +
+                'ticket_number=' + encodeURIComponent(ticketId) +
+                '&to=' + assignTo +
+                '&priority=' + priority +
+                '&deadline=' + encodeURIComponent(deadline), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: 'Basic ' + localStorage.getItem('email_password_credentials')
                 },
                 body: JSON.stringify({
-                    'ticketId': ticketId,
+                    'ticketId': encodeURIComponent(ticketId),
                     'assignTo': assignTo,
                     'priority': priority,
-                    'deadline': deadline
+                    'deadline': encodeURIComponent(deadline)
 
                 })
             }).then(response => {
@@ -151,8 +155,9 @@ const DepartmentAssignTicket = () => {
     };
     const showTicketContent = async () => {
         setIsLoading(true);
+        alert(ticketId)
         try {
-            const response = await fetch('http://localhost:8080/api/v1/tickets/management/get?ticket_id=' + ticketId, {
+            const response = await fetch('http://localhost:8080/api/v1/tickets/management/get?ticket_number=' + encodeURIComponent(ticketId), {
                 method: 'GET',
                 headers: {
                     Authorization: 'Basic ' + localStorage.getItem('email_password_credentials')
@@ -231,7 +236,7 @@ const DepartmentAssignTicket = () => {
                     {ticketContent && (
                         <div className="ticket-content-container">
                             <h3>Ticket Content:</h3>
-                            <p>ID: {ticketContent.id}</p>
+                            <p>ID: {ticketContent.ticketNumber}</p>
                             <p>Title: {ticketContent.title}</p>
                             <p>Description: {ticketContent.description}</p>
                             <p>Priority: {ticketContent.priority}</p>

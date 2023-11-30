@@ -110,9 +110,7 @@ const AdminDashboard: React.FC = () => {
     if (department == "ADMIN" || department == "OWNER") {
         return (
             <body>
-
             <>
-
                 <div className="admin-dashboard-container">
                     <nav className="nav-container">
                         <div>

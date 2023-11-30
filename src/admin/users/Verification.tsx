@@ -25,9 +25,10 @@ const Verification: React.FC = () => {
         setIsLoading(true);
 
         const username = localStorage.getItem('email');
-        alert(username)
+        // alert(username)
         try {
-            await fetch('http://localhost:8080/api/v1/users/registration/activate?username=' + username, {
+            await fetch('http://localhost:8080/api/v1/users/registration/activate?username=' + username +
+                '&activation_token=' + verification , {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
