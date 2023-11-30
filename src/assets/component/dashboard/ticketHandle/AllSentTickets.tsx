@@ -87,7 +87,7 @@ const AllSentTickets = () => {
                                     <tbody>
                                     {tickets.map(ticket => (
                                         <tr key={ticket.id}>
-                                            <td>{ticket.id}</td>
+                                            <td>{ticket.ticketNumber}</td>
                                             <td>{ticket.status}</td>
                                             <td>{ticket.assignedTo}</td>
                                             <td>{ticket.deadline}</td>

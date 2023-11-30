@@ -67,10 +67,10 @@ const Ticket: React.FC<TicketProps> = ({ setNotificationMessage }) => {
             /*formData.append('department', department?.label || '');
             formData.append('title', title);
             formData.append('description', description);*/
-            formData.append('attachment', attach.files[0]);
+            formData.append('attachment', imageUrl);
 
-            console.log('Selected file:', ftp);
-            console.log('formData:', formData);
+            // console.log('Selected file:', ftp);
+
             alert(department?.label || '')
             await fetch('http://localhost:8080/api/v1/tickets?department=' + department?.label +
                 '&title='+ title + '&description=' + description, {
