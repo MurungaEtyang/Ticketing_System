@@ -61,11 +61,13 @@ const Ticket: React.FC<TicketProps> = ({ setNotificationMessage }) => {
 
             setLoading(true);
 
+            let attach = document.querySelector('#attachment');
+
             const formData = new FormData();
-            formData.append('department', department?.label || '');
+            /*formData.append('department', department?.label || '');
             formData.append('title', title);
-            formData.append('description', description);
-            formData.append('attachment', ftp);
+            formData.append('description', description);*/
+            formData.append('attachment', attach.files[0]);
 
             console.log('Selected file:', ftp);
             console.log('formData:', formData);
@@ -74,7 +76,7 @@ const Ticket: React.FC<TicketProps> = ({ setNotificationMessage }) => {
                 '&title='+ title + '&description=' + description, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'multipart/form-data; boundary=----123',
+                    // 'Content-Type': 'multipart/form-data; boundary=----123',
                     Authorization: 'Basic ' + localStorage.getItem('email_password_credentials'),
                 },
                 body: formData,

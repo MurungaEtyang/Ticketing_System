@@ -45,7 +45,7 @@ const DepartmentTicket = () => {
     };
 
     const downloadTicket = (ticketId) => {
-        const apiEndpoint = `http://localhost:8080/api/v1/tickets/management/attachment?ticket_id=${ticketId}`;
+        const apiEndpoint = `http://localhost:8080/api/v1/tickets/management/attachment?ticket_id=${encodeURIComponent(ticketId)}`;
 
         fetch(apiEndpoint, {
             method: "GET",
@@ -96,7 +96,7 @@ const DepartmentTicket = () => {
                     {searchedTicket ? (
                         <div className="searched-ticket">
                             <h3>Search Result:</h3>
-                            <div>ID: {searchedTicket.id}</div>
+                            <div>ID: {searchedTicket.ticketNumber}</div>
                             <div>Title: {searchedTicket.title}</div>
                             <div>Description: {searchedTicket.description}</div>
                             <div>Priority: {searchedTicket.priority}</div>
@@ -113,7 +113,7 @@ const DepartmentTicket = () => {
                                 <table className="card-tickets-table">
                                     <thead>
                                     <tr className="card-tickets-table-header">
-                                        <th>ID</th>
+                                        <th>Ticket</th>
                                         <th>Title</th>
                                         <th>Description</th>
                                         {/*<th>Priority</th>*/}
@@ -128,7 +128,7 @@ const DepartmentTicket = () => {
                                     <tbody>
                                     {tickets.map(ticket => (
                                         <tr key={ticket.id}>
-                                            <td>{ticket.id}</td>
+                                            <td>{ticket.ticketNumber}</td>
                                             <td>{ticket.title}</td>
                                             <td className="description-column">{ticket.description}</td>
                                             {/*<td>{ticket.priority}</td>*/}
