@@ -68,12 +68,12 @@ const Dashboard: React.FC = () => {
     }
 
     const handleTicketTracking = () => {
-        // setShowTicketTracking(!showTicketTracking);
-        // setShowButtonDropdown(false);
-        // setShowTicket(false);
-        // setShowSentTickets(false);
+        setShowTicketTracking(!showTicketTracking);
+        setShowButtonDropdown(false);
+        setShowTicket(false);
+        setShowSentTickets(false);
 
-        navigate('/tickets_check')
+        // navigate('/tickets_check')
     }
 
     const handleProfile = () => {
@@ -172,10 +172,13 @@ const Dashboard: React.FC = () => {
                     </div>
                 </nav>
 
-
             </div>
 
-            <div className="dashboard-body-container">
+            <div className="dashboard-body-content">
+                <h2>WELCOME TO CUSTOMER SERVICE PORTAL</h2>
+            </div>
+
+            <div className= 'dashboard-container'>
                 <div>
                     <div className="book-ticket">
                         {showTicket && <Ticket />}
@@ -186,15 +189,6 @@ const Dashboard: React.FC = () => {
                     <div className="ticket-tracking-progress">
                         {showTicketTracking && <TicketTrackProgress />}
                     </div>
-                </div>
-            <div/>
-
-                {/*footer*/}
-                <div>
-                    <footer>
-                        <h4>this is the footer</h4>
-                        <p>this is the paragraph of the footer</p>
-                    </footer>
                 </div>
             </div>
         </>

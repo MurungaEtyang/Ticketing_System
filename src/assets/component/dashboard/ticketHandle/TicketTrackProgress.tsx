@@ -18,7 +18,7 @@ const TicketTrackProgress = () => {
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
-
+        setIsLoading(true)
         try {
             const response = await fetch('http://localhost:8080/api/v1/tickets/management/get?ticket_id=' + ticketId, {
                 method: 'GET',
@@ -62,6 +62,8 @@ const TicketTrackProgress = () => {
 
         // Show the table headers after clicking the "check status" button
         setShowTableHeaders(true);
+
+        setIsLoading(false)
     };
 
     const getStatusColor = (status: string | undefined) => {
@@ -184,7 +186,9 @@ const TicketTrackProgress = () => {
                             onChange={(event) => setTicketId(event.target.value)}
                             required
                         />
-                        <button>check status</button>
+                        <button type="submit" className="btn btn-primary" disabled={isLoading}>
+                            {isLoading ? 'Checking...' : 'Ticket Status'}
+                        </button>
                     </form>
                 </div>
 

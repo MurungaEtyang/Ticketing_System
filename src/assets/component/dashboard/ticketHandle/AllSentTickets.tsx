@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
-// import '../assets/stylesheet/GetAllTickets.css';
+import './AllSentTickets.css'
 import {faDownload} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
@@ -48,8 +48,8 @@ const AllSentTickets = () => {
         <div>
             {error && <div className="error">{error}</div>}
 
-            <form className="card-tickets">
-                <div className="card-tickets-body">
+            <form className="all-sent-card-tickets">
+                <div className="all-sent-card-tickets-body">
                     <div className="search-container">
                         <input
                             type="text"

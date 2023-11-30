@@ -94,13 +94,13 @@ const Home: React.FC = () => {
         <>
             <div className="home-container">
                 <nav className="nav-container"></nav>
-                <div className="content-container">
+                <div>
                     <img src={Logo} alt="Logo" className="logo" />
-                    <h1 className="home-title">CUSTOMER SERVICE PORTAL</h1>
+                    <h1>CUSTOMER SERVICE PORTAL</h1>
                 </div>
 
                 {/*<footer className="footer">*/}
-                {/*    <p className="footer-text">© 2022 Customer Service Portal. All rights reserved.</p>*/}
+                {/*    <p className="footer-text">© 2023 Customer Service Portal. All rights reserved.</p>*/}
                 {/*</footer>*/}
             </div>
 
@@ -113,7 +113,6 @@ const Home: React.FC = () => {
                             value={email}
                             onChange={handleEmailChange}
                             className="login-input"
-                            required
                         />
                         {!nextClicked && (
                             <button
@@ -139,7 +138,6 @@ const Home: React.FC = () => {
                                 value={password}
                                 onChange={handlePasswordChange}
                                 className="login-input"
-                                required
                             />
                             <button type="submit" className="btn btn-primary" disabled={loading}>
                                 {loading ? (
@@ -152,7 +150,7 @@ const Home: React.FC = () => {
                     )}
                 </form>
 
-                <footer className="footer">
+                <footer>
                     <p className="footer-text">© 2022 Customer Service Portal. All rights reserved.</p>
                 </footer>
             </div>

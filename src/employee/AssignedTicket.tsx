@@ -14,6 +14,7 @@ const AssignedTicket = () => {
     const [loading, setLoading] = useState(false);
     const [users, setUsers] = useState<string[]>([]);
     const [selectedEmail, setSelectedEmail] = useState('');
+    const [loadingStates, setLoadingStates] = useState({});
 
     useEffect(() => {
         try {
@@ -74,30 +75,76 @@ const AssignedTicket = () => {
     const submitTicket = (ticketId) => {
         setLoading(true);
 
-        const apiEndpoint = "http://localhost:8080/api/v1/tickets/submit?ticket_id=" + ticketId;
-        fetch(apiEndpoint, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: 'Basic ' + localStorage.getItem('email_password_credentials')
-            }
-        }).then(response => {
-            if (response.ok) {
-                alert("Ticket submitted successfully");
-                toast.success("Ticket submitted successfully", {
-                    position: toast.POSITION.TOP_RIGHT,
+        try {
+            const apiEndpoint = "http://localhost:8080/api/v1/tickets/submit?ticket_id=" + ticketId;
+            fetch(apiEndpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Basic ' + localStorage.getItem('email_password_credentials'),
+                },
+            })
+                .then(async (response) => {
+                    if (response.ok) {
+                        alert("Ticket submitted successfully");
+                        toast.success("Ticket submitted successfully", {
+                            position: toast.POSITION.TOP_RIGHT,
+                        });
+                    } else {
+                        alert("Ticket can not be submitted: " + response.status);
+                    }
+                    setLoading(false); // Ensure loading is set to false even in case of an error
+                })
+                .catch((error) => {
+                    toast.error('Error: ' + error, {
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                    });
+                    setLoading(false);
                 });
-            }else {
-                alert("Ticket can not be submitted: " + response.status);
-            }
-            setLoading(false);
-        }).catch(error => {
+        } catch (error) {
             toast.error('Error: ' + error, {
                 position: toast.POSITION.BOTTOM_RIGHT,
             });
             setLoading(false);
+        }
+    };
+
+    const referTicket = (ticketId) => {
+        setLoading(true);
+
+        const apiEndpoint = "http://localhost:8080/api/v1/tickets/submit?ticket_id=" + ticketId;
+        const payload = {
+            email: selectedEmail,
+            ticketId: ticketId,
+        };
+
+        fetch(apiEndpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Basic ' + localStorage.getItem('email_password_credentials'),
+            },
+            body: JSON.stringify(payload),
         })
-    }
+            .then(async (response) => {
+                if (response.ok) {
+                    alert("Ticket referred successfully");
+                    toast.success("Ticket referred successfully", {
+                        position: toast.POSITION.TOP_RIGHT,
+                    });
+                } else {
+                    alert("Ticket can not be referred: " + response.status);
+                }
+                setLoading(false); // Ensure loading is set to false even in case of an error
+            })
+            .catch((error) => {
+                toast.error('Error: ' + error, {
+                    position: toast.POSITION.BOTTOM_RIGHT,
+                });
+                setLoading(false);
+            });
+    };
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -125,45 +172,58 @@ const AssignedTicket = () => {
         fetchData();
     }, []);
 
-    const referTicket = (ticketId) => {
-        setLoading(true);
+    // const referTicket = (ticketId) => {
+    //     setLoading(true);
+    //
+    //     const apiEndpoint = "http://localhost:8080/api/v1/tickets/submit?ticket_id=" + ticketId;
+    //     const payload = {
+    //         email: selectedEmail,
+    //         ticketId: ticketId
+    //     };
+    //
+    //     fetch(apiEndpoint, {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //             Authorization: 'Basic ' + localStorage.getItem('email_password_credentials')
+    //         },
+    //         body: JSON.stringify(payload)
+    //     }).then(response => {
+    //         if (response.ok) {
+    //             alert("Ticket referred successfully");
+    //             toast.success("Ticket referred successfully", {
+    //                 position: toast.POSITION.TOP_RIGHT,
+    //             });
+    //         }else {
+    //             alert("Ticket can not be referred: " + response.status);
+    //         }
+    //         setLoading(false);
+    //     }).catch(error => {
+    //         toast.error('Error: ' + error, {
+    //             position: toast.POSITION.BOTTOM_RIGHT,
+    //         });
+    //
+    //     })
+    //
+    //
+    //
+    // }
 
-        const apiEndpoint = "http://localhost:8080/api/v1/tickets/submit?ticket_id=" + ticketId;
-        const payload = {
-            email: selectedEmail,
-            ticketId: ticketId
-        };
+    const setTicketLoadingState = (ticketId, isLoading) => {
+        setLoadingStates((prevLoadingStates) => ({
+            ...prevLoadingStates,
+            [ticketId]: isLoading,
+        }));
+    };
 
-        fetch(apiEndpoint, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: 'Basic ' + localStorage.getItem('email_password_credentials')
-            },
-            body: JSON.stringify(payload)
-        }).then(response => {
-            if (response.ok) {
-                alert("Ticket referred successfully");
-                toast.success("Ticket referred successfully", {
-                    position: toast.POSITION.TOP_RIGHT,
-                });
-            }else {
-                alert("Ticket can not be referred: " + response.status);
-            }
-            setLoading(false);
-        }).catch(error => {
-            toast.error('Error: ' + error, {
-                position: toast.POSITION.BOTTOM_RIGHT,
-            });
-            setLoading(false);
-        })
-    }
+    // setLoading(false);
+
 
     return (
         <div>
             {error && <div className="error">{error}</div>}
 
-            <form className="employee-container">
+            <div className="employee-container">
                 <div className="employee-container-body">
                     <table className="table">
                         <thead>
@@ -185,12 +245,18 @@ const AssignedTicket = () => {
                                 <td>{ticket.description}</td>
                                 <td>{ticket.deadline}</td>
                                 <td>
-                                    <button
-                                        onClick={() => submitTicket(ticket.id)}
-                                        disabled={loading}
-                                    >
-                                        {loading ? "Submitting..." : <FontAwesomeIcon icon={faCheck} />}
-                                    </button>
+                                    <form>
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                setTicketLoadingState(ticket.id, true);
+                                                submitTicket(ticket.id);
+                                            }}
+                                            disabled={loadingStates[ticket.id]}
+                                        >
+                                            {loadingStates[ticket.id] ? "Submitting..." : <FontAwesomeIcon icon={faCheck} />}
+                                        </button>
+                                    </form>
                                 </td>
                                 <td>
                                     <form>
@@ -203,10 +269,14 @@ const AssignedTicket = () => {
                                                 isSearchable
                                             />
                                             <button
-                                                onClick={() => referTicket(ticket.id)} // Pass ticketId as parameter
-                                                disabled={loading} // Disable button while loading
+                                                type="button"
+                                                onClick={() => {
+                                                    setTicketLoadingState(ticket.id, true);
+                                                    referTicket(ticket.id);
+                                                }}
+                                                disabled={loadingStates[ticket.id]}
                                             >
-                                                {loading ? "Referring..." : <FontAwesomeIcon icon={faShare} />}
+                                                {loadingStates[ticket.id] ? "Referring..." : <FontAwesomeIcon icon={faShare} />}
                                             </button>
                                         </div>
                                     </form>
@@ -216,14 +286,16 @@ const AssignedTicket = () => {
                                         <FontAwesomeIcon icon={faDownload} />
                                     </button>
                                 </td>
+                                {/* ... (other table cells) */}
                             </tr>
                         ))}
                         </tbody>
                     </table>
                 </div>
-            </form>
+            </div>
         </div>
     );
+
 };
 
 export default AssignedTicket;

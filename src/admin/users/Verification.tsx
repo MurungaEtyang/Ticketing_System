@@ -77,13 +77,13 @@ const Verification: React.FC = () => {
                                         type="text"
                                         className="form-control"
                                         id="verification"
-                                        placeholder="XXXX XXXX XXXX XXXX"
+                                        placeholder="XXXX XXXX XXXX XXXX dhfgd fdhgshfg"
                                         value={verification}
                                         onChange={(e) => setVerification(e.target.value)}
                                     />
                                 </div>
                                 <button type="submit" className="btn-primary" disabled={isLoading}>
-                                    {isLoading ? 'Loading...' : 'Verify'}
+                                    {isLoading ? 'Verifying...' : 'Verify'}
                                 </button>
                             </form>
                         </div>

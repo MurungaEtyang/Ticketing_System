@@ -22,6 +22,7 @@
 
 .form-group {
     margin-bottom: 10px;
+    width: 90%;
 }
 
 
@@ -64,5 +65,4 @@
     background-color: #747bff;
     display: block;
     border-radius: 10px;
-
 }

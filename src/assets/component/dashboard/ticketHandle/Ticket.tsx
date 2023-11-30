@@ -19,6 +19,7 @@ const Ticket: React.FC<TicketProps> = ({ setNotificationMessage }) => {
     const [department, setDepartment] = useState<{ label: string; value: string } | null>(null); // Change department state type
     const [departments, setDepartments] = useState<string[]>([]);
     const [ftp, setFtp] = useState<File | undefined>(undefined);
+
     // let ftp: File | undefined;
 
     useEffect(() => {
@@ -138,73 +139,69 @@ const Ticket: React.FC<TicketProps> = ({ setNotificationMessage }) => {
         }
     };
 
+
     return (
-        <div className="container">
-            <div className="row justify-content-center">
-                <div className="col-md-6">
-                    <div className="card">
-                        <div className="card-body">
-                            <h3 className="card-title">Ticket</h3>
-                            <form onSubmit={handleSubmit}>
-                                <div className="form-group">
-                                    <label htmlFor="title">Title*</label>
-                                    <input
-                                        type="text"
-                                        id="title"
-                                        value={title}
-                                        onChange={(e) => setTitle(e.target.value)}
-                                    />
-                                </div>
-                                <div className="form-group">
-                                    <label htmlFor="description">Description*</label>
-                                    <textarea
-                                        className="message-description"
-                                        id="description"
-                                        value={description}
-                                        onChange={handleDescriptionChange}
-                                        ref={descriptionRef}
-                                    ></textarea>
-                                </div>
-
-                                <div className="form-group">
-                                    <label htmlFor="department">Department *</label>
-                                    <Select
-                                        required
-                                        options={departments}
-                                        value={department}
-                                        onChange={(selectedOption) => setDepartment(selectedOption)}
-                                        isSearchable
-                                    />
-                                </div>
-
-                                <div>
-                                    <label htmlFor="attachment">Upload File</label>
-                                    <input
-                                        type="file"
-                                        className="form-control-file"
-                                        id="attachment"
-                                        onChange={handleFileChange}
-                                    />
-                                </div>
-                                {imageUrl && (
-                                    <div className="uploaded-image-container">
-                                        <img src={imageUrl} alt="Uploaded File" className="uploaded-image" />
-                                    </div>
-                                )}
-                                <button type="submit" className="btn-primary" disabled={loading}>
-                                    {loading ? (
-                                        <ClipLoader color="#ffffff" loading={loading} css={override} size={20} />
-                                    ) : (
-                                        'Submit'
-                                    )}
-                                </button>
-                            </form>
-                        </div>
+        <>
+            <div className="ticket-card-body-ticket">
+                <h3 className="ticket-card-title">Ticket</h3>
+                <form onSubmit={handleSubmit} className="ticket-form-group-ticket">
+                    <div className="ticket-form-group-ticket">
+                        <label htmlFor="title">Title*</label>
+                        <input
+                            type="text"
+                            id="title"
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                        />
                     </div>
-                </div>
+                    <div className="ticket-form-group">
+                        <label htmlFor="description">Description*</label>
+                        <textarea
+                            className="message-description"
+                            id="description"
+                            value={description}
+                            onChange={handleDescriptionChange}
+                            ref={descriptionRef}
+                        ></textarea>
+                    </div>
+
+                    <div className="ticket-form-group">
+                        <label htmlFor="department">Department *</label>
+                        <Select
+                            required
+                            options={departments}
+                            value={department}
+                            onChange={(selectedOption) => setDepartment(selectedOption)}
+                            isSearchable
+                        />
+                    </div>
+
+                    <div >
+                        <label htmlFor="attachment">Upload File</label>
+                        <input
+
+                            type="file"
+                            className="form-control-file"
+                            id="attachment"
+                            onChange={handleFileChange}
+                        />
+                    </div>
+                    {imageUrl && (
+                        <div className="uploaded-image-container">
+                            <img src={imageUrl} alt="Uploaded File" className="uploaded-image" />
+                        </div>
+                    )}
+                    <button type="submit" className="btn-primary" disabled={loading}>
+                        {loading ? (
+                            <ClipLoader color="#ffffff" loading={loading} css={override} size={20} />
+                        ) : (
+                            'Submit'
+                        )}
+                    </button>
+                </form>
+                <ToastContainer />
             </div>
-            <ToastContainer />
-        </div>
+        </>
     );
 };
 
