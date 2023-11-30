@@ -115,10 +115,10 @@ const TicketTrackProgress = () => {
             // alert(rating)
             setIsLoading(true);
 
-            let encodeId =(encodeURIComponent(ticketId))
+            alert(encodeURIComponent(ticketId))
 
-            const response = await fetch("http://localhost:8080/api/v1/tickets/feedback?ticket_number=" + encodeURIComponent(encodeId)+
-                    "&feedback=" + message + "&satisfied=" + satisfied + "&rating=" + rating,
+            const response = await fetch("http://localhost:8080/api/v1/tickets/feedback?ticket_number=" + encodeURIComponent(ticketId) +
+                "&feedback=" + message + "&satisfied=" + satisfied + "&rating=" + rating,
                 {
                     method: "POST",
                     headers: {
@@ -167,9 +167,9 @@ const TicketTrackProgress = () => {
     return (
         <>
             <div className="ticket-progress-container">
-                {/*<nav className="nav-container">*/}
-                {/*    /!* Navigation content *!/*/}
-                {/*</nav>*/}
+                <nav className="nav-container">
+                    {/* Navigation content */}
+                </nav>
 
                 <div>
                     <form onSubmit={handleSubmit}>
