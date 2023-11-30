@@ -40,7 +40,7 @@ const AssignedTicket = () => {
     }, []);
 
     const downloadTicket = (ticketId) => {
-        const apiEndpoint = `http://localhost:8080/api/v1/tickets/management/attachment?ticket_id=${ticketId}`;
+        const apiEndpoint = `http://localhost:8080/api/v1/tickets/management/attachment?ticketNumber=${ticketId}`;
 
         fetch(apiEndpoint, {
             method: "GET",
@@ -74,9 +74,9 @@ const AssignedTicket = () => {
 
     const submitTicket = (ticketId) => {
         setLoading(true);
-
+        alert(encodeURIComponent(ticketId));
         try {
-            const apiEndpoint = "http://localhost:8080/api/v1/tickets/submit?ticket_id=" + ticketId;
+            const apiEndpoint = "http://localhost:8080/api/v1/tickets/submit?ticketNumber=" + encodeURIComponent(ticketId);
             fetch(apiEndpoint, {
                 method: 'POST',
                 headers: {
@@ -93,7 +93,7 @@ const AssignedTicket = () => {
                     } else {
                         alert("Ticket can not be submitted: " + response.status);
                     }
-                    setLoading(false); // Ensure loading is set to false even in case of an error
+                    setLoading(false);
                 })
                 .catch((error) => {
                     toast.error('Error: ' + error, {
@@ -105,72 +105,74 @@ const AssignedTicket = () => {
             toast.error('Error: ' + error, {
                 position: toast.POSITION.BOTTOM_RIGHT,
             });
-            setLoading(false);
+
         }
+
+        setLoading(false);
     };
 
-    const referTicket = (ticketId) => {
-        setLoading(true);
+    // const referTicket = (ticketId) => {
+    //     setLoading(true);
+    //
+    //     const apiEndpoint = "http://localhost:8080/api/v1/tickets/submit?ticketNumber=" + encodeURIComponent(ticketId);
+    //     const payload = {
+    //         email: selectedEmail,
+    //         ticketId: ticketId,
+    //     };
+    //
+    //     fetch(apiEndpoint, {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //             Authorization: 'Basic ' + localStorage.getItem('email_password_credentials'),
+    //         },
+    //         body: JSON.stringify(payload),
+    //     })
+    //         .then(async (response) => {
+    //             if (response.ok) {
+    //                 alert("Ticket referred successfully");
+    //                 toast.success("Ticket referred successfully", {
+    //                     position: toast.POSITION.TOP_RIGHT,
+    //                 });
+    //             } else {
+    //                 alert("Ticket can not be referred: " + response.status);
+    //             }
+    //             setLoading(false); // Ensure loading is set to false even in case of an error
+    //         })
+    //         .catch((error) => {
+    //             toast.error('Error: ' + error, {
+    //                 position: toast.POSITION.BOTTOM_RIGHT,
+    //             });
+    //             setLoading(false);
+    //         });
+    // };
 
-        const apiEndpoint = "http://localhost:8080/api/v1/tickets/submit?ticket_id=" + ticketId;
-        const payload = {
-            email: selectedEmail,
-            ticketId: ticketId,
-        };
 
-        fetch(apiEndpoint, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: 'Basic ' + localStorage.getItem('email_password_credentials'),
-            },
-            body: JSON.stringify(payload),
-        })
-            .then(async (response) => {
-                if (response.ok) {
-                    alert("Ticket referred successfully");
-                    toast.success("Ticket referred successfully", {
-                        position: toast.POSITION.TOP_RIGHT,
-                    });
-                } else {
-                    alert("Ticket can not be referred: " + response.status);
-                }
-                setLoading(false); // Ensure loading is set to false even in case of an error
-            })
-            .catch((error) => {
-                toast.error('Error: ' + error, {
-                    position: toast.POSITION.BOTTOM_RIGHT,
-                });
-                setLoading(false);
-            });
-    };
-
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch('http://localhost:8080/api/v1/tickets/referral/refer', {
-                    method: "GET",
-                    headers: {
-                        Authorization: 'Basic ' + localStorage.getItem('email_password_credentials')
-                    }
-                });
-                const data = await response.json();
-                if (data) {
-                    setUsers(data.members);
-                    // console.log(data.members);
-                } else {
-                    alert("");
-                }
-            } catch (error) {
-                toast.error(error, {
-                    position: toast.POSITION.BOTTOM_RIGHT,
-                });
-            }
-        };
-
-        fetchData();
-    }, []);
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             const response = await fetch('http://localhost:8080/api/v1/tickets/referral/refer', {
+    //                 method: "GET",
+    //                 headers: {
+    //                     Authorization: 'Basic ' + localStorage.getItem('email_password_credentials')
+    //                 }
+    //             });
+    //             const data = await response.json();
+    //             if (data) {
+    //                 setUsers(data.members);
+    //                 // console.log(data.members);
+    //             } else {
+    //                 alert("");
+    //             }
+    //         } catch (error) {
+    //             toast.error(error, {
+    //                 position: toast.POSITION.BOTTOM_RIGHT,
+    //             });
+    //         }
+    //     };
+    //
+    //     fetchData();
+    // }, []);
 
     // const referTicket = (ticketId) => {
     //     setLoading(true);
@@ -233,14 +235,14 @@ const AssignedTicket = () => {
                             <th>Description</th>
                             <th>Deadline</th>
                             <th>Submit</th>
-                            <th>Refer</th>
+                            {/*<th>Refer</th>*/}
                             <th>Download Attachment</th>
                         </tr>
                         </thead>
                         <tbody>
                         {raisedTickets.map((ticket) => (
                             <tr key={ticket.id}>
-                                <td>{ticket.id}</td>
+                                <td>{ticket.ticketNumber}</td>
                                 <td>{ticket.title}</td>
                                 <td>{ticket.description}</td>
                                 <td>{ticket.deadline}</td>
@@ -249,40 +251,40 @@ const AssignedTicket = () => {
                                         <button
                                             type="button"
                                             onClick={() => {
-                                                setTicketLoadingState(ticket.id, true);
-                                                submitTicket(ticket.id);
+                                                setTicketLoadingState(ticket.ticketNumber, true);
+                                                submitTicket(ticket.ticketNumber);
                                             }}
-                                            disabled={loadingStates[ticket.id]}
+                                            disabled={loadingStates[ticket.ticketNumber]}
                                         >
-                                            {loadingStates[ticket.id] ? "Submitting..." : <FontAwesomeIcon icon={faCheck} />}
+                                            {loadingStates[ticket.ticketNumber] ? "Submitting..." : <FontAwesomeIcon icon={faCheck} />}
                                         </button>
                                     </form>
                                 </td>
+                                {/*<td>*/}
+                                {/*    <form>*/}
+                                {/*        <div className="refer-container">*/}
+                                {/*            <Select*/}
+                                {/*                required*/}
+                                {/*                options={users.map((email) => ({ value: email, label: email }))}*/}
+                                {/*                value={selectedEmail}*/}
+                                {/*                onChange={(selectedOption) => setSelectedEmail(selectedOption)}*/}
+                                {/*                isSearchable*/}
+                                {/*            />*/}
+                                {/*            <button*/}
+                                {/*                type="button"*/}
+                                {/*                onClick={() => {*/}
+                                {/*                    setTicketLoadingState(ticket.ticketNumber, true);*/}
+                                {/*                    referTicket(ticket.ticketNumber);*/}
+                                {/*                }}*/}
+                                {/*                disabled={loadingStates[ticket.ticketNumber]}*/}
+                                {/*            >*/}
+                                {/*                {loadingStates[ticket.ticketNumber] ? "Referring..." : <FontAwesomeIcon icon={faShare} />}*/}
+                                {/*            </button>*/}
+                                {/*        </div>*/}
+                                {/*    </form>*/}
+                                {/*</td>*/}
                                 <td>
-                                    <form>
-                                        <div className="refer-container">
-                                            <Select
-                                                required
-                                                options={users.map((email) => ({ value: email, label: email }))}
-                                                value={selectedEmail}
-                                                onChange={(selectedOption) => setSelectedEmail(selectedOption)}
-                                                isSearchable
-                                            />
-                                            <button
-                                                type="button"
-                                                onClick={() => {
-                                                    setTicketLoadingState(ticket.id, true);
-                                                    referTicket(ticket.id);
-                                                }}
-                                                disabled={loadingStates[ticket.id]}
-                                            >
-                                                {loadingStates[ticket.id] ? "Referring..." : <FontAwesomeIcon icon={faShare} />}
-                                            </button>
-                                        </div>
-                                    </form>
-                                </td>
-                                <td>
-                                    <button type="button" onClick={() => downloadTicket(ticket.id)}>
+                                    <button type="button" onClick={() => downloadTicket(ticket.ticketNumber)}>
                                         <FontAwesomeIcon icon={faDownload} />
                                     </button>
                                 </td>
