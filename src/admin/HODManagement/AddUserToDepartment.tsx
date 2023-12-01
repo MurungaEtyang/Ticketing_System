@@ -4,6 +4,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { css } from '@emotion/react';
 import { ClipLoader } from 'react-spinners';
 import Select from 'react-select';
+import '../assets/stylesheet/createDepartmentTicket.css'
 
 const AddUserToDepartment = () => {
     const [email, setEmail] = useState('');

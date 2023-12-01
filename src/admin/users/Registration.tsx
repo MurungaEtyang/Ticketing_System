@@ -92,10 +92,10 @@ const Registration = () => {
                             <div className="card-body">
                                 <h3 className="card-title">ADD USERS</h3>
                                 <form onSubmit={handleSubmit}>
-                                    <div >
+                                    <div className="form-group">
                                         <label htmlFor="department">Roles *</label>
                                         <Select
-                                            className="register-form-group"
+
                                             required
                                             options={roles.map((dept) => ({ value: dept, label: dept }))}
                                             value={role}
