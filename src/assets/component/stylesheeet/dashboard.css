@@ -147,7 +147,7 @@
 
 .profile-dropdown {
     position: fixed;
-    left:87%
+    left:80%;
 }
 
 .profile-button {
@@ -290,5 +290,95 @@
 .show-sent-tickets,
 .ticket-tracking-progress {
     margin-top: 20px;
+}
+
+/* Media queries for different devices */
+
+@media (max-width: 480px) {
+    .ticket-card-body {
+        left: 10%;
+        top: 10%;
+        width: 80%;
+    }
+
+    .container {
+        margin-top: 30px;
+    }
+
+    .nav-container {
+        height: 50px;
+    }
+
+    .dashboard-body-container img {
+        top: 50px;
+        left: 20%;
+    }
+
+    .btn-primary {
+        margin-right: 5px;
+    }
+
+    .profile-dropdown {
+        left: 80%;
+        top: 70px;
+    }
+}
+
+@media (max-width: 768px) {
+    .ticket-card-body {
+        left: 15%;
+        top: 10%;
+        width: 70%;
+    }
+
+    .container {
+        margin-top: 40px;
+    }
+
+    .nav-container {
+        height: 50px;
+    }
+
+    .dashboard-body-container img {
+        top: 70px;
+        left: 25%;
+    }
+
+    .btn-primary {
+        margin-right: 5px;
+    }
+
+    .profile-dropdown {
+        left: 75%;
+    }
+}
+
+@media (min-width: 1024px) {
+    .ticket-card-body {
+        left: 25%;
+        top: 15%;
+        width: 60%;
+    }
+
+    .container {
+        margin-top: 50px;
+    }
+
+    .nav-container {
+        height: 60px;
+    }
+
+    .dashboard-body-container img {
+        top: 100px;
+        left: 30%;
+    }
+
+    .btn-primary {
+        margin-right: 10px;
+    }
+
+    .profile-dropdown {
+        left: 80%;
+    }
 }
 
