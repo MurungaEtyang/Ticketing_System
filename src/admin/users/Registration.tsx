@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ClipLoader from 'react-spinners/ClipLoader';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
+import '../../assets/component/stylesheeet/registration.css'
 
 const Registration = () => {
     const [email, setEmail] = useState('');
@@ -55,7 +56,7 @@ const Registration = () => {
                 position: toast.POSITION.TOP_CENTER,
             });
         } finally {
-            setLoading(false); // Set loading state to false after API call is completed
+            setLoading(false);
         }
     };
 
@@ -91,9 +92,10 @@ const Registration = () => {
                             <div className="card-body">
                                 <h3 className="card-title">ADD USERS</h3>
                                 <form onSubmit={handleSubmit}>
-                                    <div className="form-group">
+                                    <div >
                                         <label htmlFor="department">Roles *</label>
                                         <Select
+                                            className="register-form-group"
                                             required
                                             options={roles.map((dept) => ({ value: dept, label: dept }))}
                                             value={role}

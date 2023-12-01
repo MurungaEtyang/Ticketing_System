@@ -123,7 +123,7 @@
     display: flex;
     margin-right: -20px;
     flex-direction: column;
-    background-color: #de0909;
+    /*background-color: #de0909;*/
     padding: 10px;
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -270,12 +270,13 @@
 
 .dashboard-body-content {
     text-align: center;
+    top: 18%;
     margin-top: 20px;
 }
 
 .dashboard-container {
     position: absolute;
-    top: 20%;
+    top: 35%;
     left: 20%;
     background-color: #f2f2f2;
     padding: 0px;

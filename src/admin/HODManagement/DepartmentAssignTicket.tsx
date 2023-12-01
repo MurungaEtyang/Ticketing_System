@@ -10,23 +10,14 @@ import moment from "moment";
 const DepartmentAssignTicket = () => {
     const [currentForm, setCurrentForm] = useState<'check' | 'content' | 'assign'>('check');
     const [isLoading, setIsLoading] = useState(false);
-    const [ticketId, setTicketId] = useState('');
+    const ticketId = localStorage.getItem('ticket_number')
     const [assignTo, setAssignTo] = useState('');
     const [priority, setPriority] = useState('');
     const [deadline, setDeadline] = useState('');
     const [assignToOptions, setAssignToOptions] = useState<string[]>([]);
     const [showForm, setShowForm] = useState(false);
-    const [ticketContent, setTicketContent] = useState<{
-        id: number;
-        title: string;
-        description: string;
-        priority: string;
-        status: string;
-        raisedBy: string;
-        assignedTo: string;
-        deadline: string;
-    } | null>(null);
 
+    alert(encodeURIComponent(ticketId));
 
     useEffect(() => {
         // Fetch the Assign To options from the API endpoint
@@ -55,10 +46,6 @@ const DepartmentAssignTicket = () => {
         fetchAssignToOptions()
     }, []);
 
-    const handleTicketIdChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setTicketId(event.target.value);
-    };
-
     const handleAssignToChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setAssignTo(event.target.value);
     };
@@ -76,7 +63,7 @@ const DepartmentAssignTicket = () => {
             try {
                 // const formData = new FormData();
                 // formData.append('ticket', ticketId);
-                await fetch('http://localhost:8080/api/v1/tickets/management/get?ticket_number=%' + encodeURIComponent(ticketId), {
+                await fetch('http://localhost:8080/api/v1/tickets/management/get?ticket_number=' + encodeURIComponent(encodeURIComponent(ticketId)), {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -100,7 +87,7 @@ const DepartmentAssignTicket = () => {
             // API FOR ASSIGNING TICKET TO EMPLOYEE
 
 
-             await fetch('http://localhost:8080/api/v1/tickets/assign?' +
+            await fetch('http://localhost:8080/api/v1/tickets/assign?' +
                 'ticket_number=' + encodeURIComponent(ticketId) +
                 '&to=' + assignTo +
                 '&priority=' + priority +
@@ -137,7 +124,7 @@ const DepartmentAssignTicket = () => {
                     position: toast.POSITION.BOTTOM_RIGHT,
                 });
             }).finally(() => {
-                setTicketId('');
+                // setTicketId('');
                 setAssignTo('');
                 setPriority('');
                 setDeadline(null);
@@ -153,116 +140,10 @@ const DepartmentAssignTicket = () => {
 
         setIsLoading(false);
     };
-    const showTicketContent = async () => {
-        setIsLoading(true);
-        alert(ticketId)
-        try {
-            const response = await fetch('http://localhost:8080/api/v1/tickets/management/get?ticket_number=' + encodeURIComponent(ticketId), {
-                method: 'GET',
-                headers: {
-                    Authorization: 'Basic ' + localStorage.getItem('email_password_credentials')
-                }
-            });
-
-            if (response.ok) {
-                const ticketInfo = await response.json();
-                setTicketContent(ticketInfo);
-                setCurrentForm('content');
-            } else {
-                toast.error('Please verify that Ticket ID is assigned to your department.', {
-                    position: toast.POSITION.BOTTOM_RIGHT,
-                });
-                setCurrentForm('check');
-            }
-        } catch (error) {
-            toast.error('Error fetching ticket content: ' + error, {
-                position: toast.POSITION.BOTTOM_RIGHT,
-            });
-            setCurrentForm('check');
-        }
-
-        setIsLoading(false);
-    };
-
-    const handleNext = () => {
-        if (currentForm === 'check') {
-            // For testing purposes
-            showTicketContent();
-            setCurrentForm('content');
-        } else if (currentForm === 'content') {
-            setCurrentForm('assign');
-        }
-    };
-
-    const handlePrevious = () => {
-        if (currentForm === 'content') {
-            setCurrentForm('check');
-        } else if (currentForm === 'assign') {
-            setCurrentForm('content');
-        }
-    };
 
     return (
         <div className="assign-ticket-container">
-            {currentForm === 'check' && (
-                <form onSubmit={handleSubmit}>
-                    <div>
-                        <h2>Assigning the Ticket</h2>
-                    </div>
-                    <div>
-                        <label htmlFor="ticketId">Ticket ID:</label>
-                        <input
-                            type="text"
-                            id="ticketId"
-                            value={ticketId}
-                            onChange={handleTicketIdChange}
-                            required
-                        />
-                    </div>
-                    <div>
-                        {isLoading ? (
-                            <BeatLoader color="#000000" size={30}/>
-                        ) : (
-                            <button type="button" onClick={handleNext} className="check-ticket-button">
-                                Next
-                            </button>
-                        )}
-                    </div>
-                </form>
-            )}
-
-            {currentForm === 'content' && (
-                <form className="ticket-details-container-form">
-                    {ticketContent && (
-                        <div className="ticket-content-container">
-                            <h3>Ticket Content:</h3>
-                            <p>ID: {ticketContent.ticketNumber}</p>
-                            <p>Title: {ticketContent.title}</p>
-                            <p>Description: {ticketContent.description}</p>
-                            <p>Priority: {ticketContent.priority}</p>
-                            <p>Status: {ticketContent.status}</p>
-                            <p>Raised By: {ticketContent.raisedBy}</p>
-                            <p>Assigned To: {ticketContent.assignedTo}</p>
-                            <p>Deadline: {ticketContent.deadline}</p>
-                            {isLoading ? (
-                                <BeatLoader color="#000000" size={30}/>
-                            ) : (
-                                <>
-                                    <button type="button" onClick={handlePrevious} className="check-ticket-button">
-                                        Edit ticket
-                                    </button>
-                                    <button type="button" onClick={handleNext} className="check-ticket-button">
-                                        Next
-                                    </button>
-                                </>
-                            )}
-                        </div>
-                    )}
-                </form>
-            )}
-
-            {currentForm === 'assign' && (
-                <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit}>
                     <div>
                         <label htmlFor="assignTo">Assign To:</label>
                         <select
@@ -310,9 +191,6 @@ const DepartmentAssignTicket = () => {
                             <BeatLoader color="#000000" size={30}/>
                         ) : (
                             <>
-                                <button type="button" onClick={handlePrevious} className="check-ticket-button">
-                                    check again
-                                </button>
                                 <button type="submit" className="assign-ticket-button">
                                     Assign Ticket
                                 </button>
@@ -320,7 +198,7 @@ const DepartmentAssignTicket = () => {
                         )}
                     </div>
                 </form>
-            )}
+
             <ToastContainer/>
         </div>
     );

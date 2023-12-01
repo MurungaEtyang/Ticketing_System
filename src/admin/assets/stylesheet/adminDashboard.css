@@ -18,6 +18,10 @@
     font-weight: bold;
 }
 
+.logout-button{
+    margin-right: 10px;
+}
+
 .profile img {
     width: 30px;
     height: 30px;

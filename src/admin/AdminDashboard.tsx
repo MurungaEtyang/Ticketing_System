@@ -160,7 +160,7 @@ const AdminDashboard: React.FC = () => {
                                         className="Ticket-Assignment-dropdown-button"
                                         onClick={() => handleDropdownItemClick("DowngradeUser")}
                                     >
-                                        lower user role
+                                        Limit users role
                                     </button>
                                 </div>
                             )}

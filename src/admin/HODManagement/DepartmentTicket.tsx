@@ -13,6 +13,7 @@ const DepartmentTicket = () => {
     const [searchedTicket, setSearchedTicket] = useState(null);
     const [loading, setLoading] = useState(false);
 
+    // alert(tickets)
     useEffect(() => {
         const apiEndpoint = 'http://localhost:8080/api/v1/tickets/report';
 
@@ -79,7 +80,10 @@ const DepartmentTicket = () => {
         });
     };
 
-    const handleCellClickAssign = () => {
+    const handleCellClickAssign = (event, ticketId) => {
+        event.preventDefault();
+        alert(`Clicked link: ${ticketId}`);
+        localStorage.setItem('ticket_number', ticketId)
         navigate(`/AssignTicket`);
     };
 
@@ -134,9 +138,10 @@ const DepartmentTicket = () => {
                                     <tbody>
                                     {tickets.map(ticket => (
                                         <tr key={ticket.id}>
-                                            <a href="" onClick={handleCellClickAssign} style={{ cursor: 'pointer' }}><td >
-                                                {ticket.ticketNumber}
-                                            </td></a>
+                                            <a href="" onClick={(event) => handleCellClickAssign(event, ticket.ticketNumber)} style={{ cursor: 'pointer' }}>
+                                                <td>{ticket.ticketNumber}</td>
+                                            </a>
+
                                             <td>{ticket.title}</td>
                                             <td className="description-column">{ticket.description}</td>
                                             {/*<td>{ticket.priority}</td>*/}

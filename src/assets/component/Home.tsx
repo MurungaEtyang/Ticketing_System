@@ -150,9 +150,9 @@ const Home: React.FC = () => {
                     )}
                 </form>
 
-                <footer>
-                    <p className="footer-text">© 2022 Customer Service Portal. All rights reserved.</p>
-                </footer>
+                {/*<footer>*/}
+                {/*    <p className="footer-text">© 2022 Customer Service Portal. All rights reserved.</p>*/}
+                {/*</footer>*/}
             </div>
             <ToastContainer />
         </>

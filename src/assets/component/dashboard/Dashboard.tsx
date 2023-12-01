@@ -114,12 +114,12 @@ const Dashboard: React.FC = () => {
                         {/* Show drop down */}
                         <div className="dropdown">
                             <button className={`dropdown-button ${showButtonDropdown ? 'active' : ''}`} onClick={handleButtonShow}>
-                                follow up
+                                Track Ticket
                             </button>
                             {showButtonDropdown && (
                                 <div className="dropdown-content">
-                                    <button onClick={handleSentTickets}>Sent Tickets</button>
-                                    <button onClick={handleTicketTracking}>Track Ticket</button>
+                                    <button onClick={handleSentTickets}>My Tickets</button>
+                                    <button onClick={handleTicketTracking}>Ticket Status</button>
                                 </div>
                             )}
                         </div>

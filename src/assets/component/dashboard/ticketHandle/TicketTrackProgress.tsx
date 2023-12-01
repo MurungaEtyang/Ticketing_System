@@ -208,9 +208,9 @@ const TicketTrackProgress = () => {
                                 </tr>
                             ))}
                             </tbody>
-                            <h4>
-                                <b>NB: </b>If your ticket has not been responded to kindly contact the assigned email
-                            </h4>
+                            {/*<h4>*/}
+                            {/*    <b>NB: </b>If your ticket has not been responded to kind*/}
+                            {/*</h4>*/}
 
                             <div className="progress-bar-container">
                                 <div

@@ -14,6 +14,10 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.register-form-group{
+    background-color: #3b3737;
+}
+
 .card-title {
     font-size: 24px;
     font-weight: bold;
