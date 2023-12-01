@@ -17,7 +17,7 @@ const DepartmentAssignTicket = () => {
     const [assignToOptions, setAssignToOptions] = useState<string[]>([]);
     const [showForm, setShowForm] = useState(false);
 
-    alert(encodeURIComponent(ticketId));
+    alert(localStorage.getItem("login_emails"));
 
     useEffect(() => {
         // Fetch the Assign To options from the API endpoint
