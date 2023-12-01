@@ -1,12 +1,12 @@
-.ticket-card-body {
-    position: absolute;
-    left: 25%;
-    top: 15%;
-    width: 50%;
-    background: linear-gradient(to bottom, #bedcf1, #bedcf1, #bedcf1, #bedcf1, #cfdbe6, #f4fad0);
-    border-radius: 10px;
-    align-items: center;
-}
+/*.ticket-card-body {*/
+/*    position: absolute;*/
+/*    left: 25%;*/
+/*    top: 15%;*/
+/*    width: 50%;*/
+/*    background: linear-gradient(to bottom, #bedcf1, #bedcf1, #bedcf1, #bedcf1, #cfdbe6, #f4fad0);*/
+/*    border-radius: 10px;*/
+/*    align-items: center;*/
+/*}*/
 
 .container {
     display: flex;
@@ -57,19 +57,33 @@
 
 .nav-buttons {
     align-items: center;
-    /*align-content: flex-end;*/
+    /*background-color: white;*/
     display: flex;
     justify-content: space-between;
+    border-radius: 10px;
 }
 
-.nav-button {
+.nav-button button{
     margin-right: 10px;
+    background-color: #46596c;
+    color: black;
 }
 
 .dropdown {
     position: relative;
     margin-left: 10px;
     border-radius: 10px;
+    /*background-color: #fff;*/
+    align-items: center;
+    top: 50%;
+}
+.dropdown button{
+    position: relative;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    background-color: #46596c;
+    align-items: center;
+    top: 50%;
 }
 
 
@@ -91,6 +105,8 @@
 .profile-dropdown {
     position: fixed;
     left: 87%;
+    background-color: #46596c;
+    border-radius: 10px;
 }
 
 .profile-button {
@@ -103,27 +119,17 @@
 .dropdown-content {
     position: absolute;
     top: 100%;
-    left: 0;
+    left: 10px;
     display: flex;
+    margin-right: -20px;
     flex-direction: column;
-    background-color: #f2f2f2;
+    background-color: #de0909;
     padding: 10px;
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.dropdown-content {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    display: flex;
-    flex-direction: column;
-    background-color: #f2f2f2;
-    padding: 10px;
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin:10px
-}
+
 .nav-right {
     display: flex;
     align-items: center;
@@ -151,21 +157,21 @@
     cursor: pointer;
 }
 
-.dropdown-content {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    display: flex;
-    flex-direction: column;
-    background-color: #f2f2f2;
-    padding: 10px;
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
+/*.dropdown-content {*/
+/*    position: absolute;*/
+/*    top: 100%;*/
+/*    left: 0;*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    !*background-color: #f2f2f2;*!*/
+/*    padding: 10px;*/
+/*    border-radius: 4px;*/
+/*    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);*/
+/*}*/
 
 .dropdown-button {
     padding: 10px;
-    background-color: transparent;
+    /*background-color: transparent;*/
     border: none;
     cursor: pointer;
 }

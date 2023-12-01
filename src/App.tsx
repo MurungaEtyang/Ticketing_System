@@ -8,6 +8,7 @@ import AdminDashboard from "./admin/AdminDashboard";
 import EmployeeDashboard from "./employee/EmployeeDashboard.tsx";
 import NotFound from "./privateRoute/NotFound";
 import TicketTrackProgress from "./assets/component/dashboard/ticketHandle/TicketTrackProgress";
+import DepartmentAssignTicket from "./admin/HODManagement/DepartmentAssignTicket";
 
 const App: React.FC = () => {
     return (
@@ -36,6 +37,9 @@ const App: React.FC = () => {
                         path="/tickets_check"
                         element={<TicketTrackProgress />}
                         />
+
+                        <Route path="/AssignTicket"
+                        element = {<DepartmentAssignTicket />}/>
                         <Route path="/*" element={<NotFound />} />
                     </Routes>
                 </div>

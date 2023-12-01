@@ -50,15 +50,15 @@ const AllSentTickets = () => {
 
             <form className="all-sent-card-tickets">
                 <div className="all-sent-card-tickets-body">
-                    <div className="search-container">
-                        <input
-                            type="text"
-                            placeholder="Enter Ticket ID"
-                            value={searchId}
-                            onChange={e => setSearchId(e.target.value)}
-                        />
-                        <button type="button" onClick={handleSearch}>Search</button>
-                    </div>
+                    {/*<div className="search-container">*/}
+                    {/*    <input*/}
+                    {/*        type="text"*/}
+                    {/*        placeholder="Enter Ticket ID"*/}
+                    {/*        value={searchId}*/}
+                    {/*        onChange={e => setSearchId(e.target.value)}*/}
+                    {/*    />*/}
+                    {/*    <button type="button" onClick={handleSearch}>Search</button>*/}
+                    {/*</div>*/}
 
                     {searchedTicket ? (
                         <div className="searched-ticket">

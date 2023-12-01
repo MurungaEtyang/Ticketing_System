@@ -29,23 +29,21 @@ const AdminDashboard: React.FC = () => {
 
     const handleLogout = async () => {
 
-            await fetch("http://localhost:8080/logout", {
+            const response = await fetch("http://localhost:8080/logout", {
                 method: "GET",
                 headers: {
                     "Authorization": "Basic " + localStorage.getItem('email_password_credentials')
                 },
-            }).then(response => {
-                alert(response.status);
-                if (response.status === 204) {
-                    const navigate = useNavigate();
-                    navigate("/");
-                    return;
-                }else{
-                    alert("Logout failed.");
-                }
-            }).catch(error => alert("Logout failed: " + error)
+            })
 
-            );
+        alert(response.status);
+        if (response.status == 204) {
+            const navigate = useNavigate();
+            navigate("/");
+            return;
+        }else{
+            alert("Logout failed.");
+        }
 
     };
 

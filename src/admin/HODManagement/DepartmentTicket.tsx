@@ -3,8 +3,10 @@ import 'react-toastify/dist/ReactToastify.css';
 import '../assets/stylesheet/GetAllTickets.css';
 import {faDownload} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import { useNavigate } from 'react-router-dom';
 
 const DepartmentTicket = () => {
+    const navigate = useNavigate()
     const [tickets, setTickets] = useState([]);
     const [error, setError] = useState('');
     const [searchId, setSearchId] = useState('');
@@ -77,6 +79,10 @@ const DepartmentTicket = () => {
         });
     };
 
+    const handleCellClickAssign = () => {
+        navigate(`/AssignTicket`);
+    };
+
     return (
         <div>
             {error && <div className="error">{error}</div>}
@@ -128,7 +134,9 @@ const DepartmentTicket = () => {
                                     <tbody>
                                     {tickets.map(ticket => (
                                         <tr key={ticket.id}>
-                                            <td>{ticket.ticketNumber}</td>
+                                            <a href="" onClick={handleCellClickAssign} style={{ cursor: 'pointer' }}><td >
+                                                {ticket.ticketNumber}
+                                            </td></a>
                                             <td>{ticket.title}</td>
                                             <td className="description-column">{ticket.description}</td>
                                             {/*<td>{ticket.priority}</td>*/}
