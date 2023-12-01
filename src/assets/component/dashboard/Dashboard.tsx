@@ -33,15 +33,19 @@ const Dashboard: React.FC = () => {
 
     const handleLogout = async () => {
         try {
-            await fetch("http://localhost:8080/logout", {
+            const response = await fetch("http://localhost:8080/logout", {
                 method: "GET",
                 headers: {
                     Authorization: 'Basic ' + localStorage.getItem('email_password_credentials')
                 },
             });
+            if (response.status == 204) {
+                const navigate = useNavigate();
+                navigate("/");
+            } else {
+                alert("Logout failed.");
+            }
 
-            const navigate = useNavigate();
-            navigate("/");
         } catch (error) {
             alert("Logout failed: " + error);
         }
@@ -72,8 +76,6 @@ const Dashboard: React.FC = () => {
         setShowButtonDropdown(false);
         setShowTicket(false);
         setShowSentTickets(false);
-
-        // navigate('/tickets_check')
     }
 
     const handleProfile = () => {
