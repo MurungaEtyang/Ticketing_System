@@ -4,6 +4,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '../stylesheeet/dashboard.css';
 import Logo from "../images/Logo.png"
+import Image1 from "../images/Image1.png"
 import Ticket from './ticketHandle/Ticket';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell } from '@fortawesome/free-solid-svg-icons';
@@ -180,18 +181,28 @@ const Dashboard: React.FC = () => {
                 <h2>WELCOME TO CUSTOMER SERVICE PORTAL</h2>
             </div>
 
-            <div className= 'dashboard-container'>
-                <div>
-                    <div className="book-ticket">
-                        {showTicket && <Ticket />}
+            <div className="main-selection">
+                <section className= 'dashboard-container'>
+
+                    <div>
+                        <div className="book-ticket">
+                            {showTicket && <Ticket />}
+                        </div>
+                        <div className="show-sent-tickets">
+                            {showSentTickets && <AllSentTickets />}
+                        </div>
+                        <div className="ticket-tracking-progress">
+                            {showTicketTracking && <TicketTrackProgress />}
+                        </div>
                     </div>
-                    <div className="show-sent-tickets">
-                        {showSentTickets && <AllSentTickets />}
+
+                </section>
+
+                <section>
+                    <div className= 'dashboard-container-images'>
+                        <img src={Image1}/>
                     </div>
-                    <div className="ticket-tracking-progress">
-                        {showTicketTracking && <TicketTrackProgress />}
-                    </div>
-                </div>
+                </section>
             </div>
         </>
     );

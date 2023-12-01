@@ -257,6 +257,10 @@
     z-index: 1;
 }
 
+.main-selection{
+    display: flex;
+}
+
 .dashboard-body-content {
     position: absolute;
     top: 10%;
@@ -268,6 +272,7 @@
     z-index: 9999;
 }
 
+
 .dashboard-body-content {
     text-align: center;
     top: 18%;
@@ -276,13 +281,27 @@
 
 .dashboard-container {
     position: absolute;
-    top: 35%;
-    left: 20%;
-    background-color: #f2f2f2;
+    top: 30%;
+    left: 60%;
+    /*background-color: #f2f2f2;*/
     padding: 0px;
-    /*text-align: center;*/
-    z-index: 9999;
+    width: 30%;
+    border-radius:20px;
+    /*z-index: 9999;*/
+    align-items: center;
 }
+
+.dashboard-container-images img{
+    position: absolute;
+    top: 30%;
+    left: 10%;
+    /*background-color: #f2f2f2;*/
+    padding: 0px;
+    width: 40%;
+    border-radius:20px;
+    height: 500px;
+}
+
 .dashboard-container > div {
     margin: 0 10px;
 }
@@ -290,7 +309,8 @@
 .book-ticket,
 .show-sent-tickets,
 .ticket-tracking-progress {
-    margin-top: 20px;
+    top: 10px;
+    border-radius: 5px;
 }
 
 /* Media queries for different devices */

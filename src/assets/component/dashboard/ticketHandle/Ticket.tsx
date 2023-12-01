@@ -145,9 +145,9 @@ const Ticket: React.FC<TicketProps> = ({ setNotificationMessage }) => {
     return (
         <>
             <div className="ticket-card-body-ticket">
-                <h3 className="ticket-card-title">Ticket</h3>
+                <h3 className="ticket-card-title">Book ticket</h3>
                 <form onSubmit={handleSubmit} className="ticket-form-group-ticket">
-                    <div className="ticket-form-group-ticket">
+                    <div className="ticket-form-group">
                         <label htmlFor="title">Title*</label>
                         <input
                             type="text"
@@ -167,9 +167,10 @@ const Ticket: React.FC<TicketProps> = ({ setNotificationMessage }) => {
                         ></textarea>
                     </div>
 
-                    <div className="ticket-form-group">
+                    <div className="ticket-form-group-department">
                         <label htmlFor="department">Department *</label>
                         <Select
+                            className="group-department"
                             required
                             options={departments}
                             value={department}
@@ -178,26 +179,26 @@ const Ticket: React.FC<TicketProps> = ({ setNotificationMessage }) => {
                         />
                     </div>
 
-                    <div >
+                    <div className="ticket-form-group-attachment">
                         <label htmlFor="attachment">Upload File</label>
                         <input
-
+                            className="ticket-form-group-attachment"
                             type="file"
                             className="form-control-file"
                             id="attachment"
                             onChange={handleFileChange}
                         />
                     </div>
-                    {imageUrl && (
-                        <div className="uploaded-image-container">
-                            <img src={imageUrl} alt="Uploaded File" className="uploaded-image" />
-                        </div>
-                    )}
+                    {/*{imageUrl && (*/}
+                    {/*    <div className="uploaded-image-container">*/}
+                    {/*        <img src={imageUrl} alt="Uploaded File" className="uploaded-image" />*/}
+                    {/*    </div>*/}
+                    {/*)}*/}
                     <button type="submit" className="btn-primary" disabled={loading}>
                         {loading ? (
                             <ClipLoader color="#ffffff" loading={loading} css={override} size={20} />
                         ) : (
-                            'Submit'
+                            'Raise Ticket'
                         )}
                     </button>
                 </form>
