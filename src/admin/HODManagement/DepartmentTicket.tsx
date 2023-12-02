@@ -87,9 +87,10 @@ const DepartmentTicket = () => {
 
     const handleSearch = () => {
         setLoading(true);
-        const ticket = tickets.find(ticket => ticket.id === searchId);
+        const ticket = tickets.find(ticket => ticket.ticketNumber === searchId);
         setSearchedTicket(ticket);
         setLoading(false);
+        alert(ticket[0].ticketNumber)
     };
 
     const downloadTicket = (ticketId) => {

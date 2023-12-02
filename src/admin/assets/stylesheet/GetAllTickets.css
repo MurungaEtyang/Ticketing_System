@@ -1,5 +1,11 @@
+.depart{
+    top: 0;
+    left: 0;
+}
+
 .Department-section-ticket{
     color:black;
+    font-weight:bold;
 }
 
 .depart-card-tickets-table thead{
@@ -80,6 +86,9 @@
 .ticketButton{
     background: #406ee5;
     color: #1a1a1a;
+    font-family: "Times New Roman";
+    max-width: 100px;
+    font-size: 12px;
 }
 
 .ticketButton:hover{
