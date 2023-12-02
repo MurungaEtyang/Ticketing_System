@@ -76,3 +76,27 @@
     top: 20px;
     margin-bottom: 10px; /* Add spacing at the bottom */
 }
+
+.ticket-submit-button{
+    position: absolute;
+    left: 10%;
+    top: 100%;
+    background-color: #747bff;
+    color: #1a1a1a;
+    font-size: larger;
+}
+
+.my-tickets-button {
+    position: absolute;
+    left: 60%;
+    top: 100%;
+    background-color: #747bff;
+    color: #1a1a1a;
+    font-size: larger;
+}
+
+.flex-buttons button{
+    background-color: #747bff;
+}
+
+

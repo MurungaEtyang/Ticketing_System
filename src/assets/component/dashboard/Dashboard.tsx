@@ -88,6 +88,14 @@ const Dashboard: React.FC = () => {
         setShowTicketTracking(false);
     };
 
+    const handleMyTickets = () => {
+        setShowTicket(false);
+        setShowButtonDropdown(false);
+        setShowSentTickets(true);  // Set showSentTickets to true to display the "My Tickets" section
+        setShowTicketTracking(false);
+        setShowLogoutDropdown(false);
+    }
+
     const handleLogin = () => {
         navigate('/login');
     };
@@ -157,7 +165,7 @@ const Dashboard: React.FC = () => {
                                     </button>
                                     {showLogoutDropdown && (
                                         <div className="dropdown-content">
-                                            <p>{email}</p>
+                                            {/*<p>{email}</p>*/}
                                             <button className="dropdown-button" onClick={handleLogout}>
                                                 Logout
                                             </button>
@@ -181,10 +189,6 @@ const Dashboard: React.FC = () => {
                         )}
                     </div>
                 </nav>
-            </div>
-
-            <div className="dashboard-body-content">
-                <h2>WELCOME TO CUSTOMER SERVICE PORTAL</h2>
             </div>
 
             <div className="main-selection">

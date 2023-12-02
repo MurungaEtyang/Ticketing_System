@@ -1,10 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 import { css } from '@emotion/react';
 import { ClipLoader } from 'react-spinners';
 import '../../stylesheeet/ticket.css';
 import Select from "react-select";
+
 
 interface TicketProps {
     setNotificationMessage: (message: string) => void;
@@ -19,6 +21,7 @@ const Ticket: React.FC<TicketProps> = ({ setNotificationMessage }) => {
     const [department, setDepartment] = useState<{ label: string; value: string } | null>(null); // Change department state type
     const [departments, setDepartments] = useState<string[]>([]);
     const [ftp, setFtp] = useState<File | undefined>(undefined);
+    const navigate = useNavigate()
 
     // let ftp: File | undefined;
 
@@ -141,6 +144,10 @@ const Ticket: React.FC<TicketProps> = ({ setNotificationMessage }) => {
         }
     };
 
+    const openMyTickets = () => {
+        navigate('./dashboard/my-tickets')
+    }
+
 
     return (
         <>
@@ -194,14 +201,18 @@ const Ticket: React.FC<TicketProps> = ({ setNotificationMessage }) => {
                     {/*        <img src={imageUrl} alt="Uploaded File" className="uploaded-image" />*/}
                     {/*    </div>*/}
                     {/*)}*/}
-                    <button type="submit" className="btn-primary" disabled={loading}>
-                        {loading ? (
-                            <ClipLoader color="#ffffff" loading={loading} css={override} size={20} />
-                        ) : (
-                            'Raise Ticket'
-                        )}
-                    </button>
+
+                        <button type="submit" className="ticket-submit-button" disabled={loading}>
+                            {loading ? (
+                                <ClipLoader color="#ffffff" loading={loading} css={override} size={20} />
+                            ) : (
+                                'Raise Ticket'
+                            )}
+                        </button>
+
                 </form>
+                <div><button onClick={openMyTickets} className={`my-tickets-button`}>My Tickets</button></div>
+
                 <ToastContainer />
             </div>
         </>

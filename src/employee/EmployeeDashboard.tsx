@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import {useLocation, useNavigate} from "react-router-dom";
 import AssignedTicket from "./AssignedTicket.tsx";
 import Logo from "../assets/component/images/Logo.png"
+import './AssignedTicket.css'
 
 
 const EmployeeDashboard: React.FC = () => {
@@ -17,7 +18,6 @@ const EmployeeDashboard: React.FC = () => {
                 "Authorization": "Basic " + localStorage.getItem('email_password_credentials')
             },
         }).then(response => {
-            alert(response.status);
             if (response.ok) {
                 const navigate = useNavigate();
                 navigate("/");
@@ -38,7 +38,7 @@ const EmployeeDashboard: React.FC = () => {
         <>
             <div className="admin-dashboard-container">
                 <nav className="nav-container">
-                    <div>
+                    <div className={`employee-logo`}>
                         <img src={Logo} alt="Logo" />
                         <button onClick={handleLogout} className="logout-button">Logout</button>
                     </div>

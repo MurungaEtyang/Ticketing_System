@@ -150,7 +150,7 @@ const DepartmentAssignTicket = () => {
                             <BeatLoader color="#000000" size={30}/>
                         ) : (
                             <>
-                                <button type="submit" className="assign-ticket-button">
+                                <button onClick={handleSubmit} type="submit" className="assign-ticket-button">
                                     Assign Ticket
                                 </button>
                             </>
