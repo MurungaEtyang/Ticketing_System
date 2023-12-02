@@ -8,7 +8,6 @@ import '../assets/stylesheet/AssignTicket.css';
 import moment from "moment";
 
 const DepartmentAssignTicket = () => {
-    const [currentForm, setCurrentForm] = useState<'check' | 'content' | 'assign'>('check');
     const [isLoading, setIsLoading] = useState(false);
     const ticketId = localStorage.getItem('ticket_number')
     const [assignTo, setAssignTo] = useState('');
@@ -17,7 +16,7 @@ const DepartmentAssignTicket = () => {
     const [assignToOptions, setAssignToOptions] = useState<string[]>([]);
     const [showForm, setShowForm] = useState(false);
 
-    // alert(localStorage.getItem("login_emails"));
+    // alert(ticketId);
 
     useEffect(() => {
         // Fetch the Assign To options from the API endpoint
@@ -62,7 +61,7 @@ const DepartmentAssignTicket = () => {
             await fetch('http://localhost:8080/api/v1/tickets/assign?' +
                 'ticket_number=' + encodeURIComponent(ticketId) +
                 '&to=' + assignTo +
-                '&priority=' + priority +
+                '&priority=MEDIUM' +
                 '&deadline=' + encodeURIComponent(deadline), {
                 method: 'POST',
                 headers: {
@@ -72,7 +71,7 @@ const DepartmentAssignTicket = () => {
                 body: JSON.stringify({
                     'ticketId': encodeURIComponent(ticketId),
                     'assignTo': assignTo,
-                    'priority': priority,
+                    'priority': 'MEDIUM',
                     'deadline': encodeURIComponent(deadline)
 
                 })
@@ -119,20 +118,20 @@ const DepartmentAssignTicket = () => {
                             ))}
                         </select>
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="priority">Priority</label>
-                        <select
-                            className="form-control"
-                            id="priority"
-                            value={priority}
-                            onChange={(e) => setPriority(e.target.value)}
-                        >
-                            <option value="">Select Priority</option>
-                            <option value="LOW">LOW</option>
-                            <option value="MEDIUM">MEDIUM</option>
-                            <option value="HIGH">HIGH</option>
-                        </select>
-                    </div>
+                    {/*<div className="form-group">*/}
+                    {/*    <label htmlFor="priority">Priority</label>*/}
+                    {/*    <select*/}
+                    {/*        className="form-control"*/}
+                    {/*        id="priority"*/}
+                    {/*        value={priority}*/}
+                    {/*        onChange={(e) => setPriority(e.target.value)}*/}
+                    {/*    >*/}
+                    {/*        <option value="">Select Priority</option>*/}
+                    {/*        <option value="LOW">LOW</option>*/}
+                    {/*        <option value="MEDIUM">MEDIUM</option>*/}
+                    {/*        <option value="HIGH">HIGH</option>*/}
+                    {/*    </select>*/}
+                    {/*</div>*/}
                     <div>
                         <div>
                             <label htmlFor="deadline">Deadline:</label>

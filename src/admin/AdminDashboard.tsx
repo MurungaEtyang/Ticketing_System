@@ -223,7 +223,36 @@ const AdminDashboard: React.FC = () => {
         );
     }else if (department == "DEPARTMENT_ADMIN"){
         return (
-           <DepartmentTicket />
+            <body>
+
+            <>
+                <div className="admin-dashboard-container">
+
+                    <nav className="nav-container">
+                        <div>
+                            <img src={Logo} alt="Logo" />
+                            <button onClick={handleLogout} className="logout-button">Logout</button>
+                        </div>
+
+                        <div className="profile">
+                            <p>{email}</p>
+                            {/*<img src={profileImage} alt="Profile" />*/}
+                        </div>
+                    </nav>
+                    {/*logo*/}
+
+                    <div className="profile">
+                        <p>Hello {email}</p>
+                        {/*<img src={profileImage} alt="Profile" />*/}
+                    </div>
+
+                    <div>
+                        <DepartmentTicket />
+                    </div>
+                </div>
+                {renderAssociatedFiles()}
+            </>
+            </body>
         );
     }else{
         navigation();

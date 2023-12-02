@@ -17,6 +17,21 @@ const DepartmentTicket = () => {
 
     const modalRef = useRef(null);
 
+    const sortTicketsByStatus = (data) => {
+        const statusOrder = { OPEN: 0, ASSIGNED: 1, SUBMITTED: 2, CLOSED: 3 };
+        return data.sort((a, b) => statusOrder[a.status] - statusOrder[b.status]);
+    };
+
+    const getProgressColor = (status) => {
+        const colorMap = {OPEN: 'red', ASSIGNED: 'yellow', SUBMITTED: 'blue',  CLOSED: 'green'};
+        return colorMap[status] || '';
+    };
+
+    const calculateProgressPercentage = (status) => {
+        const percentageMap = { OPEN: '25%', ASSIGNED: '50%', SUBMITTED: '75%',  CLOSED: '100%'};
+        return percentageMap[status] || '';
+    };
+
     useEffect(() => {
         const handleOutsideClick = (event) => {
             if (modalRef.current && !modalRef.current.contains(event.target)) {
@@ -47,7 +62,8 @@ const DepartmentTicket = () => {
                 if (response.ok) {
                     response.json()
                         .then(data => {
-                            setTickets(data);
+                            const sortedData = sortTicketsByStatus(data);
+                            setTickets(sortedData);
                         })
                         .catch(error => {
                             console.error('Error parsing JSON:', error.message);
@@ -109,6 +125,7 @@ const DepartmentTicket = () => {
         event.preventDefault();
         localStorage.setItem('ticket_number', ticketId);
         setShowAssignTicketModal(true);
+        alert(ticketId)
     };
 
     return (
@@ -155,6 +172,7 @@ const DepartmentTicket = () => {
                                         <th>Assigned To</th>
                                         <th>Department</th>
                                         <th>Download Attachment</th>
+                                        <th>Progress</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -176,6 +194,11 @@ const DepartmentTicket = () => {
                                                     <FontAwesomeIcon icon={faDownload} />
                                                 </button>
                                             </td>
+                                            <td>
+                                                <span style={{ color: getProgressColor(ticket.status) }}>
+                                                    {calculateProgressPercentage(ticket.status)}
+                                                </span>
+                                            </td>
                                         </tr>
                                     ))}
                                     </tbody>
@@ -188,7 +211,7 @@ const DepartmentTicket = () => {
                 <div>{showAssignTicketModal && (
                     <section className="ticket-depart-modal">
                         <button className="close-button" onClick={() => setShowAssignTicketModal(false)}>
-                            Close <span className="close-icon">X</span>
+                            X
                         </button>
                         <DepartmentAssignTicket />
                     </section>
