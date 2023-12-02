@@ -1,19 +1,39 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import '../assets/stylesheet/GetAllTickets.css';
-import {faDownload} from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import { faDownload } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from 'react-router-dom';
+import DepartmentAssignTicket from "./DepartmentAssignTicket";
 
 const DepartmentTicket = () => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const [tickets, setTickets] = useState([]);
     const [error, setError] = useState('');
     const [searchId, setSearchId] = useState('');
     const [searchedTicket, setSearchedTicket] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [showAssignTicketModal, setShowAssignTicketModal] = useState(false);
 
-    // alert(tickets)
+    const modalRef = useRef(null);
+
+    useEffect(() => {
+        const handleOutsideClick = (event) => {
+            if (modalRef.current && !modalRef.current.contains(event.target)) {
+                setShowAssignTicketModal(false);
+            }
+        };
+
+        // Add event listener when the component mounts
+        document.addEventListener('click', handleOutsideClick);
+
+        // Remove event listener when the component unmounts
+        return () => {
+            document.removeEventListener('click', handleOutsideClick);
+        };
+    }, []);
+
+
     useEffect(() => {
         const apiEndpoint = 'http://localhost:8080/api/v1/tickets/report';
 
@@ -22,26 +42,30 @@ const DepartmentTicket = () => {
             headers: {
                 Authorization: 'Basic ' + localStorage.getItem('email_password_credentials')
             }
-        }).then(response => {
-            if (response.ok) {
-                response.json().then(data => {
-                    setTickets(data);
-                }).catch(error => {
-                    console.error('Error parsing JSON:', error.message);
-                    setError('An error occurred while parsing JSON.');
-                });
-            } else {
-                console.error('Error fetching ticket data:', response.status);
+        })
+            .then(response => {
+                if (response.ok) {
+                    response.json()
+                        .then(data => {
+                            setTickets(data);
+                        })
+                        .catch(error => {
+                            console.error('Error parsing JSON:', error.message);
+                            setError('An error occurred while parsing JSON.');
+                        });
+                } else {
+                    console.error('Error fetching ticket data:', response.status);
+                    setError('An error occurred while fetching ticket data.');
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching ticket data:', error.message);
                 setError('An error occurred while fetching ticket data.');
-            }
-        }).catch(error => {
-            console.error('Error fetching ticket data:', error.message);
-            setError('An error occurred while fetching ticket data.');
-        });
+            });
     }, []);
 
     const handleSearch = () => {
-        setLoading(true)
+        setLoading(true);
         const ticket = tickets.find(ticket => ticket.id === searchId);
         setSearchedTicket(ticket);
         setLoading(false);
@@ -55,45 +79,45 @@ const DepartmentTicket = () => {
             headers: {
                 Authorization: 'Basic ' + localStorage.getItem('email_password_credentials')
             }
-        }).then(response => {
-            if(response.ok){
-                const disposition = response.headers.get('content-disposition');
-                const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
-                const matches = filenameRegex.exec(disposition);
-                const filename = matches !== null && matches[1] ? matches[1].replace(/['"]/g, '') : 'attachment';
+        })
+            .then(response => {
+                if (response.ok) {
+                    const disposition = response.headers.get('content-disposition');
+                    const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                    const matches = filenameRegex.exec(disposition);
+                    const filename = matches !== null && matches[1] ? matches[1].replace(/['"]/g, '') : 'attachment';
 
-                response.blob().then(blob => {
-                    const url = URL.createObjectURL(blob);
-                    const link = document.createElement('a');
-                    link.href = url;
-                    link.download = filename;
-                    link.click();
-                    URL.revokeObjectURL(url);
-                });
-
-            }else {
-                alert("Error downloading ticket attachment: Can not locate file")
-            }
-        }).catch(error => {
-            console.error('Error downloading ticket attachment:', error.message);
-            setError('An error occurred while downloading the ticket attachment.');
-        });
+                    response.blob().then(blob => {
+                        const url = URL.createObjectURL(blob);
+                        const link = document.createElement('a');
+                        link.href = url;
+                        link.download = filename;
+                        link.click();
+                        URL.revokeObjectURL(url);
+                    });
+                } else {
+                    alert("Error downloading ticket attachment: Can not locate file");
+                }
+            })
+            .catch(error => {
+                console.error('Error downloading ticket attachment:', error.message);
+                setError('An error occurred while downloading the ticket attachment.');
+            });
     };
 
     const handleCellClickAssign = (event, ticketId) => {
         event.preventDefault();
-        alert(`Clicked link: ${ticketId}`);
-        localStorage.setItem('ticket_number', ticketId)
-        navigate(`/AssignTicket`);
+        localStorage.setItem('ticket_number', ticketId);
+        setShowAssignTicketModal(true);
     };
 
     return (
-        <div>
+        <section className={`depart`}>
             {error && <div className="error">{error}</div>}
 
-            <form className="card-tickets">
-                <div className="card-tickets-body">
-                    <div className="search-container">
+            <form className="depart-card-tickets">
+                <div className="depart-card-tickets-body">
+                    <div className="depart-search-container">
                         <input
                             type="text"
                             placeholder="Enter Ticket ID"
@@ -104,7 +128,7 @@ const DepartmentTicket = () => {
                     </div>
 
                     {searchedTicket ? (
-                        <div className="searched-ticket">
+                        <div className="depart-searched-ticket">
                             <h3>Search Result:</h3>
                             <div>ID: {searchedTicket.ticketNumber}</div>
                             <div>Title: {searchedTicket.title}</div>
@@ -118,19 +142,17 @@ const DepartmentTicket = () => {
                     ) : (
                         <>
                             {tickets.length === 0 ? (
-                                <div className="no-tickets">No tickets available.</div>
+                                <div className="depart-no-tickets">No tickets available.</div>
                             ) : (
-                                <table className="card-tickets-table">
+                                <table className="depart-card-tickets-table">
                                     <thead>
-                                    <tr className="card-tickets-table-header">
+                                    <tr className="depart-card-tickets-table-header">
                                         <th>Ticket</th>
                                         <th>Title</th>
                                         <th>Description</th>
-                                        {/*<th>Priority</th>*/}
                                         <th>Status</th>
                                         <th>Raised By</th>
                                         <th>Assigned To</th>
-                                        {/*<th>Deadline</th>*/}
                                         <th>Department</th>
                                         <th>Download Attachment</th>
                                     </tr>
@@ -138,20 +160,21 @@ const DepartmentTicket = () => {
                                     <tbody>
                                     {tickets.map(ticket => (
                                         <tr key={ticket.id}>
-                                            <a href="" onClick={(event) => handleCellClickAssign(event, ticket.ticketNumber)} style={{ cursor: 'pointer' }}>
-                                                <td>{ticket.ticketNumber}</td>
-                                            </a>
-
+                                            <td>
+                                                <a href="" onClick={(event) => handleCellClickAssign(event, ticket.ticketNumber)} style={{ cursor: 'pointer' }}>
+                                                    {ticket.ticketNumber}
+                                                </a>
+                                            </td>
                                             <td>{ticket.title}</td>
                                             <td className="description-column">{ticket.description}</td>
-                                            {/*<td>{ticket.priority}</td>*/}
                                             <td>{ticket.status}</td>
                                             <td>{ticket.raisedBy}</td>
                                             <td>{ticket.assignedTo}</td>
-                                            {/*<td>{ticket.deadline}</td>*/}
                                             <td>{ticket.departmentAssigned}</td>
                                             <td>
-                                                <button type="button" onClick={() => downloadTicket(ticket.id)}><FontAwesomeIcon icon={faDownload} /></button>
+                                                <button type="button" onClick={() => downloadTicket(ticket.id)}>
+                                                    <FontAwesomeIcon icon={faDownload} />
+                                                </button>
                                             </td>
                                         </tr>
                                     ))}
@@ -160,9 +183,21 @@ const DepartmentTicket = () => {
                             )}
                         </>
                     )}
+
                 </div>
+                <div>{showAssignTicketModal && (
+                    <section className="ticket-depart-modal">
+                        <button className="close-button" onClick={() => setShowAssignTicketModal(false)}>
+                            Close <span className="close-icon">X</span>
+                        </button>
+                        <DepartmentAssignTicket />
+                    </section>
+                )}</div>
             </form>
-        </div>
+
+
+
+        </section>
     );
 };
 

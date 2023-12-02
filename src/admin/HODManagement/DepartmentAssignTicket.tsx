@@ -17,7 +17,7 @@ const DepartmentAssignTicket = () => {
     const [assignToOptions, setAssignToOptions] = useState<string[]>([]);
     const [showForm, setShowForm] = useState(false);
 
-    alert(localStorage.getItem("login_emails"));
+    // alert(localStorage.getItem("login_emails"));
 
     useEffect(() => {
         // Fetch the Assign To options from the API endpoint
@@ -59,34 +59,6 @@ const DepartmentAssignTicket = () => {
         event.preventDefault();
         setIsLoading(true);
 
-        if (currentForm === 'check') {
-            try {
-                // const formData = new FormData();
-                // formData.append('ticket', ticketId);
-                await fetch('http://localhost:8080/api/v1/tickets/management/get?ticket_number=' + encodeURIComponent(encodeURIComponent(ticketId)), {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: 'Basic ' + localStorage.getItem('email_password_credentials')
-                    },
-                    body: JSON.stringify({
-                        'ticket': encodeURIComponent(ticketId)
-                    })
-                });
-
-
-            } catch (error) {
-                toast.error('Error checking ticket: '+error, {
-                    position: toast.POSITION.BOTTOM_RIGHT,
-                });
-            }
-
-        } else if (currentForm === 'content') {
-            setCurrentForm('assign');
-        } else if (currentForm === 'assign') {
-            // API FOR ASSIGNING TICKET TO EMPLOYEE
-
-
             await fetch('http://localhost:8080/api/v1/tickets/assign?' +
                 'ticket_number=' + encodeURIComponent(ticketId) +
                 '&to=' + assignTo +
@@ -111,38 +83,26 @@ const DepartmentAssignTicket = () => {
                         position: toast.POSITION.TOP_RIGHT,
                     });
                     setShowForm(false);
-                    setCurrentForm('check');
-                    // setIsLoading()
                 } else {
                     toast.error('Error assigning ticket.', {
                         position: toast.POSITION.BOTTOM_RIGHT,
                     });
-
+                    setShowForm(false);
                 }
             }).catch(() =>{
                 toast.error('Error fetching ticket content', {
                     position: toast.POSITION.BOTTOM_RIGHT,
                 });
-            }).finally(() => {
-                // setTicketId('');
-                setAssignTo('');
-                setPriority('');
-                setDeadline(null);
-                setCurrentForm('check');
-            });
+                setShowForm(false);
+            })
 
-            // alert(ticketId);
-            // alert(deadline);
-            // alert(priority);
-            // alert(assignTo)
 
-        }
 
         setIsLoading(false);
     };
 
     return (
-        <div className="assign-ticket-container">
+        <section className="assign-ticket-container">
             <form onSubmit={handleSubmit}>
                     <div>
                         <label htmlFor="assignTo">Assign To:</label>
@@ -200,7 +160,7 @@ const DepartmentAssignTicket = () => {
                 </form>
 
             <ToastContainer/>
-        </div>
+        </section>
     );
 }
 export default DepartmentAssignTicket;

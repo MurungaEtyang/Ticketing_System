@@ -1,75 +1,70 @@
-/* GetAllTickets.css */
-
-.error {
-    color: red;
-    margin-bottom: 10px;
-}
-
-.card-tickets {
-    margin-top: 20px;
-}
-
-.card-tickets-body {
-    padding: 20px;
-    background-color: #f5f5f5;
-    border-radius: 5px;
-}
-
-.search-container {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-.search-container input {
-    padding: 5px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    margin-right: 10px;
-}
-
-.search-container button {
-    padding: 5px 10px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-}
-
-.searched-ticket {
-    margin-top: 20px;
-}
-
-.searched-ticket h3 {
-    margin-bottom: 10px;
-}
-
-.card-tickets-table {
+.depart-card-tickets-table {
     width: 100%;
     border-collapse: collapse;
 }
 
-.card-tickets-table-header th {
-    background-color: #007bff;
-    color: #fff;
-    padding: 10px;
+.depart-card-tickets-table th,
+.depart-card-tickets-table td {
+    background-color: transparent;
+    padding: 8px;
     text-align: left;
 }
 
-.card-tickets-table td {
-    padding: 10px;
-    border-bottom: 1px solid #ccc;
+.depart-card-tickets-table th {
+    background-color: transparent;
 }
 
-.description-column {
-    max-width: 200px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+.depart-card-tickets-table tr:nth-child(even) {
+    background-color: transparent;
 }
 
-.no-tickets {
-    margin-top: 20px;
-    text-align: center;
+.depart-card-tickets-table a {
+    color: #007bff;
+}
+
+.depart-card-tickets-table th,
+.depart-card-tickets-table td {
+    border-right: 1px solid #ddd;
+}
+
+.depart-card-tickets-table tr {
+    border-bottom: 1px solid #ddd;
+}
+
+.depart-card-tickets-table td:last-child,
+.depart-card-tickets-table th:last-child {
+    border-right: none;
+}
+
+.depart-search-container {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.depart-search-container input {
+    flex: 1;
+    padding: 8px;
+    margin-right: 10px;
+}
+
+.depart-search-container button {
+    padding: 8px;
+    background-color: #007bff;
+    color: #46596c;
+    border: none;
+    cursor: pointer;
+}
+
+.depart-card-tickets-table a {
+    text-decoration: none;
+    color: #007bff;
+    cursor: pointer;
+}
+
+.depart-card-tickets-table a:hover {
+    text-decoration: underline;
+}
+.description-column{
+    width: 300px;
+    max-width: 600px;
 }
