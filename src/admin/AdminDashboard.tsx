@@ -223,59 +223,7 @@ const AdminDashboard: React.FC = () => {
         );
     }else if (department == "DEPARTMENT_ADMIN"){
         return (
-            <body>
-
-            <>
-                <div className="admin-dashboard-container">
-
-                    <nav className="nav-container">
-                        <div>
-                            <img src={Logo} alt="Logo" />
-                            <button onClick={handleLogout} className="logout-button">Logout</button>
-                        </div>
-
-                        <div className="profile">
-                            <p>{email}</p>
-                            {/*<img src={profileImage} alt="Profile" />*/}
-                        </div>
-                    </nav>
-                    {/*logo*/}
-
-                    <div className="profile">
-                        <p>Hello {email}</p>
-                        {/*<img src={profileImage} alt="Profile" />*/}
-                    </div>
-
-                    <div className="side-nav-bar raised">
-                        {/*Ticket Assignment*/}
-                        <div className="Ticket-Assignment-dropdown">
-                            {/* Add dropdown */}
-                            <button className="Ticket-Assignment-button" onClick={handleDropdownDepartmentTickets}>
-                                Ticket Assignment
-                            </button>
-                            {DepartmentTickets && (
-                                <div className="Ticket-Assignment-content">
-                                    <button
-                                        className="Ticket-Assignment-dropdown-button"
-                                        onClick={() => handleDropdownItemClick("DepartmentTickets")}
-                                    >
-                                        AllTickets
-                                    </button>
-                                    <button
-                                        className="Ticket-Assignment-dropdown-button"
-                                        onClick={() => handleDropdownItemClick("DepartmentAssignTicket")}
-                                    >
-                                        Assign Ticket
-                                    </button>
-                                </div>
-                            )}
-                        </div>
-
-                    </div>
-                </div>
-                {renderAssociatedFiles()}
-            </>
-            </body>
+           <DepartmentTicket />
         );
     }else{
         navigation();

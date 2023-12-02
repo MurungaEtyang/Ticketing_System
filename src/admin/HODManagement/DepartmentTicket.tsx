@@ -195,8 +195,6 @@ const DepartmentTicket = () => {
                 )}</div>
             </form>
 
-
-
         </section>
     );
 };
