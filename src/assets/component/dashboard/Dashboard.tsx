@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useSpring, animated } from 'react-spring';
+import { useInView } from 'react-intersection-observer';
 import '../stylesheeet/dashboard.css';
 import Logo from "../images/Logo.png"
 import Image1 from "../images/Image1.png"
@@ -11,19 +13,20 @@ import { faBell } from '@fortawesome/free-solid-svg-icons';
 import AllSentTickets from "./ticketHandle/AllSentTickets";
 import TicketTrackProgress from "./ticketHandle/TicketTrackProgress";
 
+const AnimatedAllSentTickets = animated(AllSentTickets);
+
 const Dashboard: React.FC = () => {
     const location = useLocation();
     const email = location.state?.email || '';
-
     const navigate = useNavigate();
 
     const [showTicket, setShowTicket] = useState(false);
     const [showLogoutDropdown, setShowLogoutDropdown] = useState(false);
     const [notificationMessage, setNotificationMessage] = useState('');
     const [showMessageDropdown, setShowMessageDropdown] = useState(false);
-    const [showButtonDropdown, setShowButtonDropdown] = useState(false)
+    const [showButtonDropdown, setShowButtonDropdown] = useState(false);
     const [showSentTickets, setShowSentTickets] = useState(false);
-    const [showTicketTracking, setShowTicketTracking] = useState(false)
+    const [showTicketTracking, setShowTicketTracking] = useState(false);
     const [newNotificationCount, setNewNotificationCount] = useState(0);
 
     const handleButtonShow = () => {
@@ -40,13 +43,11 @@ const Dashboard: React.FC = () => {
                     Authorization: 'Basic ' + localStorage.getItem('email_password_credentials')
                 },
             });
-            if (response.status == 204) {
-                const navigate = useNavigate();
+            if (response.status === 204) {
                 navigate("/");
             } else {
                 alert("Logout failed.");
             }
-
         } catch (error) {
             alert("Logout failed: " + error);
         }
@@ -103,16 +104,23 @@ const Dashboard: React.FC = () => {
         setShowTicketTracking(false);
     };
 
+    // Define the intersection observer for the ticket-tracking section
+    const [ref, inView] = useInView({
+        triggerOnce: true, // Only trigger the animation once
+    });
+
+    // Define the spring animation for the ticket-tracking section
+    const ticketTrackingAnimation = useSpring({
+        opacity: inView ? 1 : 0,
+        transform: inView ? 'translateY(0px)' : 'translateY(50px)',
+    });
+
     return (
         <>
             <div className="container">
                 <nav className="nav-container">
-                    <img src={Logo} />
+                    <img src={Logo} alt="Logo" />
                     <div className="nav-buttons">
-                        <div className="nav-button">
-                            <button onClick={handleBookTicket}>Book Ticket</button>
-                        </div>
-                        {/* Show drop down */}
                         <div className="dropdown">
                             <button className={`dropdown-button ${showButtonDropdown ? 'active' : ''}`} onClick={handleButtonShow}>
                                 Track Ticket
@@ -126,7 +134,7 @@ const Dashboard: React.FC = () => {
                         </div>
                     </div>
                     <div className="nav-right">
-                        {email && (
+                        {email ? (
                             <>
                                 <div className="notification-icon">
                                     <FontAwesomeIcon icon={faBell} onClick={handleShowMessages} />
@@ -157,8 +165,7 @@ const Dashboard: React.FC = () => {
                                     )}
                                 </div>
                             </>
-                        )}
-                        {!email && (
+                        ) : (
                             <div className="profile-dropdown">
                                 <button className="profile-button" onClick={handleProfile}>
                                     Profile
@@ -174,7 +181,6 @@ const Dashboard: React.FC = () => {
                         )}
                     </div>
                 </nav>
-
             </div>
 
             <div className="dashboard-body-content">
@@ -182,26 +188,26 @@ const Dashboard: React.FC = () => {
             </div>
 
             <div className="main-selection">
-                <section className= 'dashboard-container'>
-
-                    <div>
-                        <div className="book-ticket">
-                            {showTicket && <Ticket />}
-                        </div>
-                        <div className="show-sent-tickets">
-                            {showSentTickets && <AllSentTickets />}
-                        </div>
-                        <div className="ticket-tracking-progress">
-                            {showTicketTracking && <TicketTrackProgress />}
-                        </div>
+                <section>
+                    <div className='dashboard-container-images'>
+                        <img src={Image1} alt="Image1" />
                     </div>
 
                 </section>
 
-                <section>
-                    <div className= 'dashboard-container-images'>
-                        <img src={Image1}/>
+                <section className='dashboard-container'>
+                    <div className={`book-ticket`}>
+                        <Ticket />
                     </div>
+                </section>
+
+                <section className="ticket-tracking" ref={ref}>
+                    <animated.div style={ticketTrackingAnimation}>
+                        <h3 className="ticket-title">LIST OF ALL TICKETS I HAVE SUBMITTED</h3>
+                        <div className={`show-sent-tickets`}>
+                            <AnimatedAllSentTickets />
+                        </div>
+                    </animated.div>
                 </section>
             </div>
         </>
