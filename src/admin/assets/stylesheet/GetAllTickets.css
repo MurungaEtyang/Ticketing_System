@@ -1,3 +1,11 @@
+.Department-section-ticket{
+    color:black;
+}
+
+.depart-card-tickets-table thead{
+    font-size: 20px;
+}
+
 .depart-card-tickets-table {
     width: 100%;
     border-collapse: collapse;
@@ -67,6 +75,15 @@
 .description-column{
     width: 300px;
     max-width: 600px;
+}
+
+.ticketButton{
+    background: #406ee5;
+    color: #1a1a1a;
+}
+
+.ticketButton:hover{
+    background-color: #fdfcfc;
 }
 
 .close-button {
