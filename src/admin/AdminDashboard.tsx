@@ -4,8 +4,8 @@ import './assets/stylesheet/adminDashboard.css'
 import logo from './assets/images/logo.jpeg'
 import AssignTicket from "./ticketAssignment/AssignTicket.tsx";
 import GetAllTickets from "./ticketAssignment/GetAllTickets.tsx";
-import AddUserToDepartment from "./HODManagement/AddUserToDepartment.tsx";
-import CreateDepartment from "./HODManagement/CreateDepartment.tsx";
+import AddUserToDepartment from "./department/AddUserToDepartment.tsx";
+import CreateDepartment from "./department/CreateDepartment.tsx";
 import Registration from "./users/Registration.tsx";
 import AllUser from "./users/AllUser.tsx";
 import ElevateUser from "./users/ElevateUser.tsx";
@@ -14,6 +14,20 @@ import DepartmentTicket from "./HODManagement/DepartmentTicket";
 import Logo from "../assets/component/images/Logo.png";
 import AssignedTicket from "../employee/AssignedTicket";
 import DepartmentAssignTicket from "./HODManagement/DepartmentAssignTicket";
+import {BsToggleOff, BsToggleOn} from "react-icons/bs";
+import {AiOutlineFileAdd, AiOutlineFileSearch} from "react-icons/ai";
+import {
+    FaUser,
+    FaUsers,
+    FaArrowUp,
+    FaArrowDown,
+    FaTasks,
+    FaListAlt,
+    FaSitemap,
+    FaPlusSquare, FaUserFriends
+} from "react-icons/fa";
+import AcceptRefer from "../employee/AcceptRefer";
+import AnalogClock from "./AnalogClock";
 
 
 const AdminDashboard: React.FC = () => {
@@ -26,6 +40,7 @@ const AdminDashboard: React.FC = () => {
     const [selectedMenuItem, setSelectedMenuItem] = useState("");
     const [DepartmentTickets, setDepartmentTickets] = useState(false);
     const department = localStorage.getItem('data_authority');
+    const [isSideNavCollapsed, setIsSideNavCollapsed] = useState(true);
 
     const handleLogout = async () => {
 
@@ -36,7 +51,6 @@ const AdminDashboard: React.FC = () => {
                 },
             })
 
-        alert(response.status);
         if (response.status == 204) {
             const navigate = useNavigate();
             navigate("/");
@@ -69,9 +83,6 @@ const AdminDashboard: React.FC = () => {
 
 
     const renderAssociatedFiles = () => {
-
-
-
             switch (selectedMenuItem) {
 
                 case "RegisterUser":
@@ -104,36 +115,45 @@ const AdminDashboard: React.FC = () => {
         return navigate('/')
     }
 
+    const handleToggleSideNav = () => {
+        setIsSideNavCollapsed(!isSideNavCollapsed);
+    };
 
     if (department == "ADMIN" || department == "OWNER") {
         return (
             <body>
             <>
-                <div className="admin-dashboard-container">
-                    <nav className="nav-container">
+                <div className={`admin-dashboard-container ${isSideNavCollapsed ? "collapsed" : ""}`}>
+
+                <nav className="nav-container">
+
                         <div>
                             <img src={Logo} alt="Logo" />
                             <button onClick={handleLogout} className="logout-button">Logout</button>
                         </div>
 
                         <div className="profile">
-                            <p>Hello {email}</p>
-                            {/*<img src={profileImage} alt="Profile" />*/}
+                            <p>{email}</p>
+
                         </div>
                     </nav>
-                    {/*logo*/}
-                    {/*<div>*/}
-                    {/*    <img src={logo} alt="Logo" className="logo" />*/}
-                    {/*    <button onClick={handleLogout}>Logout</button>*/}
-                    {/*</div>*/}
 
-
-                    <div className="side-nav-bar raised">
+                    <div className={`side-nav-bar raised ${isSideNavCollapsed ? "collapsed" : ""}`}>
+                        <button onClick={handleToggleSideNav} className="toggle-sidenav-button"
+                                style={{
+                                    backgroundColor: isSideNavCollapsed ? 'green' : 'blue',
+                                    // Add other styles as needed
+                                }}
+                        >
+                            {isSideNavCollapsed ? <BsToggleOn /> : <BsToggleOff />}
+                            {/*{isSideNavCollapsed ? <AiOutlineFileAdd /> : }*/}
+                        </button>
                         {/*User Management*/}
                         <div className="users-management-dropdown">
                             {/* Add dropdown */}
                             <button className="Ticket-Assignment-button" onClick={handleDropdownManageUsers}>
-                                Manage Users
+                                {isSideNavCollapsed ? <FaUsers  /> : 'Manage Users'}
+
                             </button>
                             {UserManagement && (
                                 <div className="Ticket-Assignment-content">
@@ -141,26 +161,27 @@ const AdminDashboard: React.FC = () => {
                                         className="Ticket-Assignment-dropdown-button"
                                         onClick={() => handleDropdownItemClick("RegisterUser")}
                                     >
-                                        Register User
+                                        {isSideNavCollapsed ? <FaUser/> : 'Register'}
                                     </button>
                                     <button
                                         className="Ticket-Assignment-dropdown-button"
                                         onClick={() => handleDropdownItemClick("ElevateUser")}
                                     >
-                                        Upgrade User
+                                        {isSideNavCollapsed ? <FaArrowUp /> : 'Elevate User'}
                                     </button>
                                     <button
                                         className="Ticket-Assignment-dropdown-button"
                                         onClick={() => handleDropdownItemClick("ALLUsers")}
                                     >
-                                        All users
+                                        {isSideNavCollapsed ? <FaUserFriends /> : 'All Users'}
                                     </button>
 
                                     <button
                                         className="Ticket-Assignment-dropdown-button"
                                         onClick={() => handleDropdownItemClick("DowngradeUser")}
                                     >
-                                        Limit users role
+                                        {isSideNavCollapsed ? <FaArrowDown /> : 'Limit users role'}
+
                                     </button>
                                 </div>
                             )}
@@ -171,7 +192,8 @@ const AdminDashboard: React.FC = () => {
                         <div className="Ticket-Assignment-dropdown">
                             {/* Add dropdown */}
                             <button className="Ticket-Assignment-button" onClick={handleDropdownTicketAssignment}>
-                                Ticket Assignment
+                                {isSideNavCollapsed ? <FaTasks /> : 'Ticket Assignment'}
+
                             </button>
                             {TicketAssignment && (
                                 <div className="Ticket-Assignment-content">
@@ -179,13 +201,7 @@ const AdminDashboard: React.FC = () => {
                                         className="Ticket-Assignment-dropdown-button"
                                         onClick={() => handleDropdownItemClick("AllTickets")}
                                     >
-                                        AllTickets
-                                    </button>
-                                    <button
-                                        className="Ticket-Assignment-dropdown-button"
-                                        onClick={() => handleDropdownItemClick("AssignTicket")}
-                                    >
-                                        Assign Ticket
+                                        {isSideNavCollapsed ? <FaListAlt /> : 'AllTickets'}
                                     </button>
                                 </div>
                             )}
@@ -196,7 +212,7 @@ const AdminDashboard: React.FC = () => {
                         <div className="Department-Management-dropdown">
                             {/* Add dropdown */}
                             <button className="Department-Management-button" onClick={handleDropDownDepartmentManagement}>
-                                Department Management
+                                {isSideNavCollapsed ? <FaSitemap /> : 'Department Management'}
                             </button>
                             {DepartmentManagement && (
                                 <div className="Department-Management-content">
@@ -204,13 +220,13 @@ const AdminDashboard: React.FC = () => {
                                         className="Department-Management-dropdown-button"
                                         onClick={() => handleDropdownItemClick("CreateDepartment")}
                                     >
-                                        Create department
+                                        {isSideNavCollapsed ? <FaPlusSquare/> : 'Department Management'}
                                     </button>
                                     <button
                                         className="Department-Management-dropdown-button"
                                         onClick={() => handleDropdownItemClick("AddUsersToDepartment")}
                                     >
-                                        Add users to department
+                                        {isSideNavCollapsed ? <AiOutlineFileAdd /> : 'Department Management'}
                                     </button>
                                 </div>
                             )}
@@ -218,15 +234,44 @@ const AdminDashboard: React.FC = () => {
                     </div>
                 </div>
                 {renderAssociatedFiles()}
+                <AnalogClock />
             </>
             </body>
         );
     }else if (department == "DEPARTMENT_ADMIN"){
+        const [UserRefer, setUserRefer] = useState(false);
+        const handleDropdownManageReferUsers = () => {
+            setUserRefer(true);
+            setSelectedMenuItem("Accept-Referral");
+        };
+        const handleCloseModal = () => {
+            setUserRefer(false);
+            setSelectedMenuItem("");
+        };
+
+        const renderAssociatedFiles = () => {
+            switch (selectedMenuItem) {
+                case "Accept-Referral":
+                    return (
+                        <div className="modal">
+                            <div className="modal-content">
+                                <button className="close-button" onClick={handleCloseModal}>
+                                    X
+                                </button>
+                                <AcceptRefer />
+                            </div>
+                        </div>
+                    );
+                default:
+                    return null;
+            }
+        };
         return (
             <body>
 
             <>
-                <div className="admin-dashboard-container">
+
+                <div className={`admin-dashboard-container ${UserRefer ? "inactive" : ""}`}>
 
                     <nav className="nav-container">
                         <div>
@@ -239,12 +284,25 @@ const AdminDashboard: React.FC = () => {
                             {/*<img src={profileImage} alt="Profile" />*/}
                         </div>
                     </nav>
+
+                    <div className={`side-nav-bar raised ${isSideNavCollapsed ? "collapsed" : ""}`}>
+                        <button
+                            onClick={handleToggleSideNav}
+                            className="toggle-sidenav-button"
+                            style={{
+                                backgroundColor: isSideNavCollapsed ? "green" : "blue",
+                            }}
+                        >
+                            {isSideNavCollapsed ? <BsToggleOn /> : <BsToggleOff />}
+                        </button>
+                        <div className="users-management-dropdown">
+                            <button className="Ticket-Assignment-button" onClick={handleDropdownManageReferUsers}>
+                                {isSideNavCollapsed ? <FaUsers /> : "Referrals"}
+                            </button>
+                        </div>
+                    </div>
                     {/*logo*/}
 
-                    <div className="profile">
-                        <p>Hello {email}</p>
-                        {/*<img src={profileImage} alt="Profile" />*/}
-                    </div>
 
                     <div>
                         <DepartmentTicket />

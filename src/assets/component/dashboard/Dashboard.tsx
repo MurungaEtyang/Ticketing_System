@@ -17,7 +17,7 @@ const AnimatedAllSentTickets = animated(AllSentTickets);
 
 const Dashboard: React.FC = () => {
     const location = useLocation();
-    const email = location.state?.email || '';
+    const email = localStorage.getItem('login_emails')
     const navigate = useNavigate();
 
     const [showTicket, setShowTicket] = useState(false);
@@ -36,21 +36,16 @@ const Dashboard: React.FC = () => {
     }
 
     const handleLogout = async () => {
-        try {
-            const response = await fetch("http://localhost:8080/logout", {
-                method: "GET",
-                headers: {
-                    Authorization: 'Basic ' + localStorage.getItem('email_password_credentials')
-                },
-            });
-            if (response.status === 204) {
-                navigate("/");
-            } else {
-                alert("Logout failed.");
-            }
-        } catch (error) {
-            alert("Logout failed: " + error);
-        }
+
+        await fetch("http://localhost:8080/logout", {
+            method: "GET",
+            headers: {
+                Authorization: 'Basic ' + localStorage.getItem('email_password_credentials')
+            },
+        });
+        navigate("/");
+
+
     };
 
     useEffect(() => {
@@ -128,49 +123,38 @@ const Dashboard: React.FC = () => {
             <div className="container">
                 <nav className="nav-container">
                     <img src={Logo} alt="Logo" />
+                    <p>{email}</p>
                     <div className="nav-buttons">
-                        <div className="dropdown">
-                            <button className={`dropdown-button ${showButtonDropdown ? 'active' : ''}`} onClick={handleButtonShow}>
-                                Track Ticket
-                            </button>
-                            {showButtonDropdown && (
-                                <div className="dropdown-content">
-                                    <button onClick={handleSentTickets}>My Tickets</button>
-                                    <button onClick={handleTicketTracking}>Ticket Status</button>
-                                </div>
-                            )}
-                        </div>
+                        {/*<div className="dropdown">*/}
+                        {/*    <button className={`dropdown-button ${showButtonDropdown ? 'active' : ''}`} onClick={handleButtonShow}>*/}
+                        {/*        Track Ticket*/}
+                        {/*    </button>*/}
+                        {/*    {showButtonDropdown && (*/}
+                        {/*        <div className="dropdown-content">*/}
+                        {/*            <button onClick={handleSentTickets}>My Tickets</button>*/}
+                        {/*            <button onClick={handleTicketTracking}>Ticket Status</button>*/}
+                        {/*        </div>*/}
+                        {/*    )}*/}
+                        {/*</div>*/}
                     </div>
                     <div className="nav-right">
                         {email ? (
                             <>
-                                <div className="notification-icon">
-                                    <FontAwesomeIcon icon={faBell} onClick={handleShowMessages} />
-                                    {showMessageDropdown && (
-                                        <div className="message-dropdown">
-                                            {notificationMessage ? (
-                                                <span className="message-item">{notificationMessage}</span>
-                                            ) : (
-                                                <span className="message-item">No new notifications</span>
-                                            )}
-                                        </div>
-                                    )}
-                                    {newNotificationCount > 0 && (
-                                        <div className={`badge ${showMessageDropdown ? 'empty' : ''}`}>{newNotificationCount}</div>
-                                    )}
-                                </div>
                                 <div className="profile-dropdown">
-                                    <button className="profile-button" onClick={handleProfile}>
-                                        Profile
+                                    <button className="dropdown-button" onClick={handleLogout}>
+                                        Logout
                                     </button>
-                                    {showLogoutDropdown && (
-                                        <div className="dropdown-content">
-                                            {/*<p>{email}</p>*/}
-                                            <button className="dropdown-button" onClick={handleLogout}>
-                                                Logout
-                                            </button>
-                                        </div>
-                                    )}
+                                    {/*<button className="profile-button" onClick={handleProfile}>*/}
+                                    {/*    Profile*/}
+                                    {/*</button>*/}
+                                    {/*{showLogoutDropdown && (*/}
+                                    {/*    <div className="dropdown-content">*/}
+                                    {/*        /!*<p>{email}</p>*!/*/}
+                                    {/*        <button className="dropdown-button" onClick={handleLogout}>*/}
+                                    {/*            Logout*/}
+                                    {/*        </button>*/}
+                                    {/*    </div>*/}
+                                    {/*)}*/}
                                 </div>
                             </>
                         ) : (
@@ -205,14 +189,6 @@ const Dashboard: React.FC = () => {
                     </div>
                 </section>
 
-                <section className="ticket-tracking" ref={ref}>
-                    <animated.div style={ticketTrackingAnimation}>
-                        <h3 className="ticket-title">LIST OF ALL TICKETS I HAVE SUBMITTED</h3>
-                        <div className={`show-sent-tickets`}>
-                            <AnimatedAllSentTickets />
-                        </div>
-                    </animated.div>
-                </section>
             </div>
         </>
     );

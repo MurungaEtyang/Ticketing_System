@@ -1,10 +1,9 @@
-/*body{*/
-/*    background-color: #2d2d2d;*/
-/*}*/
-/*.admin-dashboard-container{*/
-/*    margin-top: -10px;*/
-/*    background-color: #9a8b8b;*/
-/*}*/
+
+.side-nav-bar.collapsed {
+    width: 60px;
+}
+
+
 
 .profile {
     display: flex;
@@ -14,7 +13,7 @@
 }
 
 .profile p {
-    margin-right: 10px;
+    margin-right: 400px;
     font-weight: bold;
 }
 
@@ -30,15 +29,17 @@
 }
 
 .side-nav-bar {
-    background-color: #f2f2f2;
-    padding: 10px;
-    /*position: fixed;*/
-    margin-bottom: 20px;
-    width: 200px;
-    flex-direction: row-reverse;
     background-color: #007bff;
-    top: 100px
+    padding: 10px;
+    width: 200px;
+    position: fixed;
+    top: 100px;
+    bottom: 0;
+    left: 0;
+    overflow-y: auto;
+    left: ${(props) => (props.isSideNavCollapsed ? "-200px" : "0")};
 }
+
 
 .side-nav-bar.raised {
     margin-top: -20px;

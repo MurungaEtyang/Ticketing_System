@@ -118,20 +118,6 @@ const DepartmentAssignTicket = () => {
                             ))}
                         </select>
                     </div>
-                    {/*<div className="form-group">*/}
-                    {/*    <label htmlFor="priority">Priority</label>*/}
-                    {/*    <select*/}
-                    {/*        className="form-control"*/}
-                    {/*        id="priority"*/}
-                    {/*        value={priority}*/}
-                    {/*        onChange={(e) => setPriority(e.target.value)}*/}
-                    {/*    >*/}
-                    {/*        <option value="">Select Priority</option>*/}
-                    {/*        <option value="LOW">LOW</option>*/}
-                    {/*        <option value="MEDIUM">MEDIUM</option>*/}
-                    {/*        <option value="HIGH">HIGH</option>*/}
-                    {/*    </select>*/}
-                    {/*</div>*/}
                     <div>
                         <div>
                             <label htmlFor="deadline">Deadline:</label>

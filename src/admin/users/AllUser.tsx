@@ -45,7 +45,7 @@ const AllUser = () => {
     };
 
     return (
-        <div>
+        <section className={'all-users'}>
             {error && <div className="error">{error}</div>}
 
             <form className="card-users">
@@ -106,7 +106,7 @@ const AllUser = () => {
                     </table>
                 </div>
             </form>
-        </div>
+        </section>
     );
 };
 

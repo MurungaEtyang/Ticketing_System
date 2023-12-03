@@ -1,6 +1,17 @@
-.depart{
-    top: 0;
-    left: 0;
+.depart {
+    position: fixed;
+    top: 15%;
+    bottom: 0;
+    left: 10%;
+    right: 0;
+    overflow-y: auto;
+}
+
+.depart-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%; /* Set the container height to full viewport height */
 }
 
 .Department-section-ticket{
@@ -69,6 +80,29 @@
     cursor: pointer;
 }
 
+.depart-searched-ticket {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 20px;
+    position: relative;
+    color: #1a1a1a;
+}
+
+.depart-searched-ticket > div {
+    margin-bottom: 10px;
+}
+
+.depart-searched-ticket h3 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.depart-searched-ticket div {
+    font-size: 26px;
+}
+
 .depart-card-tickets-table a {
     text-decoration: none;
     color: #007bff;
@@ -89,10 +123,21 @@
     font-family: "Times New Roman";
     max-width: 100px;
     font-size: 12px;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.ticketButton.faded {
+    opacity: 0.5; /* Adjust the opacity value as needed */
+    pointer-events: none; /* Disable interactions with faded elements */
 }
 
 .ticketButton:hover{
     background-color: #fdfcfc;
+}
+
+.inactive {
+    opacity: 0.1;
+    pointer-events: none;
 }
 
 .close-button {

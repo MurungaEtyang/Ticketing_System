@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import '../../../../admin/assets/stylesheet/GetAllTickets.css';
-import { faDownload } from "@fortawesome/free-solid-svg-icons";
+import {faBell, faDownload} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import TicketTrackProgress from "./TicketTrackProgress";
+import './AllSentTickets.css'
+import Logo from "../../images/Logo.png";
+
 
 const AllSentTickets = () => {
     const [tickets, setTickets] = useState([]);
@@ -12,6 +15,7 @@ const AllSentTickets = () => {
     const [searchedTicket, setSearchedTicket] = useState(null);
     const [loading, setLoading] = useState(false);
     const [showAssignTicketModal, setShowAssignTicketModal] = useState(false);
+    const [isButtonClicked, setIsButtonClicked] = useState<boolean>(false);
 
     const modalRef = useRef(null);
 
@@ -124,10 +128,15 @@ const AllSentTickets = () => {
         event.preventDefault();
         localStorage.setItem('ticket_number', ticketId);
         setShowAssignTicketModal(true);
+        setIsButtonClicked(true);
     };
 
     return (
-        <section className={`depart`}>
+        <section className={`sent-depart`}>
+            <nav className="nav-container">
+                <img src={Logo} alt="Logo" />
+
+            </nav>
             {error && <div className="error">{error}</div>}
 
             <form className="depart-card-tickets">
@@ -164,35 +173,25 @@ const AllSentTickets = () => {
                                         <thead>
                                         <tr >
                                             <th>Ticket</th>
-                                            <th>Title</th>
-                                            <th>Description</th>
                                             <th>Status</th>
                                             <th>Raised By</th>
                                             <th>Assigned To</th>
                                             <th>Department</th>
-                                            <th>Download Attachment</th>
                                             <th>Progress</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         {tickets.map(ticket => (
-                                            <tr key={ticket.id}>
+                                            <tr key={ticket.id} lassName={isButtonClicked ? 'inactive' : ''}>
                                                 <td>
                                                     <button className={`ticketButton`} onClick={(event) => handleCellClickAssign(event, ticket.ticketNumber)} style={{ cursor: 'pointer' }}>
                                                         {ticket.ticketNumber}
                                                     </button>
                                                 </td>
-                                                <td>{ticket.title}</td>
-                                                <td className="description-column">{ticket.description}</td>
                                                 <td>{ticket.status}</td>
                                                 <td>{ticket.raisedBy}</td>
                                                 <td>{ticket.assignedTo}</td>
                                                 <td>{ticket.departmentAssigned}</td>
-                                                <td>
-                                                    <button type="button" onClick={() => downloadTicket(ticket.id)}>
-                                                        <FontAwesomeIcon icon={faDownload} />
-                                                    </button>
-                                                </td>
                                                 <td>
                                                 <span style={{ color: getProgressColor(ticket.status) }}>
                                                     {calculateProgressPercentage(ticket.status)}

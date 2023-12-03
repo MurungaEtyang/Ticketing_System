@@ -1,11 +1,19 @@
 .ticket-progress-container {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    height: 100vh;
-    /*position: absolute;*/
-    top: 100%;
+    justify-content: center;
+    margin-top: 20px;
+    width: 400px;
+    height: fit-content;
+    background-color: #3b61d7;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 20px rgb(12, 40, 68);
 }
+
 
 .rating-card-body {
     width: 400px; /* Adjust the width as needed */
