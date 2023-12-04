@@ -75,6 +75,10 @@
     color: #888;
 }
 
+.ticket-depart-modal {
+    background-color: transparent;
+}
+
 /* Responsive Design */
 @media (max-width: 600px) {
     .all-sent-card-tickets-body {

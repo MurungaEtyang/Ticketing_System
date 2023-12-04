@@ -17,40 +17,40 @@ const ElevateUser = () => {
         e.preventDefault();
         setLoading(true); // Set loading state to true
 
-            const data = JSON.stringify({
-                role: role.label,
-                username: user.label
-            });
+        const data = JSON.stringify({
+            role: role.label,
+            username: user.label
+        });
 
-            await fetch('http://localhost:8080/api/v1/users/management/elevate?authority='+ role.label +
-                '&username=' + user.label, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: 'Basic ' + localStorage.getItem('email_password_credentials'),
-                },
-                body: data,
-            }).then((response) => {
-                if (response.ok) {
+        await fetch('http://localhost:8080/api/v1/users/management/elevate?authority='+ role.label +
+            '&username=' + user.label, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Basic ' + localStorage.getItem('email_password_credentials'),
+            },
+            body: data,
+        }).then((response) => {
+            if (response.ok) {
 
-                    toast.success('User elevated successful!', {
-                        position: toast.POSITION.TOP_RIGHT,
-                    });
-                } else {
-                    const errorResponse = response.json();
-                    throw new Error(errorResponse.message);
-                }
-            }).catch(error => {
-                toast.error(error.message, {
-                    position: toast.POSITION.BOTTOM_RIGHT,
+                toast.success('User elevated successful!', {
+                    position: toast.POSITION.TOP_RIGHT,
                 });
-            }).finally(() => {
-                setUser(null);
-                setUser(null)
-                setLoading(false);
+            } else {
+                const errorResponse = response.json();
+                throw new Error(errorResponse.message);
+            }
+        }).catch(error => {
+            toast.error(error.message, {
+                position: toast.POSITION.BOTTOM_RIGHT,
             });
+        }).finally(() => {
+            setUser(null);
+            setUser(null)
+            setLoading(false);
+        });
 
-            setLoading(false)
+        setLoading(false)
     };
 
     useEffect(() => {
@@ -99,13 +99,14 @@ const ElevateUser = () => {
             <div className="container">
                 <div className="row justify-content-center">
                     <div className="col-md-6">
-                        <div className="card">
-                            <div className="card-body">
+                        <div className="create-dept-card">
+                            <div className="create-dept-card-body">
                                 <h3 className="card-title">ELEVATE USERS</h3>
                                 <form onSubmit={handleSubmit}>
-                                    <div className="form-group">
+                                    <div className="form-group-create">
                                         <label htmlFor="roles">ROLES *</label>
                                         <Select
+                                            className={`select`}
                                             required
                                             options={roles.map((dept) => ({ value: dept, label: dept }))}
                                             value={role}
@@ -115,6 +116,7 @@ const ElevateUser = () => {
 
                                         <label htmlFor="users">USER *</label>
                                         <Select
+                                            className={`select`}
                                             required
                                             options={users}
                                             value={user}
@@ -122,13 +124,15 @@ const ElevateUser = () => {
                                             isSearchable
                                         />
                                     </div>
-                                    <button type="submit" className="btn btn-primary" disabled={loading}>
-                                        {loading ? (
-                                            <ClipLoader color="#ffffff" loading={loading} size={20} />
-                                        ) : (
-                                            'Elevate Users'
-                                        )}
-                                    </button>
+                                    <div className={`form-group-create`}>
+                                        <button type="submit" className="create-elevate-button" disabled={loading}>
+                                            {loading ? (
+                                                <ClipLoader color="#ffffff" loading={loading} size={20} />
+                                            ) : (
+                                                'Elevate Users'
+                                            )}
+                                        </button>
+                                    </div>
                                 </form>
                             </div>
                         </div>

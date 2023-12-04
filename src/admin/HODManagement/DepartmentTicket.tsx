@@ -27,12 +27,12 @@ const DepartmentTicket = () => {
     }
 
     const getProgressColor = (status) => {
-        const colorMap = {OPEN: 'red', ASSIGNED: 'yellow', SUBMITTED: 'blue',  CLOSED: 'green'};
+        const colorMap = {OPEN: 'red', ASSIGNED: 'yellow', SUBMITTED: 'green',  CLOSED: 'green'};
         return colorMap[status] || '';
     };
 
     const calculateProgressPercentage = (status) => {
-        const percentageMap = { OPEN: '25%', ASSIGNED: '50%', SUBMITTED: '75%',  CLOSED: '100%'};
+        const percentageMap = { OPEN: '0%', ASSIGNED: '50%', SUBMITTED: '100%',  CLOSED: '100%'};
         return percentageMap[status] || '';
     };
 
@@ -177,7 +177,7 @@ const DepartmentTicket = () => {
                                             <th>Raised By</th>
                                             <th>Assigned To</th>
                                             <th>Department</th>
-                                            <th>Download Attachment</th>
+                                            {/*<th>Download Attachment</th>*/}
                                             <th>Progress</th>
                                         </tr>
                                         </thead>
@@ -195,11 +195,11 @@ const DepartmentTicket = () => {
                                                 <td>{ticket.raisedBy}</td>
                                                 <td>{ticket.assignedTo}</td>
                                                 <td>{ticket.departmentAssigned}</td>
-                                                <td>
-                                                    <button type="button" onClick={() => downloadTicket(ticket.id)}>
-                                                        <FontAwesomeIcon icon={faDownload} />
-                                                    </button>
-                                                </td>
+                                                {/*<td>*/}
+                                                {/*    <button type="button" onClick={() => downloadTicket(ticket.id)}>*/}
+                                                {/*        <FontAwesomeIcon icon={faDownload} />*/}
+                                                {/*    </button>*/}
+                                                {/*</td>*/}
                                                 <td>
                                                 <span style={{ color: getProgressColor(ticket.status) }}>
                                                     {calculateProgressPercentage(ticket.status)}

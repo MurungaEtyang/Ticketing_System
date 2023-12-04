@@ -29,12 +29,6 @@ const Dashboard: React.FC = () => {
     const [showTicketTracking, setShowTicketTracking] = useState(false);
     const [newNotificationCount, setNewNotificationCount] = useState(0);
 
-    const handleButtonShow = () => {
-        setShowButtonDropdown(!showButtonDropdown);
-        setShowSentTickets(false);
-        setShowTicketTracking(false);
-    }
-
     const handleLogout = async () => {
 
         await fetch("http://localhost:8080/logout", {
@@ -42,8 +36,8 @@ const Dashboard: React.FC = () => {
             headers: {
                 Authorization: 'Basic ' + localStorage.getItem('email_password_credentials')
             },
-        });
-        navigate("/");
+        }).then(response => navigate("/")).catch(error => navigate("/"));
+
 
 
     };
@@ -95,17 +89,6 @@ const Dashboard: React.FC = () => {
         navigate('/login');
     };
 
-    const handleNotification = (message: string) => {
-        setNotificationMessage(message);
-    };
-
-    const handleShowMessages = () => {
-        setShowMessageDropdown(true);
-        setShowButtonDropdown(false);
-        setShowTicket(false);
-        setShowSentTickets(false);
-        setShowTicketTracking(false);
-    };
 
     // Define the intersection observer for the ticket-tracking section
     const [ref, inView] = useInView({
@@ -123,54 +106,11 @@ const Dashboard: React.FC = () => {
             <div className="container">
                 <nav className="nav-container">
                     <img src={Logo} alt="Logo" />
-                    <p>{email}</p>
-                    <div className="nav-buttons">
-                        {/*<div className="dropdown">*/}
-                        {/*    <button className={`dropdown-button ${showButtonDropdown ? 'active' : ''}`} onClick={handleButtonShow}>*/}
-                        {/*        Track Ticket*/}
-                        {/*    </button>*/}
-                        {/*    {showButtonDropdown && (*/}
-                        {/*        <div className="dropdown-content">*/}
-                        {/*            <button onClick={handleSentTickets}>My Tickets</button>*/}
-                        {/*            <button onClick={handleTicketTracking}>Ticket Status</button>*/}
-                        {/*        </div>*/}
-                        {/*    )}*/}
-                        {/*</div>*/}
-                    </div>
-                    <div className="nav-right">
-                        {email ? (
-                            <>
-                                <div className="profile-dropdown">
-                                    <button className="dropdown-button" onClick={handleLogout}>
-                                        Logout
-                                    </button>
-                                    {/*<button className="profile-button" onClick={handleProfile}>*/}
-                                    {/*    Profile*/}
-                                    {/*</button>*/}
-                                    {/*{showLogoutDropdown && (*/}
-                                    {/*    <div className="dropdown-content">*/}
-                                    {/*        /!*<p>{email}</p>*!/*/}
-                                    {/*        <button className="dropdown-button" onClick={handleLogout}>*/}
-                                    {/*            Logout*/}
-                                    {/*        </button>*/}
-                                    {/*    </div>*/}
-                                    {/*)}*/}
-                                </div>
-                            </>
-                        ) : (
-                            <div className="profile-dropdown">
-                                <button className="profile-button" onClick={handleProfile}>
-                                    Profile
-                                </button>
-                                {showLogoutDropdown && (
-                                    <div className="dropdown-content">
-                                        <button className="dropdown-button" onClick={handleLogin}>
-                                            Login
-                                        </button>
-                                    </div>
-                                )}
-                            </div>
-                        )}
+                    <div className="profile-dropdown">
+                        <button className="dropdown-button" onClick={handleLogout}>
+                            {email}
+                        </button>
+
                     </div>
                 </nav>
             </div>

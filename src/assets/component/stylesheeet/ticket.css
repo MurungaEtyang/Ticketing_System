@@ -1,5 +1,5 @@
 .ticket-card-body-ticket {
-    background: linear-gradient(to bottom, #5CACEE, #5CACEE, #87CEEB);
+    /*background: linear-gradient(to bottom, #5CACEE, #5CACEE, #87CEEB);*/
     right: 100px;
     text-align: left;
     color: black;
@@ -12,6 +12,7 @@
 }
 
 .ticket-form-group input {
+    color: black;
     background-color: #e1e5e7;
     width: 300px;
     max-height: 150px;
@@ -26,13 +27,17 @@
 }
 
 .ticket-form-group textarea {
-    width: 300px;
+    min-width: 320px;
+    max-width: 320px;
+    min-height: 80px;
+    max-height: 100px;
     background-color: #e1e5e7;
     border-radius: 4px;
     bottom: 10px;
-    /*font-size: 20px;*/
-    /*color: #3b3737;*/
-    /*font-family: "Times New Roman";*/
+    border-color: white;
+    font-size: 20px;
+    color: rgba(0, 0, 0, 0.77);
+    font-family: "Times New Roman";
     /*float-displace: block;*/
     margin-bottom: 10px; /* Add spacing at the bottom */
 }
@@ -52,6 +57,10 @@
     font-family: "Times New Roman";
     float-displace: block;
     margin-bottom: 10px; /* Add spacing at the bottom */
+}
+
+.ticket-form-group-attachment label{
+    color: black;
 }
 
 .ticket-form-group-attachment input {
@@ -77,22 +86,24 @@
     margin-bottom: 10px; /* Add spacing at the bottom */
 }
 
+.ticket-form-group label {
+    color: black;
+}
+
 .ticket-submit-button{
-    position: absolute;
-    left: 10%;
-    top: 100%;
-    background-color: #747bff;
-    color: #1a1a1a;
-    font-size: larger;
+    background-color: green;
+    margin: 10px;
+}
+.ticket-submit-button:hover{
+    background-color: blue;
 }
 
 .my-tickets-button {
-    position: absolute;
-    left: 60%;
-    top: 100%;
-    background-color: #747bff;
-    color: #1a1a1a;
-    font-size: larger;
+    margin: 10px;
+    background-color: blue;
+}
+.my-tickets-button:hover{
+    background-color: green;
 }
 
 .flex-buttons button{

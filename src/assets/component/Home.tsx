@@ -43,7 +43,6 @@ const Home: React.FC = () => {
 
             localStorage.setItem("email_password_credentials", credentials);
 
-            localStorage.setItem("login_emails", email)
             const response = await fetch('http://localhost:8080/api/v1/login', {
                 method: "GET",
                 headers: {
@@ -53,6 +52,7 @@ const Home: React.FC = () => {
             });
 
             if (response.ok) {
+                localStorage.setItem("login_emails", email)
                 const data = await response.json();
 
                 // store data authority in local storage
@@ -92,69 +92,71 @@ const Home: React.FC = () => {
 
     return (
         <>
-            <div className="home-container">
-                <nav className="nav-container"></nav>
-                <div>
-                    <img src={Logo} alt="Logo" className="logo" />
-                    <h1>CUSTOMER SERVICE PORTAL</h1>
+            <div className={`Home`}>
+                <div className="home-container">
+                    <nav className="nav-container"></nav>
+                    <div className={'home-main-details'}>
+                        <img src={Logo} alt="Logo" className="logo"/>
+                        <h1>CUSTOMER SERVICE PORTAL</h1>
+                    </div>
+
+                    {/*<footer className="footer">*/}
+                    {/*    <p className="footer-text">© 2023 Customer Service Portal. All rights reserved.</p>*/}
+                    {/*</footer>*/}
                 </div>
 
-                {/*<footer className="footer">*/}
-                {/*    <p className="footer-text">© 2023 Customer Service Portal. All rights reserved.</p>*/}
-                {/*</footer>*/}
-            </div>
-
-            <div>
-                <form className="login-form" onSubmit={handleSubmit}>
-                    <div className="input-container">
-                        <input
-                            type="text"
-                            placeholder="Email"
-                            value={email}
-                            onChange={handleEmailChange}
-                            className="login-input"
-                        />
-                        {!nextClicked && (
-                            <button
-                                type="button"
-                                className="btn btn-primary"
-                                disabled={loading}
-                                onClick={handleNextClick}
-                            >
-                                {loading ? (
-                                    <ClipLoader color="#ffffff" loading={loading} size={20} />
-                                ) : (
-                                    'Next'
-                                )}
-                            </button>
-                        )}
-                    </div>
-                    {nextClicked && showPassword && (
-                        <>
+                <div>
+                    <form className="login-form" onSubmit={handleSubmit}>
+                        <div className="input-container">
                             <input
-                                class="password"
-                                type="password"
-                                placeholder="Password"
-                                value={password}
-                                onChange={handlePasswordChange}
+                                type="email"
+                                placeholder="Email"
+                                value={email}
+                                onChange={handleEmailChange}
                                 className="login-input"
                             />
-                            <button type="submit" className="btn btn-primary" disabled={loading}>
-                                {loading ? (
-                                    <ClipLoader color="#ffffff" loading={loading} size={20} />
-                                ) : (
-                                    'Login'
-                                )}
-                            </button>
-                        </>
-                    )}
-                </form>
+                            {!nextClicked && (
+                                <button
+                                    type="button"
+                                    className="btn btn-primary"
+                                    disabled={loading}
+                                    onClick={handleNextClick}
+                                >
+                                    {loading ? (
+                                        <ClipLoader color="#ffffff" loading={loading} size={20}/>
+                                    ) : (
+                                        'Next'
+                                    )}
+                                </button>
+                            )}
+                        </div>
+                        {nextClicked && showPassword && (
+                            <>
+                                <input
+                                    className="password"
+                                    type="password"
+                                    placeholder="Password"
+                                    value={password}
+                                    onChange={handlePasswordChange}
+                                    className="login-input"
+                                />
+                                <button type="submit" className="login-button" disabled={loading}>
+                                    {loading ? (
+                                        <ClipLoader color="#ffffff" loading={loading} size={20}/>
+                                    ) : (
+                                        'Login'
+                                    )}
+                                </button>
+                            </>
+                        )}
+                    </form>
 
-                {/*<footer>*/}
-                {/*    <p className="footer-text">© 2022 Customer Service Portal. All rights reserved.</p>*/}
-                {/*</footer>*/}
+                    {/*<footer>*/}
+                    {/*    <p className="footer-text">© 2022 Customer Service Portal. All rights reserved.</p>*/}
+                    {/*</footer>*/}
+                </div>
+                <ToastContainer/>
             </div>
-            <ToastContainer />
         </>
 
     );

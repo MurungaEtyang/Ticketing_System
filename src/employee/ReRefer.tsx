@@ -7,15 +7,15 @@ import 'react-toastify/dist/ReactToastify.css';
 import '../../src/admin/assets/stylesheet/AssignTicket.css'
 import moment from "moment";
 
-const Reffal = () => {
+const ReRefer = () => {
     const [isLoading, setIsLoading] = useState(false);
-    const ticketId = localStorage.getItem('ticket_number')
+    const ticketId = localStorage.getItem('ticket_no');
     const [assignTo, setAssignTo] = useState('');
     const [deadline, setDeadline] = useState('');
     const [assignToOptions, setAssignToOptions] = useState<string[]>([]);
     const [showForm, setShowForm] = useState(false);
 
-
+    console.log(ticketId);
 
     useEffect(() => {
 
@@ -62,27 +62,13 @@ const Reffal = () => {
                     'ticketId': encodeURIComponent(ticketId),
                     'assignTo': assignTo,
                 })
-            }).then(async response => {
+            }).then(response => {
                 if (response.ok) {
                     // console.log('Ticket assigned successfully');
                     toast.success('Ticket Referred successfully', {
                         position: toast.POSITION.TOP_RIGHT,
                     });
                     setShowForm(false);
-
-                    await fetch('http://localhost:8080/api/v1/tickets/referral/refer?' +
-                        'ticket_number=' + encodeURIComponent(ticketId) +
-                        '&to=' + assignTo, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            Authorization: 'Basic ' + localStorage.getItem('email_password_credentials')
-                        },
-                        body: JSON.stringify({
-                            'ticketId': encodeURIComponent(ticketId),
-                            'assignTo': assignTo,
-                        })
-                    })
                 } else {
                     toast.error('Error Referred ticket.', {
                         position: toast.POSITION.BOTTOM_RIGHT,
@@ -140,4 +126,4 @@ const Reffal = () => {
     );
 }
 
-export default Reffal;
+export default ReRefer;

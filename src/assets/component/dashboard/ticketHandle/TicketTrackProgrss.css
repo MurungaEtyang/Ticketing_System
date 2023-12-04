@@ -4,7 +4,7 @@
     align-items: center;
     justify-content: center;
     margin-top: 20px;
-    width: 400px;
+    width: 600px;
     height: fit-content;
     background-color: #3b61d7;
     position: absolute;
@@ -16,9 +16,7 @@
 
 
 .rating-card-body {
-    width: 400px; /* Adjust the width as needed */
     padding: 20px;
-    border: 1px solid #ccc;
     border-radius: 8px;
 }
 
@@ -27,23 +25,37 @@
 }
 
 .rating-form-group {
-    margin-bottom: 15px;
+    width: 500px;
+    border-color: white;
 }
 
-textarea,
-select, .rating {
+.rating-form-group textarea{
+    max-width: 100%;
+    min-width: 100%;
+    max-height: 100px;
+    min-height: 100px;
+    border-radius: 8px;
+    padding: 8px;
+    margin-top: 4px;
+    box-sizing: border-box;
+    color: black;
+    background-color: rgba(229, 229, 229, 0.87);
+    font-size: 18px;
+}
+select {
     width: 100%;
     padding: 8px;
     margin-top: 4px;
     box-sizing: border-box;
     color: black;
+    background-color: rgba(229, 229, 229, 0.87);
+    font-size: 18px;
 }
 
 .rating {
     display: flex;
     justify-content: center;
-    background-color: white;
-
+    color: white;
 }
 
 .star {
@@ -57,15 +69,21 @@ select, .rating {
     color: gold;
 }
 
-.btn {
-    display: block;
-    width: 100%;
+.feedback-button {
+    margin: 20px;
+    width: 200px;
     padding: 10px;
     background-color: #007bff;
     color: #fff;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    transform: translate(60%, 20%);
+    background-color: blue;
+}
+
+.feedback-button:hover {
+    background-color: green;
 }
 
 .error {

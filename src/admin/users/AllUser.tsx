@@ -1,5 +1,6 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import './AllUsers.css'
+import {faDownload} from "@fortawesome/free-solid-svg-icons";
 
 const AllUser = () => {
     const [users, setUsers] = useState([]);
@@ -48,7 +49,7 @@ const AllUser = () => {
         <section className={'all-users'}>
             {error && <div className="error">{error}</div>}
 
-            <form className="card-users">
+            <form className="pcard-users">
                 <div className="card-users-body">
                     <div className="search-container">
                         <input
@@ -59,51 +60,41 @@ const AllUser = () => {
                         />
                         <button type="button" onClick={handleSearch}>Search</button>
                     </div>
-                    <table className="card-users-table">
-                        <thead>
-                        <tr className="card-users-table-header">
-                            <th>USERNAME</th>
-                            <th>AUTHORITIES</th>
-                            <th>RATING</th>
 
-                        </tr>
-                        </thead>
-
-                        <tbody>
-                        <tr className="card-users-table-header">
-                            <td>ALL USERS</td>
-                            <td>{allUsers}</td>
-                            <td></td>
-
-                            <td>OWNERS</td>
-                            <td>{owners.length}</td>
-                            <td></td>
-
-                            <td>ADMINS</td>
-                            <td>{admins.length}</td>
-                            <td></td>
-
-                            <td>EMPLOYEES</td>
-                            <td>{employees.length}</td>
-                            <td></td>
-
-                            <td>REGULAR USERS</td>
-                            <td>{regularUsers.length}</td>
-                            <td></td>
-
-                        </tr>
-                        </tbody>
-                        <tbody>
-
-                        {filteredUsers.map(user => (
-                            <tr key={user.username}>
-                                <td>{user.username}</td>
-                                <td>{user.authorities.join(', ')}</td>
-                                <td>{user.rating}</td>
-                            </tr>
-                        ))}
-                        </tbody>
-                    </table>
+                    <section className={`Department-section-ticket`}>
+                        {filteredUsers.length === 0 ? (
+                            <div className="depart-no-tickets">No tickets available.</div>
+                        ) : (
+                            <table className="depart-card-tickets-table">
+                                <thead>
+                                <tr >
+                                    <th>USERNAME</th>
+                                    <th>AUTHORITIES</th>
+                                    <th>RATING</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {filteredUsers.map(user => (
+                                    <tr key={user.username}>
+                                        <td>
+                                            {/*<button className={`UserButton`} onClick={(event) => handleCellClickAssign(event, ticket.ticketNumber)} style={{ cursor: 'pointer' }}>*/}
+                                            {/*    {user.username}*/}
+                                            {/*</button>*/}
+                                            {user.username}
+                                        </td>
+                                        <td>{user.authorities.join(', ')}</td>
+                                        <td>{user.rating}</td>
+                                        {/*<td>*/}
+                                        {/*    <button type="button" onClick={() => {}}>*/}
+                                        {/*        <FontAwesomeIcon icon={faDownload} />*/}
+                                        {/*    </button>*/}
+                                        {/*</td>*/}
+                                    </tr>
+                                ))}
+                                </tbody>
+                            </table>
+                        )}
+                    </section>
                 </div>
             </form>
         </section>

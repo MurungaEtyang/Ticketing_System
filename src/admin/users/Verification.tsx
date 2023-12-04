@@ -68,24 +68,25 @@ const Verification: React.FC = () => {
         <div className="container">
             <div className="row justify-content-center">
                 <div className="col-md-6">
-                    <div className="card">
-                        <div className="card-body">
-                            <h3 className="card-title">Verification form</h3>
+                    <div className="create-dept-card">
+                        <div className="create-dept-card-body">
+                            <h2>Enter verification code</h2>
                             <form onSubmit={handleSubmit}>
-                                <div className="form-group">
-                                    <label htmlFor="verification">Code</label>
+                                <div  className="form-group-create">
                                     <input
                                         type="text"
                                         className="form-control"
                                         id="verification"
-                                        placeholder="XXXX XXXX XXXX XXXX dhfgd fdhgshfg"
+                                        placeholder="XXXX XXXX XXXX XXXX"
                                         value={verification}
                                         onChange={(e) => setVerification(e.target.value)}
                                     />
                                 </div>
-                                <button type="submit" className="btn-primary" disabled={isLoading}>
-                                    {isLoading ? 'Verifying...' : 'Verify'}
-                                </button>
+                                <div className={`form-group-create`} >
+                                    <button type="submit" className="create-dept-button" disabled={isLoading}>
+                                        {isLoading ? 'Verifying...' : 'Verify'}
+                                    </button>
+                                </div>
                             </form>
                         </div>
                     </div>

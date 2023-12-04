@@ -7,6 +7,15 @@
     overflow-y: auto;
 }
 
+.depart-referral{
+    position: fixed;
+    top: 10%;
+    bottom: 0;
+    left: 1%;
+    right: 0;
+    overflow-y: auto;
+}
+
 .depart-container {
     display: flex;
     justify-content: center;
@@ -22,6 +31,7 @@
 .depart-card-tickets-table thead{
     font-size: 20px;
 }
+
 
 .depart-card-tickets-table {
     width: 100%;
@@ -141,7 +151,7 @@
 }
 
 .close-button {
-    background-color: #ff0000;
+    background-color: #0059ff;
     color: #ffffff;
     padding: 10px 20px;
     border: none;

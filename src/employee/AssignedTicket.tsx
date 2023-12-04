@@ -26,12 +26,12 @@ const AssignedTicket = () => {
     };
 
     const getProgressColor = (status) => {
-        const colorMap = {OPEN: 'red', ASSIGNED: 'yellow', SUBMITTED: 'blue',  CLOSED: 'green'};
+        const colorMap = {OPEN: 'red', ASSIGNED: 'yellow', SUBMITTED: 'green',  CLOSED: 'green'};
         return colorMap[status] || '';
     };
 
     const calculateProgressPercentage = (status) => {
-        const percentageMap = { OPEN: '25%', ASSIGNED: '50%', SUBMITTED: '75%',  CLOSED: '100%'};
+        const percentageMap = { OPEN: '25%', ASSIGNED: '50%', SUBMITTED: '100%',  CLOSED: '100%'};
         return percentageMap[status] || '';
     };
 
@@ -92,7 +92,7 @@ const AssignedTicket = () => {
     };
 
     const downloadTicket = (ticketId) => {
-        const apiEndpoint = `http://localhost:8080/api/v1/tickets/management/attachment?ticket_id=${encodeURIComponent(ticketId)}`;
+        const apiEndpoint = `http://localhost:8080/api/v1/tickets/management/attachment?ticket_number=${encodeURIComponent(ticketId)}`;
 
         fetch(apiEndpoint, {
             method: "GET",
@@ -135,7 +135,7 @@ const AssignedTicket = () => {
     const submitTicket = (ticketId, ticketStatus) => {
         setLoading(true);
         try {
-            const apiEndpoint = "http://localhost:8080/api/v1/tickets/submit?ticketNumber=" + encodeURIComponent(ticketId);
+            const apiEndpoint = "http://localhost:8080/api/v1/tickets/submit?ticket_number=" + encodeURIComponent(ticketId);
             fetch(apiEndpoint, {
                 method: 'POST',
                 headers: {
@@ -147,8 +147,7 @@ const AssignedTicket = () => {
                     if (response.ok) {
 
                         if(ticketStatus === "SUBMITTED" || ticketStatus === "CLOSED") {
-                            setLoading(false)
-                            return;
+                            setLoading(false);
                         }
                         toast.success("Ticket submitted successfully", {
                             position: toast.POSITION.TOP_RIGHT,
@@ -225,7 +224,7 @@ const AssignedTicket = () => {
                                             <th>status</th>
                                             <th>Raised By</th>
                                             <th>Department</th>
-                                            <th>Download Attachment</th>
+                                            {/*<th>Download Attachment</th>*/}
                                             <th>Progress</th>
                                         </tr>
                                         </thead>
@@ -253,11 +252,11 @@ const AssignedTicket = () => {
                                                 <td>{ticket.status}</td>
                                                 <td>{ticket.raisedBy}</td>
                                                 <td>{ticket.departmentAssigned}</td>
-                                                <td>
-                                                    <button type="button" onClick={() => downloadTicket(ticket.id)}>
-                                                        <FontAwesomeIcon icon={faDownload} />
-                                                    </button>
-                                                </td>
+                                                {/*<td>*/}
+                                                {/*    <button type="button" onClick={() => downloadTicket(ticket.id)}>*/}
+                                                {/*        <FontAwesomeIcon icon={faDownload} />*/}
+                                                {/*    </button>*/}
+                                                {/*</td>*/}
                                                 <td>
                                                 <span style={{ color: getProgressColor(ticket.status) }}>
                                                     {calculateProgressPercentage(ticket.status)}

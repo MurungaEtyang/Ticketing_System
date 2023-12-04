@@ -106,13 +106,14 @@ const AddUserToDepartment = () => {
         <div className="container">
             <div className="row justify-content-center">
                 <div className="col-md-6">
-                    <div className="card">
-                        <div className="card-body">
+                    <div className="create-dept-card">
+                        <div className="create-deptcard-body">
                             <h3 className="card-title">Add Users To Department</h3>
                             <form onSubmit={handleSubmit}>
-                                <div className="form-group">
+                                <div className="form-group-create">
                                     <label htmlFor="email">Email *</label>
                                     <Select
+                                        className={`select`}
                                         required
                                         options={emails.map((email) => ({ value: email.emails, label: email.emails }))}
                                         value={selectedEmail}
@@ -120,9 +121,10 @@ const AddUserToDepartment = () => {
                                         isSearchable
                                     />
                                 </div>
-                                <div className="form-group">
+                                <div className="form-group-create">
                                     <label htmlFor="department">Department *</label>
                                     <Select
+                                        className={`select`}
                                         required
                                         options={departments.map((dept) => ({ value: dept, label: dept }))}
                                         value={department}
@@ -130,13 +132,15 @@ const AddUserToDepartment = () => {
                                         isSearchable
                                     />
                                 </div>
-                                <button type="submit" className="btn btn-primary" disabled={loading}>
-                                    {loading ? (
-                                        <ClipLoader color="#ffffff" loading={loading} css={override} size={20} />
-                                    ) : (
-                                        'Submit'
-                                    )}
-                                </button>
+                                <div className={`form-group-create`}>
+                                    <button type="submit" className="create-add-button" disabled={loading}>
+                                        {loading ? (
+                                            <ClipLoader color="#ffffff" loading={loading} css={override} size={20} />
+                                        ) : (
+                                            'Submit'
+                                        )}
+                                    </button>
+                                </div>
                             </form>
                         </div>
                     </div>

@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { css } from '@emotion/react';
 import { ClipLoader } from 'react-spinners';
 import '../../stylesheeet/ticket.css';
+// import { Readable } from 'stream'
 import Select from "react-select";
 
 
@@ -16,12 +17,14 @@ const Ticket: React.FC<TicketProps> = ({ setNotificationMessage }) => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [loading, setLoading] = useState(false);
-    const [imageUrl, setImageUrl] = useState('');
+    // const [imageUrl, setImageUrl] = useState('');
+    const [uploadedFile, setFile] = useState<FileList>(null);
     const descriptionRef = useRef<HTMLTextAreaElement>(null);
     const [department, setDepartment] = useState<{ label: string; value: string } | null>(null); // Change department state type
     const [departments, setDepartments] = useState<string[]>([]);
     const [ftp, setFtp] = useState<File | undefined>(undefined);
     const navigate = useNavigate()
+    let attachments = null;
 
     // let ftp: File | undefined;
 
@@ -30,23 +33,14 @@ const Ticket: React.FC<TicketProps> = ({ setNotificationMessage }) => {
     }, []);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file: File | null = e.target.files?.[0] || null;
-
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setImageUrl(reader.result as string);
-                setFtp(file);
-                console.log('ftp:', ftp);
-            };
-            reader.readAsDataURL(file);
-        }
+        const file: FileList | null = e.target.files;
+        setFile(file);
     };
-
 
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
 
         if (title === '' || description === '') {
             toast.error('Please fill in all the input fields.', {
@@ -55,35 +49,41 @@ const Ticket: React.FC<TicketProps> = ({ setNotificationMessage }) => {
             return;
         }
 
-        if (!ftp) {
-            toast.error('Please select a file to upload.', {
-                position: toast.POSITION.BOTTOM_RIGHT,
-            });
-            return;
-        }
+        // if (!ftp) {
+        //     toast.error('Please select a file to upload.', {
+        //         position: toast.POSITION.BOTTOM_RIGHT,
+        //     });
+        //     return;
+        // }
 
             setLoading(true);
 
-            let attach = document.querySelector('#attachment');
-
-            const formData = new FormData();
-            /*formData.append('department', department?.label || '');
-            formData.append('title', title);
-            formData.append('description', description);*/
-            formData.append('attachment', imageUrl);
+        //     let attach = document.querySelector('#attachment');
+        //     const formData1 = new FormData();
+        //
+        // const formData = new FormData();
+        // /*formData.append('department', department?.label || '');
+        // formData.append('title', title);
+        // formData.append('description', description);*/
+        // formData.append('attachment', imageUrl);
 
             // console.log('Selected file:', ftp);
+        const formData = new FormData();
 
-            alert(department?.label || '')
+
+
+        console.log(uploadedFile);
+        // alert(department?.label || '')
             await fetch('http://localhost:8080/api/v1/tickets?department=' + department?.label +
                 '&title='+ title + '&description=' + description, {
                 method: 'POST',
                 headers: {
-                    // 'Content-Type': 'multipart/form-data; boundary=----123',
-                    Authorization: 'Basic ' + localStorage.getItem('email_password_credentials'),
-                },
-                body: formData,
+                    'Content-Type': 'multipart/form-data; boundary=----123',
+                    Authorization: 'Basic ' + localStorage.getItem('email_password_credentials')
+                }
+                // body: formData,
             }).then(response => {
+                // alert('hello')
                 if (response.ok) {
                     // Show success toast notification
                     toast.success('Ticket submitted successfully!', {
@@ -191,7 +191,6 @@ const Ticket: React.FC<TicketProps> = ({ setNotificationMessage }) => {
                         <input
                             className="ticket-form-group-attachment"
                             type="file"
-                            className="form-control-file"
                             id="attachment"
                             onChange={handleFileChange}
                         />
@@ -202,16 +201,18 @@ const Ticket: React.FC<TicketProps> = ({ setNotificationMessage }) => {
                     {/*    </div>*/}
                     {/*)}*/}
 
-                        <button type="submit" className="ticket-submit-button" disabled={loading}>
+                    <div className={`button-layout-flex`}>
+                        <button type="submit" disabled={loading} className={`ticket-submit-button`}>
                             {loading ? (
                                 <ClipLoader color="#ffffff" loading={loading} css={override} size={20} />
                             ) : (
                                 'Raise Ticket'
                             )}
                         </button>
+                        <button onClick={openMyTickets} className={`my-tickets-button `}>My Tickets</button>
+                    </div>
 
                 </form>
-                <div><button onClick={openMyTickets} className={`my-tickets-button`}>My Tickets</button></div>
 
                 <ToastContainer />
             </div>

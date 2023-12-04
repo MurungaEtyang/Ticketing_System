@@ -14,36 +14,36 @@ const DowngradeUser = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-            try {
-                await fetch('http://localhost:8080/api/v1/users/management/downgrade?username='+ user.label +
-                    '&role_to_remove=' + role.label, {
-                    method: 'GET',
-                    headers: {
-                        Authorization: 'Basic ' + localStorage.getItem('email_password_credentials'),
-                    }
-                }).then((response) => {
-                    if (response.ok) {
+        try {
+            await fetch('http://localhost:8080/api/v1/users/management/downgrade?username='+ user.label +
+                '&role_to_remove=' + role.label, {
+                method: 'GET',
+                headers: {
+                    Authorization: 'Basic ' + localStorage.getItem('email_password_credentials'),
+                }
+            }).then((response) => {
+                if (response.ok) {
 
-                        toast.success('User demoted successful!', {
-                            position: toast.POSITION.TOP_RIGHT,
-                        });
-                    } else {
-                        const errorResponse = response.json();
-                        throw new Error(errorResponse.message);
-                    }
-                }).catch((err) => {
-                    toast.error(err.message, {
-                        position: toast.POSITION.BOTTOM_RIGHT,
+                    toast.success('User demoted successful!', {
+                        position: toast.POSITION.TOP_RIGHT,
                     });
-                }).finally(() => {
-                    setUser(null);
-                    setUser(null);
-                    setLoading(false);
+                } else {
+                    const errorResponse = response.json();
+                    throw new Error(errorResponse.message);
+                }
+            }).catch((err) => {
+                toast.error(err.message, {
+                    position: toast.POSITION.BOTTOM_RIGHT,
                 });
-            }catch (err) {
-                alert(err.message)
+            }).finally(() => {
+                setUser(null);
+                setUser(null);
                 setLoading(false);
-            }
+            });
+        }catch (err) {
+            alert(err.message)
+            setLoading(false);
+        }
         setLoading(false);
 
     };
@@ -94,13 +94,14 @@ const DowngradeUser = () => {
             <div className="container">
                 <div className="row justify-content-center">
                     <div className="col-md-6">
-                        <div className="card">
-                            <div className="card-body">
+                        <div className="create-dept-card">
+                            <div className="create-dept-card-body">
                                 <h3 className="card-title">DEMOTE USERS</h3>
                                 <form onSubmit={handleSubmit}>
-                                    <div className="form-group">
+                                    <div className="form-group-create">
                                         <label htmlFor="roles">ROLES *</label>
                                         <Select
+                                            className={`select`}
                                             required
                                             options={roles.map((dept) => ({ value: dept, label: dept }))}
                                             value={role}
@@ -110,6 +111,7 @@ const DowngradeUser = () => {
 
                                         <label htmlFor="users">USER *</label>
                                         <Select
+                                            className={`select`}
                                             required
                                             options={users}
                                             value={user}
@@ -117,13 +119,15 @@ const DowngradeUser = () => {
                                             isSearchable
                                         />
                                     </div>
-                                    <button type="submit" className="btn btn-primary" disabled={loading}>
-                                        {loading ? (
-                                            <ClipLoader color="#ffffff" loading={loading} size={20} />
-                                        ) : (
-                                            'Demote Users'
-                                        )}
-                                    </button>
+                                    <div className={`form-group-create`}>
+                                        <button type="submit" className="create-elevate-button" disabled={loading}>
+                                            {loading ? (
+                                                <ClipLoader color="#ffffff" loading={loading} size={20} />
+                                            ) : (
+                                                'Demote Users'
+                                            )}
+                                        </button>
+                                    </div>
                                 </form>
                             </div>
                         </div>

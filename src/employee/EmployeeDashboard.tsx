@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaUsers, FaUser } from "react-icons/fa";
+import {FaUsers, FaUser, FaBook} from "react-icons/fa";
 import { BsToggleOff, BsToggleOn } from "react-icons/bs";
 import AssignedTicket from "./AssignedTicket.tsx";
 import AcceptRefer from "./AcceptRefer";
@@ -8,6 +8,7 @@ import "./AssignedTicket.css";
 import { useNavigate } from 'react-router-dom';
 
 const EmployeeDashboard: React.FC = () => {
+    const email = localStorage.getItem('login_emails')
     const navigate = useNavigate()
     const [UserRefer, setUserRefer] = useState(false);
     const [isSideNavCollapsed, setIsSideNavCollapsed] = useState(true);
@@ -19,14 +20,16 @@ const EmployeeDashboard: React.FC = () => {
             headers: {
                 "Authorization": "Basic " + localStorage.getItem('email_password_credentials')
             },
-        });
-        if (response.status == 204) {
-            navigate("/");
-            return;
-        }else{
-            alert("Logout failed.");
-        }
+        }).then(response => navigate('/')).catch(error => navigate('/'));
     };
+
+    const handleManageEmployee = () => {
+        navigate('/employee')
+    }
+
+    const handleManageRefer = () => {
+        navigate('/referral')
+    }
 
     const handleDropdownManageReferUsers = () => {
         setUserRefer(true);
@@ -68,7 +71,7 @@ const EmployeeDashboard: React.FC = () => {
                     <div className={`employee-logo`}>
                         <img src={Logo} alt="Logo" />
                         <button onClick={handleLogout} className="logout-button">
-                            Logout
+                            {email}
                         </button>
                     </div>
                     <div className="profile-email">
@@ -87,7 +90,10 @@ const EmployeeDashboard: React.FC = () => {
                         {isSideNavCollapsed ? <BsToggleOn /> : <BsToggleOff />}
                     </button>
                     <div className="users-management-dropdown">
-                        <button className="Ticket-Assignment-button" onClick={handleDropdownManageReferUsers}>
+                        <button className="Ticket-Assignment-button" onClick={handleManageEmployee}>
+                            {isSideNavCollapsed ? <FaBook /> : "Tickets"}
+                        </button>
+                        <button className="Ticket-Assignment-button" onClick={handleManageRefer}>
                             {isSideNavCollapsed ? <FaUsers /> : "Referrals"}
                         </button>
                         {/*{UserRefer && (*/}

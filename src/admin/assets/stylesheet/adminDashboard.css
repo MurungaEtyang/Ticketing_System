@@ -29,7 +29,7 @@
 }
 
 .side-nav-bar {
-    background-color: #007bff;
+    background: #406ee5;
     padding: 10px;
     width: 200px;
     position: fixed;
@@ -138,10 +138,11 @@
 }
 
 .close-button {
+    background-color: rgba(169, 181, 211, 0.38);
     position: absolute;
     top: 10px;
     right: 10px;
-    background-color: transparent;
+    /*background-color: transparent;*/
     border: none;
     cursor: pointer;
     color: white;

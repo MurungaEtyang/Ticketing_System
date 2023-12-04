@@ -9,7 +9,7 @@ import CreateDepartment from "./department/CreateDepartment.tsx";
 import Registration from "./users/Registration.tsx";
 import AllUser from "./users/AllUser.tsx";
 import ElevateUser from "./users/ElevateUser.tsx";
-import DowngradeUser from "./users/DowngradeUser.tsx";
+import DowngradeUser, {ToastNotificationRegitration} from "./users/DowngradeUser.tsx";
 import DepartmentTicket from "./HODManagement/DepartmentTicket";
 import Logo from "../assets/component/images/Logo.png";
 import AssignedTicket from "../employee/AssignedTicket";
@@ -43,22 +43,12 @@ const AdminDashboard: React.FC = () => {
     const [isSideNavCollapsed, setIsSideNavCollapsed] = useState(true);
 
     const handleLogout = async () => {
-
-            const response = await fetch("http://localhost:8080/logout", {
-                method: "GET",
-                headers: {
-                    "Authorization": "Basic " + localStorage.getItem('email_password_credentials')
-                },
-            })
-
-        if (response.status == 204) {
-            const navigate = useNavigate();
-            navigate("/");
-            return;
-        }else{
-            alert("Logout failed.");
-        }
-
+        const response = await fetch("http://localhost:8080/logout", {
+            method: "GET",
+            headers: {
+                "Authorization": "Basic " + localStorage.getItem('email_password_credentials')
+            },
+        }).then(response => navigate('/')).catch(error => navigate('/'));
     };
 
     const handleDropdownManageUsers = () => {
@@ -122,6 +112,7 @@ const AdminDashboard: React.FC = () => {
     if (department == "ADMIN" || department == "OWNER") {
         return (
             <body>
+            <ToastNotificationRegitration/>
             <>
                 <div className={`admin-dashboard-container ${isSideNavCollapsed ? "collapsed" : ""}`}>
 
@@ -129,13 +120,12 @@ const AdminDashboard: React.FC = () => {
 
                         <div>
                             <img src={Logo} alt="Logo" />
-                            <button onClick={handleLogout} className="logout-button">Logout</button>
+                            <button onClick={handleLogout} className="logout-button">
+                                {email}
+                            </button>
                         </div>
 
-                        <div className="profile">
-                            <p>{email}</p>
 
-                        </div>
                     </nav>
 
                     <div className={`side-nav-bar raised ${isSideNavCollapsed ? "collapsed" : ""}`}>
@@ -220,13 +210,13 @@ const AdminDashboard: React.FC = () => {
                                         className="Department-Management-dropdown-button"
                                         onClick={() => handleDropdownItemClick("CreateDepartment")}
                                     >
-                                        {isSideNavCollapsed ? <FaPlusSquare/> : 'Department Management'}
+                                        {isSideNavCollapsed ? <FaPlusSquare/> : 'Create Department'}
                                     </button>
                                     <button
                                         className="Department-Management-dropdown-button"
                                         onClick={() => handleDropdownItemClick("AddUsersToDepartment")}
                                     >
-                                        {isSideNavCollapsed ? <AiOutlineFileAdd /> : 'Department Management'}
+                                        {isSideNavCollapsed ? <AiOutlineFileAdd /> : 'Add Users To Department'}
                                     </button>
                                 </div>
                             )}
@@ -234,7 +224,7 @@ const AdminDashboard: React.FC = () => {
                     </div>
                 </div>
                 {renderAssociatedFiles()}
-                <AnalogClock />
+                {/*<AnalogClock />*/}
             </>
             </body>
         );
@@ -276,18 +266,19 @@ const AdminDashboard: React.FC = () => {
                     <nav className="nav-container">
                         <div>
                             <img src={Logo} alt="Logo" />
-                            <button onClick={handleLogout} className="logout-button">Logout</button>
+                            <button onClick={handleLogout} className="logout-button">
+                                {email}
+                            </button>
                         </div>
 
                         <div className="profile">
-                            <p>{email}</p>
-                            {/*<img src={profileImage} alt="Profile" />*/}
+
                         </div>
                     </nav>
 
                     <div className={`side-nav-bar raised ${isSideNavCollapsed ? "collapsed" : ""}`}>
                         <button
-                            onClick={handleToggleSideNav}
+                            /*onClick={handleToggleSideNav}*/
                             className="toggle-sidenav-button"
                             style={{
                                 backgroundColor: isSideNavCollapsed ? "green" : "blue",
@@ -296,7 +287,7 @@ const AdminDashboard: React.FC = () => {
                             {isSideNavCollapsed ? <BsToggleOn /> : <BsToggleOff />}
                         </button>
                         <div className="users-management-dropdown">
-                            <button className="Ticket-Assignment-button" onClick={handleDropdownManageReferUsers}>
+                            <button className="Ticket-Assignment-button" /*onClick={handleDropdownManageReferUsers}*/>
                                 {isSideNavCollapsed ? <FaUsers /> : "Referrals"}
                             </button>
                         </div>

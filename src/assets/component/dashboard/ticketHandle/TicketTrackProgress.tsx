@@ -3,7 +3,9 @@ import React, { useState } from "react";
 import {toast, ToastContainer} from "react-toastify";
 
 const TicketTrackProgress = () => {
-    const ticketId = localStorage.getItem('ticket_number');
+    const ticketId = sessionStorage.getItem('ticket_number');
+    const requestMessage = sessionStorage.getItem('ticket_title')
+    const ticketMessage = sessionStorage.getItem('ticket_message')
     const [message, setMessage] = useState('');
     const [satisfied, setSatisfied] = useState(true);
     const [rating, setRating] = useState(0);
@@ -11,15 +13,6 @@ const TicketTrackProgress = () => {
     const [error, setError] = useState('');
     const [ticketProgress, setTicketProgress] = useState<{ status: string; color: string }[]>([]);
     const [showRatingContent, setShowRatingContent] = useState(false);
-    // const currentStatus = ticketProgress[ticketProgress.length - 1]?.status;
-
-    const showRating = () => {
-        setShowRatingContent(!showRatingContent);
-    }
-
-    const handleStarClick = (value: number) => {
-        setRating(value);
-    };
 
 
     const handleFormSubmit = async (event: React.FormEvent) => {
@@ -30,8 +23,9 @@ const TicketTrackProgress = () => {
             setIsLoading(true);
 
             let encodeId =(encodeURIComponent(ticketId))
+            console.log(encodeId)
 
-            await fetch("http://localhost:8080/api/v1/tickets/feedback?ticket_number=" + encodeURIComponent(encodeId)+
+            await fetch("http://localhost:8080/api/v1/tickets/feedback?ticket_number=" + encodeId +
                     "&feedback=" + message + "&satisfied=" + satisfied + "&rating=" + rating,
                 {
                     method: "POST",
@@ -81,44 +75,21 @@ const TicketTrackProgress = () => {
                         <h3 className="rating-card-title">Ticket Feedback</h3>
                         <form onSubmit={handleFormSubmit}>
                             <div className="rating-form-group">
-                                <label htmlFor="message">Message</label>
-                                <textarea
-                                    id="message"
-                                    value={message}
-                                    onChange={(e) => setMessage(e.target.value)}
-                                ></textarea>
+                                <label htmlFor="message">Ticket Request</label>
+                                <div className={`ticket-response-info`}>
+                                    <div className={`senders-info`}>
+                                        <h2>{requestMessage}</h2>
+                                        <p>{ticketMessage}</p>
+                                        <p>{ticketId}</p>
+                                    </div>
 
-                                <label htmlFor="satisfied">Satisfied</label>
-                                <select
-                                    className="form-control satisfied-dropdown"
-                                    id="satisfied"
-                                    value={satisfied ? 'yes' : 'no'}
-                                    onChange={(e) => setSatisfied(e.target.value === 'yes')}
-                                >
-                                    <option value="yes">Yes</option>
-                                    <option value="no">No</option>
-                                </select>
-
-                                <label htmlFor="rating">Rating</label>
-                                <div className="rating">
-                                    {[1, 2, 3, 4, 5].map((value) => (
-                                        <React.Fragment key={value}>
-                                            <input
-                                                type="radio"
-                                                id={`star${value}`}
-                                                name="rating"
-                                                value={value}
-                                                checked={rating === value}
-                                                onChange={() => handleStarClick(value)}
-                                            />
-                                            <label htmlFor={`star${value}`} className={`star ${rating >= value ? 'selected' : ''}`}>
-                                                &#9733;
-                                            </label>
-                                        </React.Fragment>
-                                    ))}
+                                    <div className={`responded-info`}>
+                                        <h2>Solution</h2>
+                                        <p>{ticketMessage}</p>
+                                    </div>
                                 </div>
                             </div>
-                            <button onClick={handleFormSubmit} type="submit" className="btn btn-primary" disabled={isLoading}>
+                            <button onClick={handleFormSubmit} type="submit" className="feedback-button" disabled={isLoading}>
                                 {isLoading ? 'Submitting...' : 'Submit'}
                             </button>
                             {error && <div className="error">{error}</div>}

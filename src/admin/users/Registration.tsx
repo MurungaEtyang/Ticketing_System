@@ -4,7 +4,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import ClipLoader from 'react-spinners/ClipLoader';
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
-import '../../assets/component/stylesheeet/registration.css'
+import '../assets/stylesheet/createDepartmentTicket.css'
 
 const Registration = () => {
     const [email, setEmail] = useState('');
@@ -88,14 +88,14 @@ const Registration = () => {
             <div className="container">
                 <div className="row justify-content-center">
                     <div className="col-md-6">
-                        <div className="card">
-                            <div className="card-body">
+                        <div className="create-dept-card">
+                            <div className="create-dept-card-body">
                                 <h3 className="card-title">ADD USERS</h3>
                                 <form onSubmit={handleSubmit}>
-                                    <div className="form-group">
+                                    <div className="form-group-create">
                                         <label htmlFor="department">Roles *</label>
                                         <Select
-
+                                            className={`select`}
                                             required
                                             options={roles.map((dept) => ({ value: dept, label: dept }))}
                                             value={role}
@@ -103,7 +103,7 @@ const Registration = () => {
                                             isSearchable
                                         />
                                     </div>
-                                    <div className="form-group">
+                                    <div className="form-group-create">
                                         <label htmlFor="email">Email *</label>
                                         <input
                                             required
@@ -114,7 +114,7 @@ const Registration = () => {
                                             onChange={(e) => setEmail(e.target.value)}
                                         />
                                     </div>
-                                    <div className="form-group">
+                                    <div className="form-group-create">
                                         <label htmlFor="password">Password *</label>
                                         <input
                                             required
@@ -125,13 +125,15 @@ const Registration = () => {
                                             onChange={(e) => setPassword(e.target.value)}
                                         />
                                     </div>
-                                    <button type="submit" className="btn btn-primary" disabled={loading}>
-                                        {loading ? (
-                                            <ClipLoader color="#ffffff" loading={loading} size={20} />
-                                        ) : (
-                                            'Register'
-                                        )}
-                                    </button>
+                                    <div className={`form-group-create`}>
+                                        <button type="submit" className="create-dept-button" disabled={loading}>
+                                            {loading ? (
+                                                <ClipLoader color="#ffffff" loading={loading} size={20} />
+                                            ) : (
+                                                'Register'
+                                            )}
+                                        </button>
+                                    </div>
                                 </form>
                             </div>
                         </div>

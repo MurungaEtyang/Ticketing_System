@@ -98,7 +98,7 @@ const AssignTicket = () => {
         <div className="assign-ticket-container">
 
                 <form onSubmit={handleSubmit}>
-                    <div>
+                    <div className="form-group">
                         <label htmlFor="assignTo">Assign To:</label>
                         <select
                             id="assignTo"
@@ -130,19 +130,19 @@ const AssignTicket = () => {
                     </div>
                     <div>
 
-                        <div>
+                        <div className="form-group">
                             <label htmlFor="deadline">Deadline:</label>
                             <DatePicker
+                                className={`datepicker`}
                                 id="deadline"
                                 value={deadline}
                                 onChange={handleDeadlineChange}
                                 dateFormat="dd/MM/yyyy"
                                 placeholderText="Select a date"
-
                             />
                         </div>
                     </div>
-                    <div>
+                    <div className={`assign-button-1`}>
                         {isLoading ? (
                             <BeatLoader color="#000000" size={30}/>
                         ) : (

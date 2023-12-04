@@ -1,6 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const path = require('src/assets/component/Home.tsx');
-
 // eslint-disable-next-line no-undef
 module.exports = {
     entry: './src/index.js', // Replace with the entry file of your application

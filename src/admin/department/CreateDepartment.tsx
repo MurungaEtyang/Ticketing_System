@@ -96,21 +96,20 @@ const CreateDepartment = () => {
         <div className="container">
             <div className="row justify-content-center">
                 <div className="col-md-6">
-                    <div className="card">
-                        <div className="card-body">
+                    <div className="create-dept-card">
+                        <div className="create-dept-card-body">
                             <h3 className="card-title">Create Department</h3>
                             <form onSubmit={handleSubmit}>
-                                <div className="form-group">
+                                <div className="form-group-create">
                                     <label htmlFor="nameOfDepart">Name of Department *</label>
                                     <input
                                         type="text"
-                                        className="form-control"
                                         id="department"
                                         value={nameOfDepartment}
                                         onChange={(e) => setNameOfDepartment(e.target.value)}
                                     />
                                 </div>
-                                <div className="form-group">
+                                <div className="form-group-create">
                                     <label htmlFor="nameOfDepart">Email of Department *</label>
                                     <input
                                         type="text"
@@ -120,22 +119,27 @@ const CreateDepartment = () => {
                                         onChange={(e) => setEmailOfDepartment(e.target.value)}
                                     />
                                 </div>
-                                <div className="form-group">
+                                <div className="form-group-create">
                                     <label htmlFor="HeadOfDepart">Head of Department *</label>
                                     <Select
+                                        className={`select`}
                                         options={userOptions}
                                         isSearchable
                                         placeholder="Search for users..."
                                         onChange={(selectedOption) => setHeadOfDepartment(selectedOption)}
                                     />
                                 </div>
-                                <button type="submit" className="btn btn-primary" disabled={loading}>
-                                    {loading ? (
-                                        <ClipLoader color="#ffffff" loading={loading} css={override} size={20} />
-                                    ) : (
-                                        'Submit'
-                                    )}
-                                </button>
+
+                                <div className={`form-group-create`}>
+                                    <button type="submit" className="create-dept-button" disabled={loading}>
+                                        {loading ? (
+                                            <ClipLoader color="#ffffff" loading={loading} css={override} size={20} />
+                                        ) : (
+                                            'Submit'
+                                        )}
+                                    </button>
+                                </div>
+
                             </form>
                         </div>
                     </div>

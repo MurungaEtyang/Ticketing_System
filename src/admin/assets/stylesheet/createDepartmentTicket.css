@@ -1,3 +1,80 @@
 .form-group{
     color: #1a1a1a;
 }
+.form-group label{
+    color: white;
+}
+.create-dept-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    width: 800px;
+    height: 700px;
+    height: fit-content;
+    background-color: #007bff;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 20px rgb(12, 40, 68);
+}
+
+.form-group-create input{
+    width: 600px;
+    height: 30px;
+    color: black;
+    background-color: white;
+    font-size: 20px;
+    font-family: "Times New Roman";
+}
+
+.form-group-create .select{
+    color: black;
+}
+
+.form-group-create .create-dept-button{
+    transform: translate(20%, -20%);
+    margin: 30px;
+    margin-right: 50px;
+    padding-top: 20px;
+    width: 400px;
+    background-color: blue;
+    border-color: rgba(255, 255, 255, 0.51);
+    color: black;
+    font-size: 20px;
+}
+.form-group-create .create-dept-button:hover{
+    background-color: green;
+}
+
+.form-group-create .create-add-button{
+    transform: translate(2%, -10%);
+    margin: 30px;
+    margin-right: 50px;
+    padding-top: 20px;
+    width: 400px;
+    background-color: blue;
+    border-color: rgba(255, 255, 255, 0.51);
+    color: black;
+    font-size: 20px;
+}
+.form-group-create .create-add-button:hover{
+    background-color: green;
+}
+
+.form-group-create .create-elevate-button{
+    transform: translate(2%, -10%);
+    margin: 30px;
+    margin-right: 50px;
+    padding-top: 20px;
+    width: 400px;
+    background-color: blue;
+    border-color: rgba(255, 255, 255, 0.51);
+    color: black;
+    font-size: 20px;
+}
+.form-group-create .create-elevate-button:hover{
+    background-color: green;
+}
