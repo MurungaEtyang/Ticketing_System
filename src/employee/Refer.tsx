@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { BeatLoader } from 'react-spinners';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import '../../src/admin/assets/stylesheet/AssignTicket.css'
-import moment from "moment";
+import '../../src/admin/assets/stylesheet/AssignTicket.css';
+import './refer.css';
 
-const Reffal = () => {
+const Refer = () => {
     const [isLoading, setIsLoading] = useState(false);
-    const ticketId = localStorage.getItem('ticket_number')
+    const ticketId = sessionStorage.getItem('employee_ticket_number')
     const [assignTo, setAssignTo] = useState('');
     const [deadline, setDeadline] = useState('');
     const [assignToOptions, setAssignToOptions] = useState<string[]>([]);
     const [showForm, setShowForm] = useState(false);
-
+    const [message, setMessage] = useState('');
 
 
     useEffect(() => {
@@ -121,18 +120,25 @@ const Reffal = () => {
                             </option>
                         ))}
                     </select>
-                </div>
-                <div className={`button-layout-flex`}>
-                    {isLoading ? (
-                        <BeatLoader color="#000000" size={30}/>
-                    ) : (
 
-                        <button onClick={handleSubmit} type="submit" className={`my-tickets-button`}>
-                            refer
-                        </button>
-
-                    )}
                 </div>
+                <div className={`refer-message`}>
+                    <textarea
+                        required
+                        value={message}
+                        onChange={event => setMessage(event.target.value)}
+                    ></textarea>
+                </div>
+
+
+                {isLoading ? (
+                    <BeatLoader color="#000000" size={30}/>
+                ) : (
+                    <button onClick={handleSubmit} type="submit" className={`my-tickets-button`}>
+                        refer
+                    </button>
+                )}
+
             </form>
 
             <ToastContainer/>
@@ -140,4 +146,4 @@ const Reffal = () => {
     );
 }
 
-export default Reffal;
+export default Refer;

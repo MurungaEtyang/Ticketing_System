@@ -3,7 +3,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import {faCheck, faDownload} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from 'react-router-dom';
-import Reffal from "./Reffal";
+import Refer from "./Refer";
 import {toast} from "react-toastify";
 import '../admin/assets/stylesheet/GetAllTickets.css';
 import {FaBook, FaShare, FaUsers} from "react-icons/fa";

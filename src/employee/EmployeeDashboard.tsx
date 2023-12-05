@@ -4,7 +4,7 @@ import { BsToggleOff, BsToggleOn } from "react-icons/bs";
 import AssignedTicket from "./AssignedTicket.tsx";
 import AcceptRefer from "./AcceptRefer";
 import Logo from "../assets/component/images/Logo.png";
-import "./AssignedTicket.css";
+import "../assets/component/stylesheeet/AssignedTicket.css";
 import { useNavigate } from 'react-router-dom';
 
 const EmployeeDashboard: React.FC = () => {

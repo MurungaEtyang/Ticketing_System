@@ -1,4 +1,4 @@
-import './TicketTrackProgrss.css'
+import '../../stylesheeet/TicketTrackProgrss.css'
 import React, { useState } from "react";
 import {toast, ToastContainer} from "react-toastify";
 
@@ -72,15 +72,12 @@ const TicketTrackProgress = () => {
         <>
             <div className="ticket-progress-container">
                     <div className="rating-card-body">
-                        <h3 className="rating-card-title">Ticket Feedback</h3>
                         <form onSubmit={handleFormSubmit}>
                             <div className="rating-form-group">
-                                <label htmlFor="message">Ticket Request</label>
                                 <div className={`ticket-response-info`}>
                                     <div className={`senders-info`}>
                                         <h2>{requestMessage}</h2>
                                         <p>{ticketMessage}</p>
-                                        <p>{ticketId}</p>
                                     </div>
 
                                     <div className={`responded-info`}>

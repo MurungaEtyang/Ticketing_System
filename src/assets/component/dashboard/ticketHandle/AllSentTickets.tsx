@@ -4,7 +4,7 @@ import '../../../../admin/assets/stylesheet/GetAllTickets.css';
 import {faBell, faDownload} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import TicketTrackProgress from "./TicketTrackProgress";
-import './AllSentTickets.css'
+import '../../stylesheeet/AllSentTickets.css'
 import Logo from "../../images/Logo.png";
 import { useNavigate } from 'react-router-dom';
 import {BsToggleOff, BsToggleOn} from "react-icons/bs";

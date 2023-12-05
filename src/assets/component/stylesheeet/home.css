@@ -166,7 +166,7 @@ h1 {
     .home {
         display: flex;
         justify-content: center;
-        align-items: flex-start; /* Align items to the top */
+        align-items: flex-start;
         height: 100vh;
     }
 

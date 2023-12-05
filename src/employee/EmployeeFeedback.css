@@ -1,0 +1,64 @@
+.employee-senders-info{
+    background-color: rgba(248, 248, 255, 0.73);
+    font-family: "Times New Roman";
+    border-bottom: 2px solid;
+    border-radius: 10px;
+    height: 100%;
+    margin: 12px;
+    min-width: 20px;
+    min-height: 150px;
+    max-height: 150px;
+    color: #2b4b2c;
+    overflow-y: auto;
+}
+
+.employee-senders-info h2{
+    /*color: black;*/
+    margin: 12px;
+}
+
+.employee-senders-info p{
+    /*color: rgba(0, 0, 0, 0.84);*/
+    margin: 12px;
+    font-size:larger;
+}
+.employee-rating-form-group .employee-respond-message-input{
+    margin: 12px;
+    border-radius: 10px;
+    height: 100%;
+    background-color: #747bff;
+    font-family: "Times New Roman";
+    font-size: larger;
+}
+
+. employee-rating-form-group .employee-respond-message-input label{
+    margin: 12px;
+}
+
+.employee-rating-form-group .employee-respond-message-input textarea{
+    font-family: "Times New Roman";
+    font-size: larger;
+    color: black;
+    margin: 12px;
+    background-color: rgba(248, 248, 255, 0.73);
+    border-radius: 10px;
+    min-height: 100px;
+    max-height: 100px;
+    min-width: 550px;
+    max-width: 500px;
+}
+
+.button-employee-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.button-employee-container button{
+    background-color: blue;
+    width: 40%;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+.button-employee-container button:hover{
+    background-color: green;
+}

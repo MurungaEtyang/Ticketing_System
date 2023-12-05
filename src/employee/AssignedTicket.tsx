@@ -3,8 +3,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import {faCheck, faDownload} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from 'react-router-dom';
-import Reffal from "./Reffal";
+import Refer from "./Refer";
 import {toast} from "react-toastify";
+import EmployeeFeedback from "./EmployeeFeedback";
 // import '../assets/stylesheet/GetAllTickets.css';
 // import DepartmentAssignTicket from "./DepartmentAssignTicket";
 
@@ -17,8 +18,10 @@ const AssignedTicket = () => {
     const [loading, setLoading] = useState(false);
     const [showAssignTicketModal, setShowAssignTicketModal] = useState(false);
     const [loadingStates, setLoadingStates] = useState({});
+    const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
 
     const modalRef = useRef(null);
+
 
     const sortTicketsByStatus = (data) => {
         const statusOrder = { OPEN: 0, ASSIGNED: 1, SUBMITTED: 2, CLOSED: 3 };
@@ -125,9 +128,11 @@ const AssignedTicket = () => {
             });
     };
 
-    const handleCellClickAssign = (event, ticketId) => {
+    const handleCellClickAssign = (event, ticketId, ticketTitle, ticketDescription) => {
         event.preventDefault();
-        localStorage.setItem('ticket_number', ticketId);
+        sessionStorage.setItem('employee_ticket_number', ticketId);
+        sessionStorage.setItem('employee_ticket_title', ticketTitle);
+        sessionStorage.setItem('employee_ticket_Description', ticketDescription);
         setShowAssignTicketModal(true);
     };
 
@@ -218,9 +223,9 @@ const AssignedTicket = () => {
                                         <thead>
                                         <tr >
                                             <th>Ticket</th>
-                                            <th>Title</th>
-                                            <th>Description</th>
-                                            <th>Submit</th>
+                                            {/*<th>Title</th>*/}
+                                            {/*<th>Description</th>*/}
+                                            {/*<th>Submit</th>*/}
                                             <th>status</th>
                                             <th>Raised By</th>
                                             <th>Department</th>
@@ -232,31 +237,15 @@ const AssignedTicket = () => {
                                         {tickets.map(ticket => (
                                             <tr key={ticket.id}>
                                                 <td>
-                                                    <button className={`ticketButton`} onClick={(event) => handleCellClickAssign(event, ticket.ticketNumber)} style={{ cursor: 'pointer' }}>
+                                                    <button className={`ticketButton`} onClick={(event) =>
+                                                        handleCellClickAssign(event, ticket.ticketNumber, ticket.title, ticket.description)} style={{ cursor: 'pointer' }}>
                                                         {ticket.ticketNumber}
                                                     </button>
                                                 </td>
-                                                <td>{ticket.title}</td>
-                                                <td className="description-column">{ticket.description}</td>
-                                                <td><button
-                                                    type="button"
-                                                    onClick={() => {
-                                                        setTicketLoadingState(ticket.ticketNumber, true);
-                                                        submitTicket(ticket.ticketNumber, ticket.status);
-                                                    }}
-                                                    disabled={loadingStates[ticket.ticketNumber]}
-                                                >
-                                                    {loadingStates[ticket.ticketNumber] ? "Submitting..." : <FontAwesomeIcon icon={faCheck} />}
-                                                </button></td>
 
                                                 <td>{ticket.status}</td>
                                                 <td>{ticket.raisedBy}</td>
                                                 <td>{ticket.departmentAssigned}</td>
-                                                {/*<td>*/}
-                                                {/*    <button type="button" onClick={() => downloadTicket(ticket.id)}>*/}
-                                                {/*        <FontAwesomeIcon icon={faDownload} />*/}
-                                                {/*    </button>*/}
-                                                {/*</td>*/}
                                                 <td>
                                                 <span style={{ color: getProgressColor(ticket.status) }}>
                                                     {calculateProgressPercentage(ticket.status)}
@@ -277,7 +266,13 @@ const AssignedTicket = () => {
                         <button className="close-button" onClick={() => setShowAssignTicketModal(false)}>
                             X
                         </button>
-                        <Reffal />
+                        {/*{isFeedbackOpen && (*/}
+                        {/*    <div className="fade-effect">*/}
+                        {/*        <EmployeeFeedback />*/}
+                        {/*    </div>*/}
+                        {/*)}*/}
+
+                        <EmployeeFeedback />
                     </section>
                 )}</div>
             </form>

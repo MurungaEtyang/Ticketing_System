@@ -3,9 +3,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import {faCheck, faDownload} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from 'react-router-dom';
-import Reffal from "./Reffal";
+import Refer from "./Refer";
 import {toast} from "react-toastify";
-import './ticketDetails.css'
+import '../assets/component/stylesheeet/ticketDetails.css'
 // import '../assets/stylesheet/GetAllTickets.css';
 // import DepartmentAssignTicket from "./DepartmentAssignTicket";
 
@@ -174,7 +174,7 @@ const AssignedTicket = () => {
                         <button className="close-button" onClick={() => setShowAssignTicketModal(false)}>
                             X
                         </button>
-                        <Reffal />
+                        <Refer />
                     </section>
                 )}</div>
             </form>

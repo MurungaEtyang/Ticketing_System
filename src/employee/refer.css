@@ -1,0 +1,16 @@
+.refer-message textarea{
+    margin-top: 10px;
+    background-color: rgba(248, 248, 255, 0.73);;
+    border-radius: 10px;
+    min-height: 100px;
+    max-height: 100px;
+    min-width: 280px;
+    max-width: 280px;
+    color: black;
+    font-size: 18px;
+    font-family: "Times New Roman";
+}
+
+.refer-message button{
+    background-color: black;
+}
