@@ -7,7 +7,7 @@ import Select from 'react-select';
 import '../assets/stylesheet/createDepartmentTicket.css'
 
 const AddUserToDepartment = () => {
-    const [email, setEmail] = useState('');
+    const [email, setEmail] = useState<string[]>([]);
     const [department, setDepartment] = useState<{ department: string; }[]>([]);
     const [loading, setLoading] = useState(false);
     const [departments, setDepartments] = useState<string[]>([]);
@@ -42,15 +42,15 @@ const AddUserToDepartment = () => {
 
     const fetchEmails = async () => {
         try {
-            const response = await fetch('http://localhost:8080/api/v1/users/management/authority?authority=employee', {
+            const response = await fetch('http://localhost:8080/api/v1/users/report/nonDeptEmps', {
                 method: "GET",
                 headers: {
                     Authorization: 'Basic ' + localStorage.getItem('email_password_credentials')
                 }
             });
-            const data = await response.json();
-            const userNames = data.map((user) => user.username);
-            setEmails(userNames.map((name) => ({ emails: name })));
+            setEmails(await response.json());
+
+
         } catch (error) {
             console.error('Error fetching users:', error.message);
             console.log(error);
@@ -81,7 +81,7 @@ const AddUserToDepartment = () => {
             })
 
             // Reset the form fields
-            setEmail('');
+            setEmail(null);
             setDepartment(null);
 
             toast.success('success.', {
@@ -115,7 +115,7 @@ const AddUserToDepartment = () => {
                                     <Select
                                         className={`select`}
                                         required
-                                        options={emails.map((email) => ({ value: email.emails, label: email.emails }))}
+                                        options={emails.map((email) => ({ value: email, label: email }))}
                                         value={selectedEmail}
                                         onChange={(selectedOption) => setSelectedEmail(selectedOption)}
                                         isSearchable
