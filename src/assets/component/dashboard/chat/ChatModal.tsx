@@ -3,7 +3,6 @@ import './other-style.css';
 import { FaPaperPlane } from 'react-icons/fa';
 
 class ChatModal extends Component<void, any> {
-    =
     constructor(props) {
         super(props);
         alert(sessionStorage.getItem('ticket_sender'))
