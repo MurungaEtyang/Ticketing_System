@@ -5,6 +5,7 @@
     left: 10%;
     right: 0;
     overflow-y: auto;
+    background-color: rgb(64, 110, 229);
 }
 .card-users {
     margin: 20px;

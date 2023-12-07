@@ -69,7 +69,17 @@ const GetAllTickets = () => {
                         .then(data => {
                             const sortedData = sortTicketsByStatus(data);
                             setTickets(sortedData);
-                            console.log(response.json());
+                            const openTickets = sortedData.filter(tickets => tickets.status === 'OPEN');
+                            const assignedTickets = sortedData.filter(tickets => tickets.status === 'ASSIGNED');
+                            const submittedTickets = sortedData.filter(tickets => tickets.status === 'SUBMITTED');
+                            const closedTickets = sortedData.filter(tickets => tickets.status === 'CLOSED');
+                            const totalTickets = openTickets.length +assignedTickets.length +
+                                submittedTickets.length + closedTickets.length
+                            sessionStorage.setItem('total_tickets', totalTickets);
+                            sessionStorage.setItem('closed_tickets', closedTickets.length);
+                            sessionStorage.setItem('submitted_tickets', submittedTickets.length);
+                            sessionStorage.setItem('assigned_tickets', assignedTickets.length);
+                            sessionStorage.setItem('open_tickets', openTickets.length);
                         })
                         .catch(error => {
                             console.error('Error parsing JSON:', error.message);

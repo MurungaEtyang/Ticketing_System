@@ -7,7 +7,7 @@ const TicketTrackProgress = () => {
     const requestMessage = sessionStorage.getItem('ticket_title');
     const ticketMessage = sessionStorage.getItem('ticket_message');
     const ticketSolution = sessionStorage.getItem('ticket_solution');
-    const ticketRaisedBy = sessionStorage.getItem('ticket_sender');
+    const ticketRaisedBy = localStorage.getItem('ticket_sender');
     const ticketResponder = sessionStorage.getItem('ticket_responder');
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');

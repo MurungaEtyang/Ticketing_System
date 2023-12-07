@@ -5,10 +5,8 @@ import { FaPaperPlane } from 'react-icons/fa';
 class ChatModal extends Component<void, any> {
     constructor(props) {
         super(props);
-        alert(sessionStorage.getItem('ticket_sender'))
 
         //from tickets/AllsentTickets.tsx
-
         const storedMessages = sessionStorage.getItem('chatMessage');
         const initialMessages = storedMessages ? JSON.parse(storedMessages) : [];
 
@@ -38,7 +36,7 @@ class ChatModal extends Component<void, any> {
 
         const newMessages = [
             ...messages,
-            { sender: 'evans', content: newMessage },
+            { sender: localStorage.getItem('ticket_sender'), content: newMessage },
         ];
 
         setTimeout(() => {

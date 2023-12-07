@@ -154,7 +154,7 @@ const AllSentTickets = () => {
         sessionStorage.setItem('ticket_title', ticketTitle);
         sessionStorage.setItem('ticket_message', ticketMessage);
         sessionStorage.setItem('ticket_solution', ticketSolution);
-        sessionStorage.setItem('ticket_sender', ticketSender);
+        localStorage.setItem('ticket_sender', ticketSender);
         sessionStorage.setItem('ticket_responder', ticketResponder);
         setShowAssignTicketModal(true);
         setIsButtonClicked(true);

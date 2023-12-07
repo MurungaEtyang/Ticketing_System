@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {useLocation, useNavigate} from "react-router-dom";
 import './assets/stylesheet/adminDashboard.css'
-import logo from './assets/images/logo.jpeg'
 import AssignTicket from "./ticketAssignment/AssignTicket.tsx";
 import GetAllTickets from "./ticketAssignment/GetAllTickets.tsx";
 import AddUserToDepartment from "./department/AddUserToDepartment.tsx";
@@ -12,10 +11,12 @@ import ElevateUser from "./users/ElevateUser.tsx";
 import DowngradeUser, {ToastNotificationRegitration} from "./users/DowngradeUser.tsx";
 import DepartmentTicket from "./HODManagement/DepartmentTicket";
 import Logo from "../assets/component/images/Logo.png";
-import AssignedTicket from "../employee/AssignedTicket";
 import DepartmentAssignTicket from "./HODManagement/DepartmentAssignTicket";
 import {BsToggleOff, BsToggleOn} from "react-icons/bs";
 import {AiOutlineFileAdd, AiOutlineFileSearch} from "react-icons/ai";
+import { Chart as ChartJs, ArcElement, Tooltip, Legend } from "chart.js";
+import { Pie } from 'react-chartjs-2';
+
 import {
     FaUser,
     FaUsers,
@@ -24,13 +25,14 @@ import {
     FaTasks,
     FaListAlt,
     FaSitemap,
-    FaPlusSquare, FaUserFriends
+    FaPlusSquare, FaUserFriends, FaTachometerAlt
 } from "react-icons/fa";
 import AcceptRefer from "../employee/AcceptRefer";
-import AnalogClock from "./AnalogClock";
 
 
+ChartJs.register(ArcElement, Tooltip, Legend)
 const AdminDashboard: React.FC = () => {
+
     const navigate = useNavigate();
     const location = useLocation();
     const email = localStorage.getItem("login_emails")
@@ -41,6 +43,40 @@ const AdminDashboard: React.FC = () => {
     const [DepartmentTickets, setDepartmentTickets] = useState(false);
     const department = localStorage.getItem('data_authority');
     const [isSideNavCollapsed, setIsSideNavCollapsed] = useState(true);
+
+    //from AllUsers.tsx
+    const allUsers = sessionStorage.getItem('all-users');
+    const owners = sessionStorage.getItem('owners');
+    const admins = sessionStorage.getItem('admins');
+    const HODS = sessionStorage.getItem('hod');
+    const employees = sessionStorage.getItem('employees');
+    const regularUsers = sessionStorage.getItem('regular-users');
+
+    //from GetAllTickets.tsx
+
+    const totalTickets = sessionStorage.getItem('total_tickets');
+    const openTickets = sessionStorage.getItem('open_tickets');
+    const assignedTickets = sessionStorage.getItem('assigned_tickets');
+    const submittedTickets = sessionStorage.getItem('submitted_tickets');
+    const closedTickets = sessionStorage.getItem('closed_tickets');
+
+
+    const ticketData = {
+        labels: ['open tickets', 'Assigned Tickets', 'Submitted tickets', 'Closed tickets'],
+        datasets: [{
+            data: [openTickets, assignedTickets, submittedTickets, closedTickets],
+            backgroundColor: ['#0ff500', '#d0b305', '#3f40b6', '#053812'],
+        }]
+    }
+
+    const usersData = {
+        labels: ['Students', 'employees', 'Head of Department', 'Administrator', 'Super administrator'],
+        datasets: [{
+            data: [regularUsers, employees,HODS, admins, owners],
+            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
+        }]
+    }
+
 
     const handleLogout = async () => {
         const response = await fetch("http://localhost:8080/logout", {
@@ -71,10 +107,10 @@ const AdminDashboard: React.FC = () => {
         setSelectedMenuItem(menuItem);
     };
 
-
     const renderAssociatedFiles = () => {
             switch (selectedMenuItem) {
-
+                case "Dashboard":
+                    return <div><AdminDashboard /></div>
                 case "RegisterUser":
                     return <div><Registration /></div>;
                 case "ALLUsers":
@@ -128,6 +164,100 @@ const AdminDashboard: React.FC = () => {
 
                     </nav>
 
+                    <section className={`admin-content-section`}>
+                        <div className={`admin-content`}>
+                            <div className={'admin-content-data'}>
+                                <label>TOTAL USERS</label>
+                                <p>{allUsers}</p>
+                            </div>
+                            <div className={'admin-content-data'}>
+                                <label>STUDENTS</label>
+                                <p>{regularUsers}</p>
+                            </div>
+                            <div className={'admin-content-data'}>
+                                <label>EMPLOYEES</label>
+                                <p>{employees}</p>
+                            </div>
+                            <div className={'admin-content-data'}>
+                                <label>HOD</label>
+                                <p>{HODS}</p>
+                            </div>
+                            <div className={'admin-content-data'}>
+                                <label>SUPER USER</label>
+                                <p>{admins}</p>
+                            </div>
+                            <div className={'admin-content-data'}>
+                                <label>MAIN USER</label>
+                                <p>{owners}</p>
+                            </div>
+                        </div>
+
+                    {/*    tickets */}
+                        <div className={`ticket-content`}>
+                            <div className={'ticket-content-data'}>
+                                <label>TOTAL TICKETS</label>
+                                <p>{totalTickets}</p>
+                            </div>
+                            <div className={'ticket-content-data'}>
+                                <label>OPEN TICKETS</label>
+                                <p>{openTickets}</p>
+                            </div>
+                            <div className={'ticket-content-data'}>
+                                <label>ASSIGNED TICKETS</label>
+                                <p>{assignedTickets}</p>
+                            </div>
+                            <div className={'ticket-content-data'}>
+                                <label>CLOSED TICKETS</label>
+                                <p>{submittedTickets}</p>
+                            </div>
+                            <div className={'ticket-content-data'}>
+                                <label>CLOSED & RATED TICKETS</label>
+                                <p>{closedTickets}</p>
+                            </div>
+                        </div>
+                        <div style={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    height: '100vh',
+                                    overflow: "hidden"
+                                }}>
+                                    <div style={{
+                                        position: 'fixed',
+                                        top: '230px',
+                                        padding: '60px',
+                                        width: '400px',
+                                    }}>
+                                        <Pie
+                                            data={usersData}
+                                            // options={options}
+                                        ></Pie>
+                                    </div>
+                        </div>
+
+                        <div style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            height: '100vh',
+                            overflow: "hidden"
+                        }}>
+                            <div style={{
+                                position: 'fixed',
+                                left: '60%',
+                                top: '230px',
+                                padding: '60px',
+                                width: '400px',
+                            }}>
+                                <Pie
+                                    data={ticketData}
+                                    // options={options}
+                                ></Pie>
+                            </div>
+                        </div>
+
+                    </section>
+
                     <div className={`side-nav-bar raised ${isSideNavCollapsed ? "collapsed" : ""}`}>
                         <button onClick={handleToggleSideNav} className="toggle-sidenav-button"
                                 style={{
@@ -140,6 +270,14 @@ const AdminDashboard: React.FC = () => {
                         </button>
                         {/*User Management*/}
                         <div className="users-management-dropdown">
+                            {/*dashboard*/}
+                            <button
+                                className="Ticket-Assignment-button"
+                                onClick={() => handleDropdownItemClick("DashboardDashboard")}
+                            >
+                                {isSideNavCollapsed ? <FaTachometerAlt  /> : 'Dashboard'}
+                            </button>
+
                             {/* Add dropdown */}
                             <button className="Ticket-Assignment-button" onClick={handleDropdownManageUsers}>
                                 {isSideNavCollapsed ? <FaUsers  /> : 'Manage Users'}

@@ -35,10 +35,17 @@ const AllUser = () => {
 
     const owners = users.filter(user => user.authorities.includes('OWNER'));
     const admins = users.filter(user => user.authorities.includes('ADMIN'));
+    const hods = users.filter(user => user.authorities.includes('DEPARTMENT_ADMIN'))
     const employees = users.filter(user => user.authorities.includes('EMPLOYEE'));
     const regularUsers = users.filter(user => user.authorities.includes('USER'));
+    const allUsers = owners.length + admins.length + hods.length + employees.length + regularUsers.length;
 
-    const allUsers = owners.length + admins.length + employees.length + regularUsers.length;
+    sessionStorage.setItem('owners', owners.length);
+    sessionStorage.setItem('admins', admins.length);
+    sessionStorage.setItem('hod', hods.length);
+    sessionStorage.setItem('employees', employees.length);
+    sessionStorage.setItem('regular-users', regularUsers.length);
+    sessionStorage.setItem('all-users', allUsers)
 
     const handleSearch = () => {
         const filtered = users.filter(user => user.username.toLowerCase().includes(searchUsername.toLowerCase()));
