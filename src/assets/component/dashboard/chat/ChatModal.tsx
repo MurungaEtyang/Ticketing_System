@@ -38,7 +38,7 @@ class ChatModal extends Component<void, any> {
 
         const newMessages = [
             ...messages,
-            { sender: this.ticketRaisedBy, content: newMessage },
+            { sender: 'evans', content: newMessage },
         ];
 
         setTimeout(() => {
