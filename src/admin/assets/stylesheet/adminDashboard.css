@@ -138,14 +138,13 @@
 }
 
 .close-button {
-    background-color: rgba(169, 181, 211, 0.38);
-    position: absolute;
-    top: 10px;
+    background-color: rgb(175, 32, 32);
+    position: fixed;
+    top: 80px;
     right: 10px;
-    /*background-color: transparent;*/
     border: none;
     cursor: pointer;
-    color: white;
+    color: #2b378c;
     font-size: 30px;
 }
 

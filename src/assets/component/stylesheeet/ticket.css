@@ -38,6 +38,7 @@
     font-size: 20px;
     color: rgba(0, 0, 0, 0.77);
     font-family: "Times New Roman";
+    overflow: hidden;
     /*float-displace: block;*/
     margin-bottom: 10px; /* Add spacing at the bottom */
 }

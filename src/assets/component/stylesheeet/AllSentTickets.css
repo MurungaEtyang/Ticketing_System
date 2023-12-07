@@ -8,6 +8,46 @@
     background-color: #747bff;
 }
 
+.chat-button-container {
+    position: fixed;
+    bottom: 20px;
+    right: 30px;
+    border-radius: 20px;
+    margin: 30px
+}
+.chatButton::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 2px solid white;
+    opacity: 0;
+    animation: glow-lines 2s linear infinite;
+}
+
+@keyframes glow-lines {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0);
+    }
+    50% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0);
+    }
+}
+
+.chatButton {
+    background-color: green;
+}
+
 .error {
     color: red;
     margin-bottom: 10px;

@@ -51,7 +51,7 @@ const Refer = () => {
         try{
             await fetch('http://localhost:8080/api/v1/tickets/referral/refer?' +
                 'ticket_number=' + encodeURIComponent(ticketId) +
-                '&to=' + assignTo, {
+                '&to=' + assignTo + '&reason='+ message, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

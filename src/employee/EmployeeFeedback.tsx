@@ -23,8 +23,8 @@ const EmployeeFeedback = () => {
             let encodeId =(encodeURIComponent(ticketId))
             console.log(ticketId)
 
-            await fetch("http://localhost:8080/api/v1/tickets/feedback?ticket_number=" + encodeId +
-                "&feedback=" + message + "&satisfied=yes" + "&rating=5",
+            await fetch("http://localhost:8080/api/v1/tickets/submit?ticket_number="+ ticketId+
+            "&solution=" + encodeURIComponent(message),
                 {
                     method: "POST",
                     headers: {
@@ -37,12 +37,12 @@ const EmployeeFeedback = () => {
                     }),
                 }).then(response => {
                 if (response.ok) {
-                    toast.success("Rating submitted successfully.", {
+                    toast.success("submitted successfully.", {
                         position: toast.POSITION.BOTTOM_RIGHT,
                     });
                 } else {
                     // Handle the error response from the API
-                    toast.error("Failed to submit rating please try again later. ", {
+                    toast.error("Failed to submit please try again later. ", {
                         position: toast.POSITION.BOTTOM_RIGHT,
                     });
                     setIsLoading(false);

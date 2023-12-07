@@ -7,7 +7,7 @@
     width: 600px;
     height: fit-content;
     background-color: #3b61d7;
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -70,10 +70,8 @@ select {
 }
 
 .feedback-button {
-    margin: 20px;
     width: 200px;
     padding: 10px;
-    background-color: #007bff;
     color: #fff;
     border: none;
     border-radius: 4px;
@@ -94,12 +92,10 @@ select {
 .ticket-response-info {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    margin-bottom: 20px;
-    overflow-y: auto;
+
 }
 
-.senders-info {
+.sender-info {
     margin-bottom: 10px;
     text-align: left;
 }
@@ -108,39 +104,38 @@ select {
     text-align: right;
 }
 
-.senders-info h2,
+.sender-info h2,
 .responded-info h2 {
     font-size: 18px;
     font-weight: bold;
     margin-bottom: 10px;
 }
 
-.senders-info p,
+.sender-info p,
 .responded-info p {
     font-size: 14px;
     margin-bottom: 5px;
-    background-color: #000000;
     padding: 8px;
     border-radius: 8px;
     display: inline-block;
-    width: 60%;
-    height: 110px;
-
+    min-width: 300px;
+    max-width: 300px;
+    min-height: 110px;
+    max-height: 110px;
+    font-size: 15px;
+    font-family: "Times New Roman";
+    overflow-y: auto;
 }
 
-.senders-info p {
+.sender-info p {
+    color: white;
+    background-color: #262525;
     text-align: left;
+    min-width: 300px;
 }
 
 .responded-info p {
+    color: black;
     text-align: right;
-}
-/* Optional: Style the ToastContainer if needed */
-.Toastify__toast-container {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 300px;
-    padding: 8px;
-    z-index: 9999;
+    background-color: rgba(255, 255, 255, 0.57);
 }

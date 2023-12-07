@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import '../../../../admin/assets/stylesheet/GetAllTickets.css';
-import {faBell, faDownload} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import TicketTrackProgress from "./TicketTrackProgress";
 import '../../stylesheeet/AllSentTickets.css'
@@ -10,6 +9,8 @@ import { useNavigate } from 'react-router-dom';
 import {BsToggleOff, BsToggleOn} from "react-icons/bs";
 import {FaBook, FaUsers} from "react-icons/fa";
 import {FaHand} from "react-icons/fa6";
+import {faComment} from "@fortawesome/free-solid-svg-icons/faComment";
+import ChatModal from "../chat/ChatModal";
 
 
 const AllSentTickets = () => {
@@ -23,6 +24,11 @@ const AllSentTickets = () => {
     const [showAssignTicketModal, setShowAssignTicketModal] = useState(false);
     const [isButtonClicked, setIsButtonClicked] = useState<boolean>(false);
     const [isSideNavCollapsed, setIsSideNavCollapsed] = useState(true);
+    const [chatModal, setChatModal] = useState(false);
+
+    function showChatModal() {
+        setChatModal(prevChatModal => !prevChatModal);
+    }
 
     const modalRef = useRef(null);
 
@@ -141,11 +147,15 @@ const AllSentTickets = () => {
             });
     };
 
-    const handleCellClickAssign = (event, ticketId, ticketTitle, ticketMessage) => {
+    const handleCellClickAssign = (event, ticketId, ticketTitle, ticketMessage,
+                                   ticketSolution, ticketSender, ticketResponder) => {
         event.preventDefault();
         sessionStorage.setItem('ticket_number', ticketId);
         sessionStorage.setItem('ticket_title', ticketTitle);
         sessionStorage.setItem('ticket_message', ticketMessage);
+        sessionStorage.setItem('ticket_solution', ticketSolution);
+        sessionStorage.setItem('ticket_sender', ticketSender);
+        sessionStorage.setItem('ticket_responder', ticketResponder);
         setShowAssignTicketModal(true);
         setIsButtonClicked(true);
     };
@@ -169,7 +179,17 @@ const AllSentTickets = () => {
                 <button onClick={handleLogout} className="logout-button">
                     {email}
                 </button>
+
             </nav>
+            <div className={`chat-button-container`}>
+                {chatModal && <ChatModal onClose={() => setChatModal(false)} />}
+                <button
+                    className={`chatButton`}
+                    onClick={showChatModal}
+                >
+                    Chat Now <FontAwesomeIcon icon={faComment} />
+                </button>
+            </div>
             {error && <div className="error">{error}</div>}
 
             <div className={`side-nav-bar raised ${isSideNavCollapsed ? "collapsed" : ""}`}>
@@ -240,7 +260,8 @@ const AllSentTickets = () => {
                                             <tr key={ticket.id} lassName={isButtonClicked ? 'inactive' : ''}>
                                                 <td>
                                                     <button className={`ticketButton`} onClick={(event) =>
-                                                        handleCellClickAssign(event, ticket.ticketNumber, ticket.title, ticket.description)} style={{ cursor: 'pointer' }}>
+                                                        handleCellClickAssign(event, ticket.ticketNumber, ticket.title, ticket.description,
+                                                            ticket.solution, ticket.raisedBy, ticket.assignedTo)} style={{ cursor: 'pointer' }}>
                                                         {ticket.ticketNumber}
                                                     </button>
                                                 </td>
@@ -260,6 +281,7 @@ const AllSentTickets = () => {
                                         ))}
                                         </tbody>
                                     </table>
+
                                 )}
                             </section>
                         </>
