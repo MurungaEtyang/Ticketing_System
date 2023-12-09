@@ -1,14 +1,10 @@
-/*.dashboard-container{*/
-/*    background-color: #46596c;*/
-/*}*/
 .container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    /*max-height: calc(100vh - 30px);*/
     overflow-y: auto;
-    margin-top: 60px; /* Add this line */
+    margin-top: 60px;
 }
 
 .nav-container {
@@ -329,6 +325,10 @@
 /* Media queries for different devices */
 
 @media (max-width: 480px) {
+    .dashboard-container-images img{
+        height: 200px;
+        width: 200px;
+    }
     .ticket-card-body {
         left: 10%;
         top: 10%;

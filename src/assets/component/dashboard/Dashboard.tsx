@@ -6,7 +6,7 @@ import { useSpring, animated } from 'react-spring';
 import { useInView } from 'react-intersection-observer';
 import '../stylesheeet/dashboard.css';
 import Logo from "../images/Logo.png"
-import Image1 from "../images/Image1.png"
+import Image1 from "../images/Image2.png"
 import Ticket from './ticketHandle/Ticket';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell } from '@fortawesome/free-solid-svg-icons';

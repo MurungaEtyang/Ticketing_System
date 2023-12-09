@@ -1,9 +1,5 @@
 body{
-    /*background: linear-gradient(to bottom, #f1c162, #5CACEE, #eb87c0, #eed65c, #87CEEB);*/
-    /*background-image: url("../images/Img.jpg");*/
     background-size: 100% 100%;
-    /*background-color: white;*/
-    /*background-position: center;*/
     margin: 0;
     padding: 0;
     /*height: 100%;*/
@@ -11,15 +7,8 @@ body{
     display: flex;
     justify-content: space-between;
     font-family: 'Your Preferred Font', sans-serif;
-    /*color: #333;*/
-    /*width: auto;*/
-    /*opacity: 0.5;*/
-    /*position: relative;*/
-    /*height: 200px;*/
-    /*width: 100%;*/
     background: linear-gradient(to bottom, #87CEEB, #5CACEE, #87CEEB, #5CACEE, #87CEEB );
     background-size: 100% 100%;
-    /*overflow: visible;*/
 }
 
 /*body:before {*/
@@ -39,13 +28,6 @@ body{
 /*    !*color: #333; !* Text color on the wavy background *!*!*/
 /*}*/
 
-/*.home-container {*/
-/*    display: flex;*/
-/*    justify-content: center;*/
-/*    align-items: center;*/
-/*    height: 100vh;*/
-/*    z-index: 0;*/
-/*}*/
 
 .nav-container {
     display: flex;
@@ -159,70 +141,7 @@ h1 {
     top: 40%;
     left: 10%;
 }
-/*style for tablets screens*/
-@media (min-width: 768px) and (max-width: 1024px){
-    body{
-        width: 100%;
-    }
-    .logo {
-        max-width: 100%;
-        height: 150px;
-        width: 2050px;
-        margin: auto;
-        border-radius: 14px;
-        position: absolute;
-        top: 16%;
-        left: 50%;
-    }
-    .nav-container {
-        /*display: flex;*/
-        justify-content: space-between;
-        align-items: center;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 667px;
-        height: 50px;
-        padding: 10px;
-    }
 
-    h1{
-        position: relative;
-        left: -15%;
-        top: -120px;
-    }
-    .input-container{
-        display: inline;
-
-    }
-    .input-container input {
-        width: 410px;
-        height: 47px ;
-        font-size: 39px;
-    }
-    .input-container button{
-        width: 90px;
-        height: 45px;
-        border-radius: 3px;
-
-    }
-
-    .login-input{
-        margin-top: 30px;
-        width: 410px;
-        height: 50px;
-        font-size: 39px;
-    }
-
-    .login-form button {
-        margin-top: 30px;
-        width: 180px;
-        height: 85px;
-        border-radius: 5px;
-        font-size: 25px;
-    }
-
-}
 
 /*style for smaller screens*/
 @media (max-width:480px){
@@ -309,5 +228,67 @@ h1 {
 
 }
 
+/*style for tablets screens*/
+@media (min-width: 768px) and (max-width: 1024px){
+    body{
+        width: 100%;
+    }
+    .logo {
+        max-width: 100%;
+        height: 150px;
+        width: 2050px;
+        margin: auto;
+        border-radius: 14px;
+        position: absolute;
+        top: 16%;
+        left: 50%;
+    }
+    .nav-container {
+        /*display: flex;*/
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 667px;
+        height: 50px;
+        padding: 10px;
+    }
 
+    h1{
+        position: relative;
+        left: -15%;
+        top: -120px;
+    }
+    .input-container{
+        display: inline;
 
+    }
+    .input-container input {
+        width: 410px;
+        height: 47px ;
+        font-size: 39px;
+    }
+    .input-container button{
+        width: 90px;
+        height: 45px;
+        border-radius: 3px;
+
+    }
+
+    .login-input{
+        margin-top: 30px;
+        width: 410px;
+        height: 50px;
+        font-size: 39px;
+    }
+
+    .login-form button {
+        margin-top: 30px;
+        width: 180px;
+        height: 85px;
+        border-radius: 5px;
+        font-size: 25px;
+    }
+
+}

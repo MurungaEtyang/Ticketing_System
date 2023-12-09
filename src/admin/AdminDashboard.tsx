@@ -35,15 +35,15 @@ const AdminDashboard: React.FC = () => {
 
     const navigate = useNavigate();
     const location = useLocation();
-    const email = localStorage.getItem("login_emails")
+    const email = localStorage.getItem("login_emails");
+    const isLoggedIn = localStorage.getItem('email_password_credentials');
+    const department = localStorage.getItem('data_authority');
     const [UserManagement, setUserManagement] = useState(false);
     const [TicketAssignment, setTicketAssignment] = useState(false);
     const [DepartmentManagement, setDepartmentManagement] = useState(false);
     const [selectedMenuItem, setSelectedMenuItem] = useState("");
     const [DepartmentTickets, setDepartmentTickets] = useState(false);
-    const department = localStorage.getItem('data_authority');
     const [isSideNavCollapsed, setIsSideNavCollapsed] = useState(true);
-
     //from AllUsers.tsx
     const allUsers = sessionStorage.getItem('all-users');
     const owners = sessionStorage.getItem('owners');
@@ -51,9 +51,7 @@ const AdminDashboard: React.FC = () => {
     const HODS = sessionStorage.getItem('hod');
     const employees = sessionStorage.getItem('employees');
     const regularUsers = sessionStorage.getItem('regular-users');
-
     //from GetAllTickets.tsx
-
     const totalTickets = sessionStorage.getItem('total_tickets');
     const openTickets = sessionStorage.getItem('open_tickets');
     const assignedTickets = sessionStorage.getItem('assigned_tickets');
@@ -68,7 +66,6 @@ const AdminDashboard: React.FC = () => {
             backgroundColor: ['#0ff500', '#d0b305', '#3f40b6', '#053812'],
         }]
     }
-
     const usersData = {
         labels: ['Students', 'employees', 'Head of Department', 'Administrator', 'Super administrator'],
         datasets: [{
@@ -79,13 +76,27 @@ const AdminDashboard: React.FC = () => {
 
 
     const handleLogout = async () => {
-        const response = await fetch("http://localhost:8080/logout", {
+        await fetch("http://localhost:8080/logout", {
             method: "GET",
             headers: {
                 "Authorization": "Basic " + localStorage.getItem('email_password_credentials')
             },
         }).then(response => navigate('/')).catch(error => navigate('/'));
     };
+
+    if (isLoggedIn) {
+        const loginTime = localStorage.getItem('loginTime');
+
+        if (loginTime) {
+            const currentTime = new Date().getTime();
+            const elapsedTime = currentTime - parseInt(loginTime, 10);
+            const fiveMinutesInMilliseconds = 5 * 60 * 1000;
+
+            if (elapsedTime > fiveMinutesInMilliseconds) {
+                alert('Session timeout - user logged in for more than 5 minutes');
+            }
+        }
+    }
 
     const handleDropdownManageUsers = () => {
         setUserManagement(!UserManagement);
