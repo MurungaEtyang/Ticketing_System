@@ -6,7 +6,6 @@
         margin: 0;
         padding: 0;
     }
-    /*css for the image*/
     .dashboard-container-images img{
         height: 250px;
         width: 250px;
@@ -17,7 +16,6 @@
         left:40%;
         top: 9%;
     }
-    /*css for the logo*/
     .nav-container img{
         position: fixed;
         top: 3px;
@@ -39,27 +37,5 @@
     .dashboard-container div{
         font-size: 12px;
     }
-
-}
-@media (min-width: 768px) and (max-width: 1024px){
-    .dashboard-container {
-        position: absolute;
-        top: 19%;
-        left: 54%;
-        padding: 0px;
-        width: 30%;
-        border-radius: 20px;
-        align-items: center;
-    }
-
-    .dashboard-container div{
-        font-size: 18px;
-    }
-    .profile-dropdown button{
-        position: fixed;
-        left:68%;
-        top: 6%;
-    }
-
 
 }
