@@ -1,0 +1,150 @@
+
+/*style for smaller screens*/
+@media (max-width:480px){
+    body {
+        width: auto;
+    }
+    .logo{
+        position: fixed;
+        top: 39px;
+        left: 150px;
+        height: 76px;
+        min-width: 150px;
+        width: 280px;
+        z-index: 999;
+    }
+    .nav-container {
+        /*display: flex;*/
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 667px;
+        height: 30%;
+        padding: 10px;
+    }
+    .profile-button{
+        font-size: 20px;
+    }
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        top:0;
+        left:0;
+        width: 100%;
+        height: 40%;
+        padding:10px;
+    }
+    h1{
+        position: relative;
+        left: -28%;
+        top: -120px;
+    }
+
+    .profile-dropdown{
+        left: 0px;
+    }
+    .login-form{
+        margin: 10px;
+    }
+    .input-container {
+        display: inline;
+
+    }
+
+    .input-container input {
+
+        width: 310px;
+        height: 47px ;
+        font-size: 25px;
+    }
+    .input-container button{
+        margin-top: 30px;
+        margin-right: 50px;
+
+    }
+
+    .login-input{
+        margin-top: 30px;
+        width: 310px;
+        height: 47px;
+        font-size: 25px;
+    }
+
+    .login-form button {
+        margin-top: 30px;
+        width: 110px;
+        height: 55px;
+        border-radius: 3px;
+        font-size: 25px;
+    }
+
+}
+
+/*style for tablets screens*/
+@media (min-width: 768px) and (max-width: 1024px){
+    body{
+        width: 100%;
+    }
+    .logo {
+        max-width: 100%;
+        height: 150px;
+        width: 2050px;
+        margin: auto;
+        border-radius: 14px;
+        position: absolute;
+        top: 16%;
+        left: 50%;
+    }
+    .nav-container {
+        /*display: flex;*/
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 667px;
+        height: 50px;
+        padding: 10px;
+    }
+
+    h1{
+        position: relative;
+        left: -15%;
+        top: -120px;
+    }
+    .input-container{
+        display: inline;
+
+    }
+    .input-container input {
+        width: 410px;
+        height: 47px ;
+        font-size: 39px;
+    }
+    .input-container button{
+        width: 90px;
+        height: 45px;
+        border-radius: 3px;
+
+    }
+
+    .login-input{
+        margin-top: 30px;
+        width: 410px;
+        height: 50px;
+        font-size: 39px;
+    }
+
+    .login-form button {
+        margin-top: 30px;
+        width: 180px;
+        height: 85px;
+        border-radius: 5px;
+        font-size: 25px;
+    }
+
+}

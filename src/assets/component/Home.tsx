@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './stylesheeet/home.css';
+import './stylesheeet/home-mobile.css';
 import Logo from './images/Logo.png';
 import {ClipLoader} from "react-spinners";
 import {toast, ToastContainer} from "react-toastify";

@@ -1,0 +1,11 @@
+/*style for tablets screens*/
+@media (max-width: 1024px){
+    .my-tickets-button{
+      width: 320px;
+
+    }
+    .ticket-submit-button{
+        width: 320px;
+        background-color: green;
+    }
+}
