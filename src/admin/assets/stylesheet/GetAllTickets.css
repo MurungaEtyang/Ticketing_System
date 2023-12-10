@@ -167,3 +167,15 @@
 .close-button:hover {
     background-color: #cc0000;
 }
+
+
+@media (min-width: 768px) {
+    .depart-card-tickets {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .ticket-card {
+        width: 50%;
+    }
+}

@@ -1,18 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
-import {faCheck, faDownload} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from 'react-router-dom';
-import Refer from "./Refer";
 import {toast} from "react-toastify";
 import '../admin/assets/stylesheet/GetAllTickets.css';
 import {FaBook, FaShare, FaUsers} from "react-icons/fa";
 import {BsToggleOff, BsToggleOn} from "react-icons/bs";
 import Logo from "../assets/component/images/Logo.png";
-import ReRefer from "./ReRefer";
-import TicketIdDetails from "./TicketIdDetails";
-// import '../assets/stylesheet/GetAllTickets.css';
-// import DepartmentAssignTicket from "./DepartmentAssignTicket";
+import ReRefer from "./employeeAccept/ReRefer";
+import ReReferDetails from "./employeeAccept/ReReferDetails";
 
 const AcceptRefer = () => {
     const navigate = useNavigate();
@@ -108,49 +103,43 @@ const AcceptRefer = () => {
         setShowAssignTicketModal(true);
     };
 
-    const HandleTicketDetails = (event, ticketId) => {
+    const HandleTicketDetails = (event, ticketId, reason, ticketNumber) => {
         event.preventDefault();
-        const split = ticketId.split(' ')[0]
-        console.log(split)
+        sessionStorage.setItem('referral_id', ticketId)
+        sessionStorage.setItem('referral_reason', reason)
+        sessionStorage.setItem('ticket_number', ticketNumber)
         setShowTicketDetails( true);
     }
 
     //handle ticket
     const submitTicket = (refId) => {
         setLoading(true);
-        try {
-            const apiEndpoint = "http://localhost:8080/api/v1/tickets/referral?accept=true&referral_id="+ refId ;
-            fetch(apiEndpoint, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: 'Basic ' + localStorage.getItem('email_password_credentials'),
-                },
-            })
-                .then(async (response) => {
-                    if (response.ok) {
-
-                        toast.success("Accepted", {
-                            position: toast.POSITION.TOP_RIGHT,
-                        });
-
-                    }
-                    setLoading(false);
-                })
-                .catch((error) => {
-                    toast.error('Error: ' + error, {
+        const apiEndpoint = "http://localhost:8080/api/v1/tickets/referral?accept=true&referral_id=" + refId;
+        fetch(apiEndpoint, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Basic ' + localStorage.getItem('email_password_credentials'),
+            },
+        })
+            .then(async (response) => {
+                if (response.ok) {
+                    toast.success("Accepted", {
+                        position: toast.POSITION.TOP_RIGHT,
+                    });
+                } else {
+                    toast.error('Error: ' + response.statusText, {
                         position: toast.POSITION.BOTTOM_RIGHT,
                     });
-                    setLoading(false);
+                }
+                setLoading(false);
+            })
+            .catch((error) => {
+                toast.error('Error: ' + error, {
+                    position: toast.POSITION.BOTTOM_RIGHT,
                 });
-        } catch (error) {
-            toast.error('Error: ' + error, {
-                position: toast.POSITION.BOTTOM_RIGHT,
+                setLoading(false);
             });
-
-        }
-
-        setLoading(false);
     };
 
     const setTicketLoadingState = (ticketId, isLoading) => {
@@ -225,15 +214,15 @@ const AcceptRefer = () => {
 
                     {searchedTicket ? (
                         <div className="depart-searched-ticket">
-                            <h3>Search Result:</h3>
-                            <div>ID: {searchedTicket.ticketNumber}</div>
-                            <div>Title: {searchedTicket.title}</div>
-                            <div>Description: {searchedTicket.description}</div>
-                            <div>Priority: {searchedTicket.priority}</div>
-                            <div>Status: {searchedTicket.status}</div>
-                            <div>Raised By: {searchedTicket.raisedBy}</div>
-                            <div>Assigned To: {searchedTicket.assignedTo}</div>
-                            <div>Deadline: {searchedTicket.deadline}</div>
+                            {/*<h3>Search Result:</h3>*/}
+                            {/*<div>ID: {searchedTicket.ticketNumber}</div>*/}
+                            {/*<div>Title: {searchedTicket.title}</div>*/}
+                            {/*<div>Description: {searchedTicket.description}</div>*/}
+                            {/*<div>Priority: {searchedTicket.priority}</div>*/}
+                            {/*<div>Status: {searchedTicket.status}</div>*/}
+                            {/*<div>Raised By: {searchedTicket.raisedBy}</div>*/}
+                            {/*<div>Assigned To: {searchedTicket.assignedTo}</div>*/}
+                            {/*<div>Deadline: {searchedTicket.deadline}</div>*/}
                         </div>
                     ) : (
                         <>
@@ -245,10 +234,9 @@ const AcceptRefer = () => {
                                         <thead>
                                         <tr >
                                             <th>Ticket</th>
+                                            <th>Referral ID</th>
                                             <th>Referred From</th>
                                             <th>Requested On</th>
-                                            <th>Accept</th>
-                                            <th>Re-Refer</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -259,28 +247,14 @@ const AcceptRefer = () => {
                                                     {/*    {refRequest.referredTicket}*/}
                                                     {/*</button>*/}
                                                     <td>
-                                                        <button className={`ticketButton`} onClick={(event) => HandleTicketDetails(event, refRequest.referredTicket)} style={{ cursor: 'pointer' }}>
+                                                        <button className={`ticketButton`} onClick={(event) => HandleTicketDetails(event, refRequest.referralId, refRequest.reason, refRequest.referredTicket)} style={{ cursor: 'pointer' }}>
                                                             {refRequest.referredTicket}
                                                         </button>
                                                     </td>
                                                 </td>
+                                                <td>{refRequest.referralId}</td>
                                                 <td>{refRequest.from}</td>
                                                 <td>{refRequest.requestedOn}</td>
-                                                <td><button
-                                                    type="button"
-                                                    onClick={() => {
-                                                        setTicketLoadingState(refRequest.referralId, true);
-                                                        submitTicket(refRequest.referralId);
-                                                    }}
-                                                    disabled={loadingStates[refRequest.referralId]}
-                                                >
-                                                    {loadingStates[refRequest.referralId] ? "Accepting..." : <FontAwesomeIcon icon={faCheck} />}
-                                                </button></td>
-                                                <td>
-                                                    <button className={`ticketButton`} onClick={(event) => HandleRerefer(event, refRequest.referredTicket)} style={{ cursor: 'pointer' }}>
-                                                        <FaShare />
-                                                    </button>
-                                                </td>
 
                                             </tr>
                                         ))}
@@ -306,7 +280,7 @@ const AcceptRefer = () => {
                         <button className="close-button" onClick={() => setShowTicketDetails(false)}>
                             X
                         </button>
-                        <TicketIdDetails />
+                        <ReReferDetails />
                     </section>
                 )}</div>
             </form>

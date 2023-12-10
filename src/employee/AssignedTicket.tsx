@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from 'react-router-dom';
 import Refer from "./Refer";
 import {toast} from "react-toastify";
-import EmployeeFeedback from "./EmployeeFeedback";
+import EmployeeFeedback from "./employeeAccept/EmployeeFeedback";
 // import '../assets/stylesheet/GetAllTickets.css';
 // import DepartmentAssignTicket from "./DepartmentAssignTicket";
 
@@ -266,11 +266,6 @@ const AssignedTicket = () => {
                         <button className="close-button" onClick={() => setShowAssignTicketModal(false)}>
                             X
                         </button>
-                        {/*{isFeedbackOpen && (*/}
-                        {/*    <div className="fade-effect">*/}
-                        {/*        <EmployeeFeedback />*/}
-                        {/*    </div>*/}
-                        {/*)}*/}
 
                         <EmployeeFeedback />
                     </section>

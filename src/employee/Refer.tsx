@@ -4,7 +4,7 @@ import { BeatLoader } from 'react-spinners';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '../../src/admin/assets/stylesheet/AssignTicket.css';
-import './refer.css';
+import '../assets/component/stylesheeet/refer.css';
 
 const Refer = () => {
     const [isLoading, setIsLoading] = useState(false);
