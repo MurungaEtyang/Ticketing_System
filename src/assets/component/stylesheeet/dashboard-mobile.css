@@ -1,0 +1,41 @@
+/*style for smaller screens*/
+@media (max-width:480px){
+    body {
+        width: auto;
+        background: linear-gradient(to bottom, #87CEEB, #5CACEE, #87CEEB, #5CACEE, #87CEEB );
+        margin: 0;
+        padding: 0;
+    }
+    .dashboard-container-images img{
+        height: 250px;
+        width: 250px;
+        top: 19%;
+    }
+    .profile-dropdown button{
+        position: fixed;
+        left:40%;
+        top: 9%;
+    }
+    .nav-container img{
+        position: fixed;
+        top: 3px;
+        left: 10px;
+        height: 76px;
+        min-width: 150px;
+        width: 300px;
+        z-index: 999;
+    }
+    .dashboard-container {
+        position: absolute;
+        top: 50%;
+        left: 56%;
+        padding: 0px;
+        width: 30%;
+        border-radius: 20px;
+        align-items: center;
+    }
+    .dashboard-container div{
+        font-size: 12px;
+    }
+
+}
