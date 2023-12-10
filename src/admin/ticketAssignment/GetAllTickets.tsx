@@ -5,6 +5,7 @@ import { faDownload } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from 'react-router-dom';
 import AssignTicket from "./AssignTicket";
+import {BeatLoader} from "react-spinners";
 // import AssignTicket from "./AssignTicket";
 
 const GetAllTickets = () => {
@@ -44,10 +45,8 @@ const GetAllTickets = () => {
             }
         };
 
-        // Add event listener when the component mounts
         document.addEventListener('click', handleOutsideClick);
 
-        // Remove event listener when the component unmounts
         return () => {
             document.removeEventListener('click', handleOutsideClick);
         };
@@ -55,6 +54,7 @@ const GetAllTickets = () => {
 
 
     useEffect(() => {
+        setLoading(true);
         const apiEndpoint = 'http://localhost:8080/api/v1/tickets/report';
 
         fetch(apiEndpoint, {
@@ -73,28 +73,33 @@ const GetAllTickets = () => {
                             const assignedTickets = sortedData.filter(tickets => tickets.status === 'ASSIGNED');
                             const submittedTickets = sortedData.filter(tickets => tickets.status === 'SUBMITTED');
                             const closedTickets = sortedData.filter(tickets => tickets.status === 'CLOSED');
-                            const totalTickets = openTickets.length +assignedTickets.length +
+                            const totalTickets = openTickets.length + assignedTickets.length +
                                 submittedTickets.length + closedTickets.length
                             sessionStorage.setItem('total_tickets', totalTickets);
                             sessionStorage.setItem('closed_tickets', closedTickets.length);
                             sessionStorage.setItem('submitted_tickets', submittedTickets.length);
                             sessionStorage.setItem('assigned_tickets', assignedTickets.length);
                             sessionStorage.setItem('open_tickets', openTickets.length);
+                            setLoading(false);
                         })
                         .catch(error => {
                             console.error('Error parsing JSON:', error.message);
                             setError('An error occurred while parsing JSON.');
+                            setLoading(false);
                         });
                 } else {
                     console.error('Error fetching ticket data:', response.status);
                     setError('An error occurred while fetching ticket data.');
+                    setLoading(false);
                 }
             })
             .catch(error => {
                 console.error('Error fetching ticket data:', error.message);
                 setError('An error occurred while fetching ticket data.');
+                setLoading(false);
             });
     }, []);
+
 
     const handleSearch = () => {
         setLoading(true);
@@ -175,51 +180,51 @@ const GetAllTickets = () => {
                     ) : (
                         <>
                             <section className={`Department-section-ticket`}>
-                                {tickets.length === 0 ? (
-                                    <div className="depart-no-tickets">No tickets available.</div>
+                                {loading ? (
+                                    <BeatLoader color={'blue'} size={50}/>
                                 ) : (
-                                    <table className="depart-card-tickets-table">
-                                        <thead>
-                                        <tr >
-                                            <th>Ticket</th>
-                                            <th>Title</th>
-                                            <th>Description</th>
-                                            <th>Status</th>
-                                            <th>Raised By</th>
-                                            <th>Assigned To</th>
-                                            <th>Department</th>
-                                            {/*<th>Download Attachment</th>*/}
-                                            <th>Progress</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        {tickets.map(ticket => (
-                                            <tr key={ticket.id}>
-                                                <td>
-                                                    <button className={`ticketButton`} onClick={(event) => handleCellClickAssign(event, ticket.ticketNumber)} style={{ cursor: 'pointer' }}>
-                                                        {ticket.ticketNumber}
-                                                    </button>
-                                                </td>
-                                                <td>{ticket.title}</td>
-                                                <td className="description-column">{ticket.description}</td>
-                                                <td>{ticket.status}</td>
-                                                <td>{ticket.raisedBy}</td>
-                                                <td>{ticket.assignedTo}</td>
-                                                <td>{ticket.departmentAssigned}</td>
-                                                {/*<td>*/}
-                                                {/*    <button type="button" onClick={() => downloadTicket(ticket.id)}>*/}
-                                                {/*        <FontAwesomeIcon icon={faDownload} />*/}
-                                                {/*    </button>*/}
-                                                {/*</td>*/}
-                                                <td>
-                                                <span style={{ color: getProgressColor(ticket.status) }}>
-                                                    {calculateProgressPercentage(ticket.status)}
-                                                </span>
-                                                </td>
+                                    tickets.length === 0 ? (
+                                        <div className="depart-no-tickets">No tickets available.</div>
+                                    ) : (
+                                        <table className="depart-card-tickets-table">
+                                            <thead>
+                                            <tr>
+                                                <th>Ticket</th>
+                                                <th>Title</th>
+                                                <th>Description</th>
+                                                <th>Status</th>
+                                                <th>Raised By</th>
+                                                <th>Assigned To</th>
+                                                <th>Department</th>
+                                                {/*<th>Download Attachment</th>*/}
+                                                <th>Progress</th>
                                             </tr>
-                                        ))}
-                                        </tbody>
-                                    </table>
+                                            </thead>
+                                            <tbody>
+                                            {tickets.map(ticket => (
+                                                <tr key={ticket.id}>
+                                                    <td>
+                                                        <button className={`ticketButton`} onClick={(event) => handleCellClickAssign(event, ticket.ticketNumber)} style={{ cursor: 'pointer' }}>
+                                                            {ticket.ticketNumber}
+                                                        </button>
+                                                    </td>
+                                                    <td>{ticket.title}</td>
+                                                    <td className="description-column">{ticket.description}</td>
+                                                    <td>{ticket.status}</td>
+                                                    <td>{ticket.raisedBy}</td>
+                                                    <td>{ticket.assignedTo}</td>
+                                                    <td>{ticket.departmentAssigned}</td>
+                                                    {/*<td>
+                <button type="button" onClick={() => downloadTicket(ticket.id)}>
+                  Download Attachment
+                </button>
+              </td>*/}
+                                                    <td>{calculateProgressPercentage(ticket.status)}</td>
+                                                </tr>
+                                            ))}
+                                            </tbody>
+                                        </table>
+                                    )
                                 )}
                             </section>
                         </>

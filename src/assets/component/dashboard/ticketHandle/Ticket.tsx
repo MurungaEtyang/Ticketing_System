@@ -76,7 +76,7 @@ const Ticket: React.FC<TicketProps> = ({ setNotificationMessage }) => {
         console.log(uploadedFile);
         // alert(department?.label || '')
             await fetch('http://localhost:8080/api/v1/tickets?department=' + department?.label +
-                '&title='+ title + '&description=' + description, {
+                '&title='+ encodeURIComponent(title) + '&description=' + encodeURIComponent(description), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'multipart/form-data; boundary=----123',
@@ -87,14 +87,16 @@ const Ticket: React.FC<TicketProps> = ({ setNotificationMessage }) => {
                 // alert('hello')
                 if (response.ok) {
                     // Show success toast notification
-                    toast.success('Ticket submitted successfully!', {
+                    toast.success('Ticket submitted successfully.', {
                         position: toast.POSITION.TOP_RIGHT,
                     });
 
                     // Set the notification message
                     setNotificationMessage('Message has been sent');
                 } else {
-                    console.log(response.status);
+                    toast.error('Error occurred while submitting ticket!', {
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                    });
                 }
             }).catch(error => {
                 toast.error(error, {

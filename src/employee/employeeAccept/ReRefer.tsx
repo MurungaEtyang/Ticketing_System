@@ -1,21 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { BeatLoader } from 'react-spinners';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import '../../src/admin/assets/stylesheet/AssignTicket.css'
-import moment from "moment";
+import '../../../src/admin/assets/stylesheet/AssignTicket.css';
+import '../../assets/component/stylesheeet/refer.css';
 
 const ReRefer = () => {
     const [isLoading, setIsLoading] = useState(false);
-    const ticketId = localStorage.getItem('ticket_no');
+    const ticketId = sessionStorage.getItem('ticket_number')
     const [assignTo, setAssignTo] = useState('');
     const [deadline, setDeadline] = useState('');
     const [assignToOptions, setAssignToOptions] = useState<string[]>([]);
     const [showForm, setShowForm] = useState(false);
-
-    console.log(ticketId);
+    const [message, setMessage] = useState('');
 
     useEffect(() => {
 
@@ -52,7 +50,7 @@ const ReRefer = () => {
         try{
             await fetch('http://localhost:8080/api/v1/tickets/referral/refer?' +
                 'ticket_number=' + encodeURIComponent(ticketId) +
-                '&to=' + assignTo, {
+                '&to=' + assignTo + '&reason='+ message, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -62,7 +60,7 @@ const ReRefer = () => {
                     'ticketId': encodeURIComponent(ticketId),
                     'assignTo': assignTo,
                 })
-            }).then(response => {
+            }).then(async response => {
                 if (response.ok) {
                     // console.log('Ticket assigned successfully');
                     toast.success('Ticket Referred successfully', {
@@ -107,18 +105,25 @@ const ReRefer = () => {
                             </option>
                         ))}
                     </select>
-                </div>
-                <div className={`button-layout-flex`}>
-                    {isLoading ? (
-                        <BeatLoader color="#000000" size={30}/>
-                    ) : (
 
-                        <button onClick={handleSubmit} type="submit" className={`my-tickets-button`}>
-                            refer
-                        </button>
-
-                    )}
                 </div>
+                <div className={`refer-message`}>
+                    <textarea
+                        required
+                        value={message}
+                        onChange={event => setMessage(event.target.value)}
+                    ></textarea>
+                </div>
+
+
+                {isLoading ? (
+                    <BeatLoader color="#000000" size={30}/>
+                ) : (
+                    <button onClick={handleSubmit} type="submit" className={`my-tickets-button`}>
+                        refer
+                    </button>
+                )}
+
             </form>
 
             <ToastContainer/>

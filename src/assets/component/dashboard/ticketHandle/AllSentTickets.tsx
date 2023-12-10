@@ -11,6 +11,7 @@ import {FaBook, FaUsers} from "react-icons/fa";
 import {FaHand} from "react-icons/fa6";
 import {faComment} from "@fortawesome/free-solid-svg-icons/faComment";
 import ChatModal from "../chat/ChatModal";
+import {BeatLoader} from "react-spinners";
 
 
 const AllSentTickets = () => {
@@ -75,6 +76,7 @@ const AllSentTickets = () => {
 
 
     useEffect(() => {
+        setLoading(true)
         const apiEndpoint = 'http://localhost:8080/api/v1/tickets/report';
 
         fetch(apiEndpoint, {
@@ -90,19 +92,23 @@ const AllSentTickets = () => {
                             const sortedData = sortTicketsByStatus(data);
                             setTickets(sortedData);
                             console.log(response.json());
+                            setLoading(false);
                         })
                         .catch(error => {
                             console.error('Error parsing JSON:', error.message);
                             setError('An error occurred while parsing JSON.');
+                            setLoading(false);
                         });
                 } else {
                     console.error('Error fetching ticket data:', response.status);
                     setError('An error occurred while fetching ticket data.');
+                    setLoading(false);
                 }
             })
             .catch(error => {
                 console.error('Error fetching ticket data:', error.message);
                 setError('An error occurred while fetching ticket data.');
+                setLoading(false);
             });
     }, []);
 
@@ -241,48 +247,52 @@ const AllSentTickets = () => {
                     ) : (
                         <>
                             <section className={`Department-section-ticket`}>
-                                {tickets.length === 0 ? (
-                                    <div className="depart-no-tickets">No tickets available.</div>
+                                {loading ? (
+                                    <BeatLoader color={'blue'} size={50}/>
                                 ) : (
-                                    <table className="depart-card-tickets-table">
-                                        <thead>
-                                        <tr >
-                                            <th>Ticket</th>
-                                            {/*<th>Title</th>*/}
-                                            {/*<th>Description</th>*/}
-                                            <th>Assigned To</th>
-                                            <th>Department</th>
-                                            <th>Progress</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        {tickets.map(ticket => (
-                                            <tr key={ticket.id} lassName={isButtonClicked ? 'inactive' : ''}>
-                                                <td>
-                                                    <button className={`ticketButton`} onClick={(event) =>
-                                                        handleCellClickAssign(event, ticket.ticketNumber, ticket.title, ticket.description,
-                                                            ticket.solution, ticket.raisedBy, ticket.assignedTo)} style={{ cursor: 'pointer' }}>
-                                                        {ticket.ticketNumber}
-                                                    </button>
-                                                </td>
-                                                {/*<td>{ticket.title}</td>*/}
-                                                {/*<td>{ticket.description}</td>*/}
-                                                <td>{ticket.assignedTo}</td>
-                                                <td>{ticket.departmentAssigned}</td>
-                                                <td>
+                                    tickets.length === 0 ? (
+                                        <div className="depart-no-tickets">No tickets available.</div>
+                                    ) : (
+                                        <table className="depart-card-tickets-table">
+                                            <thead>
+                                            <tr >
+                                                <th>Ticket</th>
+                                                {/*<th>Title</th>*/}
+                                                {/*<th>Description</th>*/}
+                                                <th>Assigned To</th>
+                                                <th>Department</th>
+                                                <th>Progress</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {tickets.map(ticket => (
+                                                <tr key={ticket.id} lassName={isButtonClicked ? 'inactive' : ''}>
+                                                    <td>
+                                                        <button className={`ticketButton`} onClick={(event) =>
+                                                            handleCellClickAssign(event, ticket.ticketNumber, ticket.title, ticket.description,
+                                                                ticket.solution, ticket.raisedBy, ticket.assignedTo)} style={{ cursor: 'pointer' }}>
+                                                            {ticket.ticketNumber}
+                                                        </button>
+                                                    </td>
+                                                    {/*<td>{ticket.title}</td>*/}
+                                                    {/*<td>{ticket.description}</td>*/}
+                                                    <td>{ticket.assignedTo}</td>
+                                                    <td>{ticket.departmentAssigned}</td>
+                                                    <td>
                                                 <span style={{ color: getProgressColor(ticket.status) }}>
                                                     {calculateProgressPercentage(ticket.status)}
                                                 </span>
-                                                </td>
+                                                    </td>
 
-                                                {/*{ticketRequest(ticket.title)}*/}
-                                                {/*{ticketMessage(ticket.description)}*/}
-                                            </tr>
-                                        ))}
-                                        </tbody>
-                                    </table>
-
+                                                    {/*{ticketRequest(ticket.title)}*/}
+                                                    {/*{ticketMessage(ticket.description)}*/}
+                                                </tr>
+                                            ))}
+                                            </tbody>
+                                        </table>
+                                )
                                 )}
+
                             </section>
                         </>
                     )}

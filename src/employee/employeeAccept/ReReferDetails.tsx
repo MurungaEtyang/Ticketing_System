@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import {toast, ToastContainer} from "react-toastify";
-import './EmployeeFeedback.css';
-import Refer from "./Refer";
+import '../../assets/component/stylesheeet/EmployeeFeedback.css';
+import ReRefer from "./ReRefer";
 
 const EmployeeFeedback = () => {
-    const ticketId = sessionStorage.getItem('employee_ticket_number');
-    const requestMessage = sessionStorage.getItem('employee_ticket_title')
-    const ticketMessage = sessionStorage.getItem('employee_ticket_Description')
-    const [message, setMessage] = useState('');
+    const referralId = sessionStorage.getItem('referral_id');
+    const ticketMessage = sessionStorage.getItem('referral_reason')
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
     const [showEmployeeFeedback, setShowEmployeeFeedback] = useState(true)
@@ -20,29 +18,25 @@ const EmployeeFeedback = () => {
             // alert(message)
             setIsLoading(true);
 
-            let encodeId =(encodeURIComponent(ticketId))
-            console.log(ticketId)
+            let encodeId =(encodeURIComponent(referralId))
 
-            await fetch("http://localhost:8080/api/v1/tickets/submit?ticket_number="+ ticketId+
-            "&solution=" + encodeURIComponent(message),
+            // alert(referralId)
+
+            await fetch("http://localhost:8080/api/v1/tickets/referral?accept=true&referral_id="+ encodeId,
                 {
-                    method: "POST",
+                    method: "GET",
                     headers: {
                         'Content-Type': 'application/json',
                         Authorization: "Basic " + localStorage.getItem("email_password_credentials"),
-                    },
-                    body: JSON.stringify({
-                        ticket_id: encodeURIComponent(ticketId),
-                        message: message,
-                    }),
+                    }
                 }).then(response => {
                 if (response.ok) {
-                    toast.success("submitted successfully.", {
+                    toast.success("Referral accepted successfully.", {
                         position: toast.POSITION.BOTTOM_RIGHT,
                     });
                 } else {
                     // Handle the error response from the API
-                    toast.error("Failed to submit please try again later. ", {
+                    toast.error("Failed", {
                         position: toast.POSITION.BOTTOM_RIGHT,
                     });
                     setIsLoading(false);
@@ -68,27 +62,15 @@ const EmployeeFeedback = () => {
                         <form onSubmit={handleFormSubmit}>
                             <div className="employee-rating-form-group">
                                 <div className={`employee-senders-info`}>
-                                    <h2>{requestMessage}</h2>
                                     <p>{ticketMessage}</p>
                                 </div>
-                                <div className={`employee-respond-message-input`}>
-                                    <label>Send Response</label>
-                                    <textarea
-                                        required
-                                        className={'employee-dashboard'}
-                                        value= {message}
-                                        onChange={event => setMessage(event.target.value)}
-                                    >
-                                            </textarea>
-                                </div>
-
                                 <div className={`button-employee-container`}>
                                     <button onClick={handleFormSubmit} type="submit"  disabled={isLoading}>
-                                        {isLoading ? 'Submitting...' : 'Submit'}
+                                        {isLoading ? 'Accepting...' : 'Accept'}
                                     </button>
 
                                     {referButton && (
-                                        <button type={`submit`} onClick={employeeFeedbackShow}>Refer</button>
+                                        <button type={`submit`} onClick={employeeFeedbackShow}>Re-Refer</button>
                                     )}
                                 </div>
                             </div>
@@ -99,7 +81,7 @@ const EmployeeFeedback = () => {
             )}
 
             {referModal && (
-                <Refer />
+                <ReRefer />
             )}
             <ToastContainer />
         </>

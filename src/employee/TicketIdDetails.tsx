@@ -2,12 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import {faCheck, faDownload} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useNavigate } from 'react-router-dom';
 import Refer from "./Refer";
-import {toast} from "react-toastify";
 import '../assets/component/stylesheeet/ticketDetails.css'
-// import '../assets/stylesheet/GetAllTickets.css';
-// import DepartmentAssignTicket from "./DepartmentAssignTicket";
 
 const AssignedTicket = () => {
     const ticketId = localStorage.getItem('ticket_no');
@@ -151,11 +147,11 @@ const AssignedTicket = () => {
                                         <td>{ticket.status}</td>
                                         <td>{ticket.raisedBy}</td>
                                         <td>{ticket.departmentAssigned}</td>
-                                        <td>
-                                            <button type="button" onClick={() => downloadTicket(ticket.id)}>
-                                                <FontAwesomeIcon icon={faDownload} />
-                                            </button>
-                                        </td>
+                                        {/*<td>*/}
+                                        {/*    <button type="button" onClick={() => downloadTicket(ticket.id)}>*/}
+                                        {/*        <FontAwesomeIcon icon={faDownload} />*/}
+                                        {/*    </button>*/}
+                                        {/*</td>*/}
                                         <td>
                                                 <span style={{ color: getProgressColor(ticket.status) }}>
                                                     {calculateProgressPercentage(ticket.status)}
