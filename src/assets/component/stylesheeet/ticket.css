@@ -92,11 +92,11 @@
 }
 
 .ticket-submit-button{
-    background-color: green;
+    background-color: blue;
     margin: 10px;
 }
 .ticket-submit-button:hover{
-    background-color: blue;
+    background-color: green;
 }
 
 .my-tickets-button {

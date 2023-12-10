@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { css } from '@emotion/react';
 import { ClipLoader } from 'react-spinners';
 import '../../stylesheeet/ticket.css';
+import '../../stylesheeet/ticket-mobile.css';
 // import { Readable } from 'stream'
 import Select from "react-select";
 
