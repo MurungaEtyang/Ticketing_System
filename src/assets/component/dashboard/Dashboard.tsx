@@ -5,6 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useSpring, animated } from 'react-spring';
 import { useInView } from 'react-intersection-observer';
 import '../stylesheeet/dashboard.css';
+import '../stylesheeet/dashboard-mobile.css';
 import Logo from "../images/Logo.png"
 import Image1 from "../images/Image2.png"
 import Ticket from './ticketHandle/Ticket';
