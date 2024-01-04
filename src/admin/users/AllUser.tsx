@@ -1,36 +1,38 @@
 import React, {useEffect, useState} from "react";
 import './AllUsers.css'
 import {faDownload} from "@fortawesome/free-solid-svg-icons";
+import apiServices from "../../handleApi/ApiServices.ts";
+import ApiServices from "../../handleApi/ApiServices.ts";
 
 const AllUser = () => {
     const [users, setUsers] = useState([]);
     const [error, setError] = useState('');
     const [searchUsername, setSearchUsername] = useState('');
     const [filteredUsers, setFilteredUsers] = useState([]);
+    const apiServices = new ApiServices();
+
+
+    const fetchRoles = async () => {
+        // setLoading(true);
+        try {
+            const result = await apiServices.allUsers();
+            if (result.success) {
+                const role = result.data;
+                setUsers(role);
+                setFilteredUsers(role);
+            } else {
+                console.error(result.error);
+            }
+        } catch (error) {
+            // Handle other errors, if needed
+            console.error('Error fetching roles:', error);
+        }
+
+        // setLoading(false);
+    };
 
     useEffect(() => {
-        try {
-            const apiEndpoint = 'http://localhost:8080/api/v1/users/management';
-
-            fetch(apiEndpoint, {
-                method: "GET",
-                headers: {
-                    Authorization: 'Basic ' + localStorage.getItem('email_password_credentials')
-                }
-            })
-                .then(response => response.json())
-                .then(data => {
-                    setUsers(data);
-                    setFilteredUsers(data);
-                })
-                .catch(error => {
-                    console.error('Error fetching users data:', error);
-                    setError('An error occurred while fetching user data.');
-                });
-        } catch (error) {
-            console.error('Error fetching user data:', error);
-            setError('An error occurred while fetching user data.');
-        }
+        fetchRoles()
     }, []);
 
     const owners = users.filter(user => user.authorities.includes('OWNER'));
@@ -47,7 +49,7 @@ const AllUser = () => {
     sessionStorage.setItem('regular-users', regularUsers.length);
     sessionStorage.setItem('all-users', allUsers)
 
-    const handleSearch = () => {
+    const handleSearch = async () => {
         const filtered = users.filter(user => user.username.toLowerCase().includes(searchUsername.toLowerCase()));
         setFilteredUsers(filtered);
     };

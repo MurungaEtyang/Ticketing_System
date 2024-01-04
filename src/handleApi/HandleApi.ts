@@ -1,71 +1,81 @@
-
 interface ApiResponse {
-    // Define a common response format here
+    success: boolean;
+    data?: any;
+    error?: string;
 }
 
-class HandleApi
-{
+class HandleApi {
     private apiUrl: string;
+    private authHeader: string;
 
-    constructor(apiUrl: string) {
+    constructor(apiUrl: string, authHeader: string) {
         this.apiUrl = apiUrl;
+        this.authHeader = authHeader;
+    }
+
+    private async handleResponse(response: Response): Promise<ApiResponse> {
+        if (response.ok) {
+            const data = await response.json();
+            console.log('Data operation successful.');
+            return { success: true, data };
+        } else {
+            const error = await response.text();
+            console.error('Error in API operation:', error);
+            return { success: false, error };
+        }
+    }
+
+    private getRequestHeaders(): Headers {
+        const headers = new Headers({
+            'Content-Type': 'application/json',
+            'Authorization': this.authHeader,
+        });
+        return headers;
     }
 
     async post(endpoint: string, body: object): Promise<ApiResponse> {
         try {
-            const response = await fetch(`${this.apiUrl}+${endpoint}`, {
+            const response = await fetch(`${this.apiUrl}${endpoint}`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.getItem('access_token'),
-                },
+                headers: this.getRequestHeaders(),
                 body: JSON.stringify(body),
             });
 
-            if (response.ok) {
-                const data = await response.json();
-                // Show success toast notification
-                console.log('Data submitted successfully.');
-
-                return data;
-            } else {
-                // If the response is not ok, throw an error
-                throw new Error('Error occurred while submitting data');
-            }
+            return this.handleResponse(response);
         } catch (error) {
-
-            console.log(error.message);
+            console.error('Error in API request:', error.message);
             throw error;
         }
     }
 
     async get(endpoint: string): Promise<ApiResponse> {
         try {
-            const response = await fetch(`${this.apiUrl}+${endpoint}`, {
+            const response = await fetch(`${this.apiUrl}${endpoint}`, {
                 method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.getItem('access_token'),
-                },
+                headers: this.getRequestHeaders(),
             });
 
-            if (response.ok) {
-                const data = await response.json();
-                // Show success toast notification
-                console.log('Data fetched successfully.');
-
-                return data;
-            } else {
-                // If the response is not ok, throw an error
-                throw new Error('Error occurred while fetching data');
-            }
+            return this.handleResponse(response);
         } catch (error) {
-            // Handle errors, show toast notification
-            console.log(error.message);
+            console.error('Error in API request:', error.message);
             throw error;
         }
     }
 
+    async put(endpoint: string, body: object): Promise<ApiResponse> {
+        try {
+            const response = await fetch(`${this.apiUrl}${endpoint}`, {
+                method: 'PUT',
+                headers: this.getRequestHeaders(),
+                body: JSON.stringify(body),
+            });
+
+            return this.handleResponse(response);
+        } catch (error) {
+            console.error('Error in API request:', error.message);
+            throw error;
+        }
+    }
 }
 
 export default HandleApi;

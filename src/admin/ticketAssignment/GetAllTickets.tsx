@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from 'react-router-dom';
 import AssignTicket from "./AssignTicket";
 import {BeatLoader} from "react-spinners";
+import ApiServices from "../../handleApi/ApiServices.ts";
 // import AssignTicket from "./AssignTicket";
 
 const GetAllTickets = () => {
@@ -18,7 +19,7 @@ const GetAllTickets = () => {
     const [showAssignTicketModal, setShowAssignTicketModal] = useState(false);
 
     const modalRef = useRef(null);
-
+    const apiServices = new ApiServices();
     const sortTicketsByStatus = (data) => {
         const statusOrder = { OPEN: 0, ASSIGNED: 1, SUBMITTED: 2, CLOSED: 3 };
         return data.sort((a, b) => statusOrder[a.status] - statusOrder[b.status]);
