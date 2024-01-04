@@ -4,7 +4,7 @@ import './stylesheeet/home-mobile.css';
 import Logo from './images/Logo.png';
 import {ClipLoader} from "react-spinners";
 import {toast, ToastContainer} from "react-toastify";
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate} from 'react-router-dom';
 
 const Home: React.FC = () => {
     const [loading, setLoading] = useState(false);
@@ -139,7 +139,7 @@ const Home: React.FC = () => {
                                     placeholder="Password"
                                     value={password}
                                     onChange={handlePasswordChange}
-                                    className="login-input"
+                                    // className="login-input"
                                 />
                                 <button type="submit" className="login-button" disabled={loading}>
                                     {loading ? (

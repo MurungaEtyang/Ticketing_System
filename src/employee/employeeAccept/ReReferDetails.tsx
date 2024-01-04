@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import {toast, ToastContainer} from "react-toastify";
 import '../../assets/component/stylesheeet/EmployeeFeedback.css';
 import ReRefer from "./ReRefer";
+import Refer from "../Refer";
 
 const EmployeeFeedback = () => {
     const referralId = sessionStorage.getItem('referral_id');
@@ -81,7 +82,7 @@ const EmployeeFeedback = () => {
             )}
 
             {referModal && (
-                <ReRefer />
+                <Refer />
             )}
             <ToastContainer />
         </>

@@ -1,0 +1,6 @@
+class HandleApiFromBackend {
+    
+    funtion constructor (){
+
+    }
+}

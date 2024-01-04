@@ -49,12 +49,12 @@ const AllSentTickets = () => {
     };
 
     const getProgressColor = (status) => {
-        const colorMap = {OPEN: 'red', ASSIGNED: 'yellow', SUBMITTED: 'green',  CLOSED: 'green'};
+        const colorMap = {OPEN: 'red', ASSIGNED: 'yellow', SUBMITTED: '#436b01',  CLOSED: 'green'};
         return colorMap[status] || '';
     };
 
     const calculateProgressPercentage = (status) => {
-        const percentageMap = { OPEN: '25%', ASSIGNED: '50%', SUBMITTED: '100%',  CLOSED: '100%'};
+        const percentageMap = { OPEN: '25% (OPEN)', ASSIGNED: '50% (ON-PROGRESS)', SUBMITTED: '100% (COMPLETED)',  CLOSED: '100% (CLOSED)'};
         return percentageMap[status] || '';
     };
 
@@ -187,15 +187,15 @@ const AllSentTickets = () => {
                 </button>
 
             </nav>
-            <div className={`chat-button-container`}>
-                {chatModal && <ChatModal onClose={() => setChatModal(false)} />}
-                <button
-                    className={`chatButton`}
-                    onClick={showChatModal}
-                >
-                    Chat Now <FontAwesomeIcon icon={faComment} />
-                </button>
-            </div>
+            {/*<div className={`chat-button-container`}>*/}
+            {/*    {chatModal && <ChatModal onClose={() => setChatModal(false)} />}*/}
+            {/*    <button*/}
+            {/*        className={`chatButton`}*/}
+            {/*        onClick={showChatModal}*/}
+            {/*    >*/}
+            {/*        Chat Now <FontAwesomeIcon icon={faComment} />*/}
+            {/*    </button>*/}
+            {/*</div>*/}
             {error && <div className="error">{error}</div>}
 
             <div className={`side-nav-bar raised ${isSideNavCollapsed ? "collapsed" : ""}`}>
